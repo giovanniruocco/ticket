@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:675516644201:android:782f92bf42a47b7cfa5bf8",
         "android_client_info": {
-          "package_name": "com.example.app"
+          "package_name": "com.ticket.app"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "675516644201-3dtdo1m5dufeetd8ncho5tuso8cl1det.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.app",
+            "package_name": "com.ticket.app",
             "certificate_hash": "a8d524d657b9792964a966f4cccc71138594325f"
           }
         },
