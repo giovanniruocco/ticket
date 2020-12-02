@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="nero">#000</color>
+    <color name="scuro">#534C4C</color>
+    <color name="bianco">#FBFF00</color>
+    <color name="uait">#FFFFFF</color>
+    <color name="prova">#F4B558</color>
+    <color name="active_dots">#fffafa</color>
+    <color name="inactive_dots">#83878b</color>
+    <color name="error_color">#FF1100</color>
+    <color name="Rosso">#D81B60</color>
+    <color name="verde">#209B27</color>
+</resources>
