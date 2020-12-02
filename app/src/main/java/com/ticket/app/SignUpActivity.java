@@ -49,6 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
         activity_sign_up = (RelativeLayout)findViewById(R.id.activity_sign_up);
         myVib=(Vibrator)this.getSystemService(VIBRATOR_SERVICE);
 
+
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,9 +91,9 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                         else{
                             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-                            mDatabase.child("Utenti").child(currentFirebaseUser.getUid()).child("email").setValue(input_email.getText().toString());
-                            mDatabase.child("Utenti").child(currentFirebaseUser.getUid()).child("nome").setValue(nome.getText().toString());
-                            mDatabase.child("Utenti").child(currentFirebaseUser.getUid()).child("cognome").setValue(cognome.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("email").setValue(input_email.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(nome.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(cognome.getText().toString());
                             startActivity(new Intent(SignUpActivity.this,ProfileActivity.class));
                         }
                     }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -41,12 +44,14 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 0;
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatabase= FirebaseDatabase.getInstance().getReference();
 
         setContentView(R.layout.activity_login);
         btnGoogleLogin = findViewById(R.id.googlelogin_btn);
@@ -75,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                //Intent intento = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
+                //startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
             }
 
 
@@ -126,7 +132,24 @@ public class LoginActivity extends AppCompatActivity {
             // Signed in successfully, show authenticated UI.
 
             firebaseAuthWithGoogle(account.getIdToken());
-            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            //FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+            //auth = FirebaseAuth.getInstance();
+            //mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("email").setValue("blo");
+            //mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").setValue("bla");
+            //mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("surname").setValue("bla");
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                }
+            }, 1000);
+
+
+
+
+
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.

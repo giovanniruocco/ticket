@@ -10,12 +10,49 @@
       "client_info": {
         "mobilesdk_app_id": "1:675516644201:android:782f92bf42a47b7cfa5bf8",
         "android_client_info": {
-          "package_name": "com.ticket.app"
+          "package_name": "com.example.app"
         }
       },
       "oauth_client": [
         {
           "client_id": "675516644201-3dtdo1m5dufeetd8ncho5tuso8cl1det.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app",
+            "certificate_hash": "a8d524d657b9792964a966f4cccc71138594325f"
+          }
+        },
+        {
+          "client_id": "675516644201-6fd0vjs28nbk86r76hhrmup4apn6cgse.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz8HTD4MDHEci5y6KnJ1SLbQNguQV2ffM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675516644201-6fd0vjs28nbk86r76hhrmup4apn6cgse.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675516644201:android:2d26ce5c48715a64fa5bf8",
+        "android_client_info": {
+          "package_name": "com.ticket.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675516644201-nds178tid9v5ev0t08nptgth9fbevoms.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ticket.app",
