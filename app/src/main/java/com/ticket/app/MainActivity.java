@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else {
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                            Toast.makeText(MainActivity.this, "Login", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Login ", Toast.LENGTH_LONG).show();
                         }
                         break;
 
