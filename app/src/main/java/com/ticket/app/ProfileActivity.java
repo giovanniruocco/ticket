@@ -58,9 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         mail = findViewById(R.id.mail);
         cell = findViewById(R.id.cell);
 
-        user = auth.getCurrentUser().getEmail();
-        Query query = UsersRef.orderByChild("email").equalTo(user);
-        query.addListenerForSingleValueEvent(evento);
+
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,6 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
             //name.setText(auth.getCurrentUser().getDisplayName());
             mail.setText("Email: " + auth.getCurrentUser().getEmail());
             cell.setText("Cellulare non inserito");
+            Query query = UsersRef.orderByChild("email").equalTo(auth.getCurrentUser().getEmail());
+            query.addListenerForSingleValueEvent(evento);
         }
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ProfileActivity.this);
@@ -92,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
             mDatabase.child("Users").child(personId).child("email").setValue(personEmail);
             mDatabase.child("Users").child(personId).child("name").setValue(personGivenName);
             mDatabase.child("Users").child(personId).child("surname").setValue(personFamilyName);
-            mDatabase.child("Users").child(personId).child("cell").setValue(null);
+            //mDatabase.child("Users").child(personId).child("cell").setValue(null);
         }
 
 
