@@ -1,4 +1,5 @@
 package com.ticket.app;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -17,15 +18,25 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import static java.util.Collections.reverse;
 
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference mDatabase;
+    private DatabaseReference UsersRef;
+    private String user;
 
-    TextView name, mail;
+    TextView name, mail, cell;
     Button logout;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -35,11 +46,22 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         setTitle("Profile");
         mDatabase= FirebaseDatabase.getInstance().getReference();
+        UsersRef=FirebaseDatabase.getInstance().getReference("Users");
+
+
+
+
 
         auth = FirebaseAuth.getInstance();
         logout = findViewById(R.id.logout);
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
+        cell = findViewById(R.id.cell);
+
+        user = auth.getCurrentUser().getEmail();
+        Query query = UsersRef.orderByChild("email").equalTo(user);
+        query.addListenerForSingleValueEvent(evento);
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -52,12 +74,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if(auth.getCurrentUser() != null){
-            name.setText(auth.getCurrentUser().getDisplayName());
+            //name.setText(auth.getCurrentUser().getDisplayName());
             mail.setText(auth.getCurrentUser().getEmail());
+            cell.setText(auth.getCurrentUser().getPhoneNumber());
         }
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ProfileActivity.this);
-        if (acct != null && mDatabase.child("Utenti").child(acct.getId()).child("email").toString() != acct.getEmail())  {
+        if (acct != null && mDatabase.child("Users").child(acct.getId()).child("email").toString() != acct.getEmail())  {
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
@@ -85,6 +108,23 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     }
+
+    ValueEventListener evento = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                User user = snap.getValue(User.class);
+                if (!(user.getName().equals("")))
+                    name.setText(user.getName() + " " + user.getSurname());
+            }
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 
     @Override
     public void onBackPressed() {

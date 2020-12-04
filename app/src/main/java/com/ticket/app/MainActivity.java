@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -20,13 +22,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private NavigationView nv;
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private DrawerLayout activity_main;
+    private DatabaseReference UsersRef;
     private FirebaseAuth auth;
+    private TextView tvnamelogin, tvemaillogin;
+    private ImageView immaginelogin;
+    private String user;
     GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -42,10 +54,24 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         auth = FirebaseAuth.getInstance();
 
+
+        UsersRef= FirebaseDatabase.getInstance().getReference("Users");
+
+        if(auth.getCurrentUser() != null) {
+            user = auth.getCurrentUser().getEmail();
+            Query query = UsersRef.orderByChild("email").equalTo(user);
+            query.addListenerForSingleValueEvent(evento);
+        }
         final GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
         NavigationView navigescionView = (NavigationView) findViewById(R.id.nv);
         View headerView = navigescionView.getHeaderView(0);
+
+        immaginelogin= (ImageView) headerView.findViewById(R.id.immaginelogin);
+        immaginelogin.setImageResource(R.drawable.ic_profile);
+        tvnamelogin = (TextView) headerView.findViewById(R.id.navigation_name);
+        tvemaillogin = (TextView) headerView.findViewById(R.id.navigation_email);
+
         activity_main = (DrawerLayout) findViewById(R.id.dl);
 
 
@@ -116,6 +142,30 @@ public class MainActivity extends AppCompatActivity {
         if (t.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
+    }
+
+    ValueEventListener evento = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                User user = snap.getValue(User.class);
+                tvnamelogin.setText(user.getName() + " " + user.getSurname());
+                tvemaillogin.setText(user.getEmail());
+            }
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
+    public void Clicckino(View v){
+        if (auth.getCurrentUser()==null)
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        else
+            startActivity(new Intent(MainActivity.this,ProfileActivity.class));
     }
 
 }

@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpActivity extends AppCompatActivity {
     Button btnSignup;
     TextView btnLogin;
-    EditText input_email,input_pass,nome,cognome, confirm_pass;
+    EditText input_email,input_pass,name,surname, confirm_pass;
     RelativeLayout activity_sign_up;
     private Vibrator myVib;
     private FirebaseAuth auth;
@@ -44,8 +44,8 @@ public class SignUpActivity extends AppCompatActivity {
         input_email = (EditText)findViewById(R.id.signup_email);
         input_pass = (EditText)findViewById(R.id.signup_password);
         confirm_pass = (EditText)findViewById(R.id.confirm_password);
-        nome = (EditText)findViewById(R.id.signup_username);
-        cognome = (EditText)findViewById(R.id.signup_surname);
+        name = (EditText)findViewById(R.id.signup_username);
+        surname = (EditText)findViewById(R.id.signup_surname);
         activity_sign_up = (RelativeLayout)findViewById(R.id.activity_sign_up);
         myVib=(Vibrator)this.getSystemService(VIBRATOR_SERVICE);
 
@@ -92,8 +92,8 @@ public class SignUpActivity extends AppCompatActivity {
                         else{
                             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("email").setValue(input_email.getText().toString());
-                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(nome.getText().toString());
-                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(cognome.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(surname.getText().toString());
                             startActivity(new Intent(SignUpActivity.this,ProfileActivity.class));
                         }
                     }
