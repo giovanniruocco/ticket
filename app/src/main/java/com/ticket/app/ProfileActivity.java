@@ -75,12 +75,12 @@ public class ProfileActivity extends AppCompatActivity {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if(auth.getCurrentUser() != null){
             //name.setText(auth.getCurrentUser().getDisplayName());
-            mail.setText(auth.getCurrentUser().getEmail());
-            cell.setText(auth.getCurrentUser().getPhoneNumber());
+            mail.setText("Email: " + auth.getCurrentUser().getEmail());
+            cell.setText("Cellulare non inserito");
         }
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ProfileActivity.this);
-        if (acct != null && mDatabase.child("Users").child(acct.getId()).child("email").toString() != acct.getEmail())  {
+        if (acct != null && mDatabase.child("Users").child(acct.getId()).child("email").toString() != acct.getEmail())  { //mando nel database tutti i valore gel google account
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
@@ -92,6 +92,7 @@ public class ProfileActivity extends AppCompatActivity {
             mDatabase.child("Users").child(personId).child("email").setValue(personEmail);
             mDatabase.child("Users").child(personId).child("name").setValue(personGivenName);
             mDatabase.child("Users").child(personId).child("surname").setValue(personFamilyName);
+            mDatabase.child("Users").child(personId).child("cell").setValue(null);
         }
 
 
@@ -115,7 +116,10 @@ public class ProfileActivity extends AppCompatActivity {
             for (DataSnapshot snap : dataSnapshot.getChildren()) {
                 User user = snap.getValue(User.class);
                 if (!(user.getName().equals("")))
-                    name.setText(user.getName() + " " + user.getSurname());
+                    name.setText("Name: " + user.getName() + " " + user.getSurname());
+                if (user.getCell()!=null )
+                    cell.setText("Cell: " + user.getCell());
+
             }
 
         }

@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpActivity extends AppCompatActivity {
     Button btnSignup;
     TextView btnLogin;
-    EditText input_email,input_pass,name,surname, confirm_pass;
+    EditText input_email,input_pass,name,surname, cell, confirm_pass;
     RelativeLayout activity_sign_up;
     private Vibrator myVib;
     private FirebaseAuth auth;
@@ -46,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         confirm_pass = (EditText)findViewById(R.id.confirm_password);
         name = (EditText)findViewById(R.id.signup_username);
         surname = (EditText)findViewById(R.id.signup_surname);
+        cell = (EditText)findViewById(R.id.signup_cell);
         activity_sign_up = (RelativeLayout)findViewById(R.id.activity_sign_up);
         myVib=(Vibrator)this.getSystemService(VIBRATOR_SERVICE);
 
@@ -94,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("email").setValue(input_email.getText().toString());
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(surname.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("cell").setValue(cell.getText().toString());
                             startActivity(new Intent(SignUpActivity.this,ProfileActivity.class));
                         }
                     }

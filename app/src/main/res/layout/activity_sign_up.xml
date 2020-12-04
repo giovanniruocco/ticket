@@ -23,6 +23,23 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@+id/input_usersurname"
+        android:id="@+id/signup_input_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/signup_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/productsansregular"
+        android:hint="Add your Cell"
+        android:inputType="phone"
+        android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_below="@+id/signup_input_cell"
         android:id="@+id/signup_input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
