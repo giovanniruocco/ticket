@@ -95,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("email").setValue(input_email.getText().toString());
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(surname.getText().toString());
-                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("cell").setValue(cell.getText().toString());
+                            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("cell").setValue(cell .getText().toString());
                             startActivity(new Intent(SignUpActivity.this,ProfileActivity.class));
                         }
                     }
