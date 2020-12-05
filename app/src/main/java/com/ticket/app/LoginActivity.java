@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void run() {
                     startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
                 }
-            }, 1000);
+            }, 0);
 
 
 

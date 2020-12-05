@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String user;
 
     TextView name, mail, cell;
-    Button logout;
+    Button logout, gippiesse;
     GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -45,6 +45,23 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         setTitle("Profile");
+
+        Button refresh = findViewById(R.id.refresh);
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //startActivity(new Intent(gps.this, gps.class));
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+                Toast.makeText(ProfileActivity.this, "Refresh", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
         mDatabase= FirebaseDatabase.getInstance().getReference();
         UsersRef=FirebaseDatabase.getInstance().getReference("Users");
 
@@ -54,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         logout = findViewById(R.id.logout);
+        gippiesse = findViewById(R.id.gippiesse);
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
         cell = findViewById(R.id.cell);
@@ -104,6 +122,16 @@ public class ProfileActivity extends AppCompatActivity {
                 mGoogleSignInClient.signOut();
                 startActivity(new Intent(ProfileActivity.this, MainActivity.class));
                 Toast.makeText(ProfileActivity.this, "Logout effettuato con successo", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        gippiesse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(ProfileActivity.this, gps.class));
+                Toast.makeText(ProfileActivity.this, "GPS", Toast.LENGTH_SHORT).show();
 
             }
         });
