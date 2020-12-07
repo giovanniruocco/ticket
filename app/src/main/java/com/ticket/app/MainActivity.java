@@ -131,7 +131,23 @@ public class MainActivity extends AppCompatActivity {
                                     .show();
                         }
                         break;
-
+                    case R.id.nv_add:
+                        if(auth.getCurrentUser() != null) {
+                            startActivity(new Intent(MainActivity.this, AddActivity.class));
+                        }
+                        else {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setMessage("You must be logged in")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok, let's go", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                        }
+                                    })
+                                    .setNegativeButton("No, thanks", null)
+                                    .show();
+                        }
+                        break;
                 }
                 return true;
             }

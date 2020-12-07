@@ -1,9 +1,13 @@
 package com.ticket.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -62,11 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        mDatabase= FirebaseDatabase.getInstance().getReference();
-        UsersRef=FirebaseDatabase.getInstance().getReference("Users");
-
-
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        UsersRef = FirebaseDatabase.getInstance().getReference("Users");
 
 
         auth = FirebaseAuth.getInstance();
@@ -75,9 +76,6 @@ public class ProfileActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
         cell = findViewById(R.id.cell);
-
-
-
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if(auth.getCurrentUser() != null){
+        if (auth.getCurrentUser() != null) {
             //name.setText(auth.getCurrentUser().getDisplayName());
             mail.setText("Email: " + auth.getCurrentUser().getEmail());
             cell.setText("Cellulare non inserito");
@@ -99,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ProfileActivity.this);
-        if (acct != null && mDatabase.child("Users").child(acct.getId()).child("email").toString() != acct.getEmail())  { //mando nel database tutti i valore gel google account
+        if (acct != null && mDatabase.child("Users").child(acct.getId()).child("email").toString() != acct.getEmail()) { //mando nel database tutti i valore gel google account
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
@@ -107,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
-            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             mDatabase.child("Users").child(personId).child("email").setValue(personEmail);
             mDatabase.child("Users").child(personId).child("name").setValue(personGivenName);
             mDatabase.child("Users").child(personId).child("surname").setValue(personFamilyName);
@@ -129,9 +127,15 @@ public class ProfileActivity extends AppCompatActivity {
         gippiesse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                requestgps();
 
-                startActivity(new Intent(ProfileActivity.this, gps.class));
-                Toast.makeText(ProfileActivity.this, "GPS", Toast.LENGTH_SHORT).show();
+                if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(new Intent(ProfileActivity.this, gps.class));
+
+                    Toast.makeText(ProfileActivity.this, "GPS", Toast.LENGTH_SHORT).show();
+                } /*else
+                    Toast.makeText(ProfileActivity.this, "GPS Permission denied", Toast.LENGTH_SHORT).show();
+                    */
 
             }
         });
@@ -146,7 +150,7 @@ public class ProfileActivity extends AppCompatActivity {
                 User user = snap.getValue(User.class);
                 if (!(user.getName().equals("")))
                     name.setText("Name: " + user.getName() + " " + user.getSurname());
-                if (user.getCell()!=null )
+                if (user.getCell() != null)
                     cell.setText("Cell: " + user.getCell());
 
             }
@@ -158,6 +162,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
     };
+
+    private void requestgps() {
+        ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+    }
+
 
     @Override
     public void onBackPressed() {

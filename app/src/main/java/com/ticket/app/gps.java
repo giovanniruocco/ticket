@@ -29,7 +29,7 @@ public class gps extends AppCompatActivity {
     Location final_loc;
     double longitude;
     double latitude;
-    String userCountry, userAddress;
+    String userProvince, userAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class gps extends AppCompatActivity {
         TextView tv3 = findViewById(R.id.textView3);
         TextView tv4 = findViewById(R.id.textView4);
         TextView tv5 = findViewById(R.id.textView5);
+        TextView tv0 = findViewById(R.id.textView0);
         Button refresh = findViewById(R.id.button);
 
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +64,7 @@ public class gps extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-
+            Toast.makeText(gps.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -92,24 +93,31 @@ public class gps extends AppCompatActivity {
         }
 
 
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+        //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
 
         try {
 
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses != null && addresses.size() > 0) {
-                userCountry = addresses.get(0).getCountryName();
+                userProvince = addresses.get(0).getSubAdminArea();
                 userAddress = addresses.get(0).getAddressLine(0);
-                tv.setText("User Province: " + (addresses.get(0).getSubAdminArea()));
+                if (userProvince.contains("Città Metropolitana di "))
+                    userProvince=userProvince.substring(23);
+                else if (userProvince.contains("Provincia di "))
+                    userProvince = userProvince.substring(13);
+                else if (userProvince.contains("Provincia dell'"))
+                    userProvince = "L'" + userProvince.substring(15);
+                tv0.setText("User Regione: " + (addresses.get(0).getAdminArea()));
+                tv.setText("User Province: " + userProvince);
                 tv2.setText("User Locality: " + (addresses.get(0).getLocality()));
                 tv3.setText("User Address: " + userAddress);
                 tv4.setText("Latitude: " + latitude);
                 tv5.setText("Longitude: " + longitude);
             }
             else {
-                userCountry = "Unknown";
-                tv.setText(userCountry);
+                userProvince = "Unknown";
+                tv.setText(userProvince);
             }
 
         } catch (Exception e) {
