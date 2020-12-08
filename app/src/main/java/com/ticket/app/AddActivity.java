@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import java.util.List;
@@ -38,9 +40,15 @@ import java.util.Locale;
 
 public class AddActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    String[] countryNames={"Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
+    String[] categoryNames={"Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
     int flags[] = {R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
-    String[] provincearray = {"ciao"};
+    String[] provincearray;
+    String[] regionearray;
+    String addname ;
+    String addprice;
+    String region, city;
+    private EditText et_name,et_price,et_description;
+    int id_regionearray;
     Location gps_loc;
     Location network_loc;
     Location final_loc;
@@ -52,16 +60,13 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        Button gippiesse;
+        Button gippiesse, add_btn;
         gippiesse = findViewById(R.id.gippiesse);
-        TextView testo = findViewById(R.id.textView2);
+        add_btn = findViewById(R.id.add_button);
 
-        final String[] testArray = getResources().getStringArray(R.array.regionArray);
-        testo.setText(testArray[1]);
-
-
-
-
+        et_name = (EditText) findViewById(R.id.add_name);
+        et_description = (EditText) findViewById(R.id.add_description);
+        et_price = (EditText) findViewById(R.id.add_price);
 
 
         final Spinner spinner = findViewById(R.id.spinner);
@@ -81,152 +86,95 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
                 switch (position) {
                     case 0 : //No selection
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.nullArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.nullArray;
                         break;
 
                     case 1 : //Abruzzo
-                        provincearray = getResources().getStringArray(R.array.abruzzoArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.abruzzoArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.abruzzoArray;
                         break;
 
                     case 2 : //Basilicata
-                        provincearray = getResources().getStringArray(R.array.basilicataArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.basilicataArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.basilicataArray;
                         break;
 
                     case 3 : //Calabria
-                        provincearray = getResources().getStringArray(R.array.calabriaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.calabriaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.calabriaArray;
                         break;
 
                     case 4 : //Campania
-                        provincearray = getResources().getStringArray(R.array.campaniaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.campaniaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.campaniaArray;
                         break;
 
                     case 5 : //Emilia
-                        provincearray = getResources().getStringArray(R.array.emiliaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.emiliaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.emiliaArray;
                         break;
 
                     case 6 : //Friuli
-                        provincearray = getResources().getStringArray(R.array.friuliArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.friuliArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.friuliArray;
                         break;
 
                     case 7 : //Lazio
-                        provincearray = getResources().getStringArray(R.array.lazioArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.lazioArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.lazioArray;
                         break;
 
                     case 8 : //Liguria
-                        provincearray = getResources().getStringArray(R.array.liguriaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.liguriaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.liguriaArray;
                         break;
 
                     case 9 : //Lombardia
-                        provincearray = getResources().getStringArray(R.array.lombardiaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.lombardiaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.lombardiaArray;
                         break;
 
                     case 10 : //Marche
-                        provincearray = getResources().getStringArray(R.array.marcheArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.marcheArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.marcheArray;
                         break;
 
                     case 11 : //Molise
-                        provincearray = getResources().getStringArray(R.array.moliseArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.moliseArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.moliseArray;
                         break;
 
                     case 12 : //Piemonte
-                        provincearray = getResources().getStringArray(R.array.piemonteArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.piemonteArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.piemonteArray;
                         break;
 
                     case 13 : //Puglia
-                        provincearray = getResources().getStringArray(R.array.pugliaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.pugliaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.pugliaArray;
                         break;
 
                     case 14 : //Sardegna
-                        provincearray = getResources().getStringArray(R.array.sardegnaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.sardegnaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.sardegnaArray;
                         break;
 
                     case 15 : //Sicilia
-                        provincearray = getResources().getStringArray(R.array.siciliaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.siciliaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.siciliaArray;
                         break;
 
                     case 16 : //Trentino
-                        provincearray = getResources().getStringArray(R.array.trentinoArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.trentinoArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.trentinoArray;
                         break;
 
                     case 17 : //Toscana
-                        provincearray = getResources().getStringArray(R.array.toscanaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.toscanaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.toscanaArray;
                         break;
 
                     case 18 : //Umbria
-                        provincearray = getResources().getStringArray(R.array.umbriaArray);
-                        provincearray = getResources().getStringArray(R.array.umbriaArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.umbriaArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.umbriaArray;
                         break;
 
                     case 19 : //Valle d'Aosta
-                        provincearray = getResources().getStringArray(R.array.valleArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.valleArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.valleArray;
                         break;
 
                     case 20 : //Veneto
-                        provincearray = getResources().getStringArray(R.array.venetoArray);
-                        adapter1 = ArrayAdapter.createFromResource( getApplicationContext(), R.array.venetoArray, android.R.layout.simple_spinner_item);
-                        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter1);
+                        id_regionearray = R.array.venetoArray;
                         break;
                 }
+
+                adapter1 = ArrayAdapter.createFromResource(getApplicationContext(), id_regionearray, android.R.layout.simple_spinner_item);
+                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner2.setAdapter(adapter1);
+                regionearray = getResources().getStringArray(R.array.regionArray);
+                provincearray = getResources().getStringArray(id_regionearray);
             }
 
             @Override
@@ -235,27 +183,10 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
-      
-       
-       
-       
-       
-       
-       
-       
-
-       
-       
-       
-       
-       
-       
- 
-
         final Spinner spin = (Spinner) findViewById(R.id.cat_spinner);
         spin.setOnItemSelectedListener(this);
 
-        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),flags,countryNames);
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),flags,categoryNames);
         spin.setAdapter(customAdapter);
 
 
@@ -264,6 +195,9 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         gippiesse.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View view) {
+
+                                             if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                                                 ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
 
 
                                              LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -325,25 +259,9 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                                  e.printStackTrace();
                                              }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //regione = "Umbria";//insert code here
                 int index = -1;
-                for (int i=0;i<testArray.length;i++) {
-                    if (testArray[i].equals(regione)) {
+                for (int i=0;i<regionearray.length;i++) {
+                    if (regionearray[i].equals(regione)) {
                         index = i;
                         break;
                     }
@@ -363,23 +281,43 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                         }
                         spinner2.setSelection(indexo);
                     }
-                }, 50);
-
-
+                }, 150);
 
             }
         });
+
+        add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addname = et_name.getText().toString().trim();
+                addprice = et_price.getText().toString().trim();
+                if (spinner.getSelectedItem()!=null && spinner2.getSelectedItem() !=null) {
+                    region = spinner.getSelectedItem().toString();
+                    city = spinner2.getSelectedItem().toString();
+                }
+                else {
+                    region = "";
+                    city = "";
+                }
+                String category = categoryNames[spin.getSelectedItemPosition()];
+                String finaltext = "Name: " + addname + "\nCategory: " + category + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice;
+                Toast.makeText(getApplicationContext(),finaltext, Toast.LENGTH_LONG).show();
+            }
+
+        });
+
 
 
     }
 
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
-        Toast.makeText(getApplicationContext(), countryNames[position], Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), categoryNames[position], Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
+
 }

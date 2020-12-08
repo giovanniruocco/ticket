@@ -35,11 +35,11 @@
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_dog_name" />
+        app:layout_constraintTop_toBottomOf="@+id/add_name" />
 
 
     <EditText
-        android:id="@+id/add_dog_name"
+        android:id="@+id/add_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
     <EditText
-        android:id="@+id/add_phone"
+        android:id="@+id/add_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -179,6 +179,7 @@
         android:background="#49b675"
         android:fontFamily="@font/productsansbold"
         android:text="ADD"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -193,7 +194,7 @@
         android:fontFamily="@font/productsansregular"
         android:text="* (Required Fields)"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_phone" />
+        app:layout_constraintTop_toBottomOf="@+id/add_price" />
 
     <Button
         android:id="@+id/gippiesse"

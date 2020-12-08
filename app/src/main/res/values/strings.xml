@@ -8,17 +8,6 @@
 
     </string-array>
 
-    <string-array name="categoryArray">
-        <item>...</item>
-        <item>Music</item>
-        <item>Football</item>
-        <item>Theatre</item>
-        <item>Cinema</item>
-        <item>Flights</item>
-        <item>Trains</item>
-        <item>Other Events</item>
-    </string-array>
-
 
     <string-array name="regionArray">
         <item> </item>
@@ -45,6 +34,7 @@
     </string-array>
 
     <string-array name="cityArray">
+        <item></item>
         <item>Agrigento</item>
         <item>Alessandria</item>
         <item>Ancona</item>
@@ -158,6 +148,7 @@
     </string-array>
 
     <string-array name="abruzzoArray">
+        <item></item>
         <item>Chieti</item>
         <item>L\'Aquila</item>
         <item>Pescara</item>
@@ -165,11 +156,13 @@
     </string-array>
 
     <string-array name="basilicataArray">
+        <item></item>
         <item>Matera</item>
         <item>Potenza</item>
     </string-array>
 
     <string-array name="calabriaArray">
+        <item></item>
         <item>Catanzaro</item>
         <item>Cosenza</item>
         <item>Crotone</item>
@@ -178,6 +171,7 @@
     </string-array>
 
     <string-array name="campaniaArray">
+        <item></item>
         <item>Avellino</item>
         <item>Benevento</item>
         <item>Caserta</item>
@@ -186,6 +180,7 @@
     </string-array>
 
     <string-array name="emiliaArray">
+        <item></item>
         <item>Bologna</item>
         <item>Ferrara</item>
         <item>Forlì-Cesena</item>
@@ -198,6 +193,7 @@
     </string-array>
 
     <string-array name="friuliArray">
+        <item></item>
         <item>Gorizia</item>
         <item>Pordenone</item>
         <item>Trieste</item>
@@ -205,6 +201,7 @@
     </string-array>
 
     <string-array name="lazioArray">
+        <item></item>
         <item>Frosinone</item>
         <item>Latina</item>
         <item>Rieti</item>
@@ -213,6 +210,7 @@
     </string-array>
 
     <string-array name="liguriaArray">
+        <item></item>
         <item>Genova</item>
         <item>Imperia</item>
         <item>La Spezia</item>
@@ -220,6 +218,7 @@
     </string-array>
 
     <string-array name="lombardiaArray">
+        <item></item>
         <item>Bergamo</item>
         <item>Brescia</item>
         <item>Como</item>
@@ -235,6 +234,7 @@
     </string-array>
 
     <string-array name="marcheArray">
+        <item></item>
         <item>Ancona</item>
         <item>Ascoli Piceno</item>
         <item>Fermo</item>
@@ -243,11 +243,13 @@
     </string-array>
 
     <string-array name="moliseArray">
+        <item></item>
         <item>Campobasso</item>
         <item>Isernia</item>
     </string-array>
 
     <string-array name="piemonteArray">
+        <item></item>
         <item>Alessandria</item>
         <item>Asti</item>
         <item>Cuneo</item>
@@ -258,6 +260,7 @@
     </string-array>
 
     <string-array name="pugliaArray">
+        <item></item>
         <item>Bari</item>
         <item>Barletta-Andria-Trani</item>
         <item>Brindisi</item>
@@ -267,6 +270,7 @@
     </string-array>
 
     <string-array name="sardegnaArray">
+        <item></item>
         <item>Cagliari</item>
         <item>Nuoro</item>
         <item>Oristano</item>
@@ -275,6 +279,7 @@
     </string-array>
 
     <string-array name="siciliaArray">
+        <item></item>
         <item>Agrigento</item>
         <item>Caltanissetta</item>
         <item>Catania</item>
@@ -287,11 +292,13 @@
     </string-array>
 
     <string-array name="trentinoArray">
+        <item></item>
         <item>Bolzano</item>
         <item>Trento</item>
     </string-array>
 
     <string-array name="toscanaArray">
+        <item></item>
         <item>Arezzo</item>
         <item>Firenze</item>
         <item>Grosseto</item>
@@ -305,15 +312,18 @@
     </string-array>
 
     <string-array name="umbriaArray">
+        <item></item>
         <item>Perugia</item>
         <item>Terni</item>
     </string-array>
 
     <string-array name="valleArray">
+        <item></item>
         <item>Aosta</item>
     </string-array>
 
     <string-array name="venetoArray">
+        <item></item>
         <item>Belluno</item>
         <item>Padova</item>
         <item>Rovigo</item>
