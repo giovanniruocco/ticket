@@ -3,17 +3,28 @@ package com.ticket.app;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.app.slice.Slice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -32,21 +43,61 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 
 public class AddActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String[] categoryNames={"Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
     int flags[] = {R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
+    ImageView imgview;
     String[] provincearray;
     String[] regionearray;
-    String addname ;
-    String addprice;
-    String region, city;
+    String addname, addprice, adddesc;
+    String region, city, category, finaltext;
+    String cell;
+
+    private DatabaseReference mDatabase, TicketsRef;
+    private FirebaseAuth auth;
+    private DatabaseReference UsersRef;
+
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private Uri selectedImageUri;
+    static final int REQUEST_CAMERA = 1;
+    static final int CAPTURE_IMAGE_REQUEST = 1;
+    private Integer SELECT_FILE=0;
+    private String urlimmagine, mCurrentPhotoPath;
+    private Bitmap bmp;
+    File photoFile = null;
+    private static final String IMAGE_DIRECTORY_NAME = "BAOO";
     private EditText et_name,et_price,et_description;
     int id_regionearray;
     Location gps_loc;
@@ -60,9 +111,41 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        Button gippiesse, add_btn;
+        TicketsRef = FirebaseDatabase.getInstance().getReference("Tickets");
+        mDatabase= FirebaseDatabase.getInstance().getReference();
+
+        Button gippiesse, add_btn, add_img;
         gippiesse = findViewById(R.id.gippiesse);
         add_btn = findViewById(R.id.add_button);
+        add_img = findViewById(R.id.immaginepiuID);
+        imgview = findViewById(R.id.immagineviewID);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        UsersRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        auth = FirebaseAuth.getInstance();
+        final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        final String utente = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (auth.getCurrentUser() != null) {
+            //name.setText(auth.getCurrentUser().getDisplayName());
+
+            Query query = UsersRef.orderByChild("email").equalTo(auth.getCurrentUser().getEmail());
+            query.addListenerForSingleValueEvent(evento);
+        }
+
+
+        add_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SelectImage();
+                //Toast.makeText(getApplicationContext(),"Ammo", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
 
         et_name = (EditText) findViewById(R.id.add_name);
         et_description = (EditText) findViewById(R.id.add_description);
@@ -190,6 +273,9 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         spin.setAdapter(customAdapter);
 
 
+
+
+
 //Performing action onItemSelected and onNothing selected
 
         gippiesse.setOnClickListener(new View.OnClickListener() {
@@ -291,6 +377,10 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             public void onClick(View view) {
                 addname = et_name.getText().toString().trim();
                 addprice = et_price.getText().toString().trim();
+                if(!(et_description.getText().toString().trim().equals("")))
+                    adddesc = et_description.getText().toString().trim();
+                else
+                    adddesc = "NO DESCRIPTION ADDED";
                 if (spinner.getSelectedItem()!=null && spinner2.getSelectedItem() !=null) {
                     region = spinner.getSelectedItem().toString();
                     city = spinner2.getSelectedItem().toString();
@@ -299,9 +389,27 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                     region = "";
                     city = "";
                 }
-                String category = categoryNames[spin.getSelectedItemPosition()];
-                String finaltext = "Name: " + addname + "\nCategory: " + category + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice;
-                Toast.makeText(getApplicationContext(),finaltext, Toast.LENGTH_LONG).show();
+                category = categoryNames[spin.getSelectedItemPosition()];
+                finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
+
+                new AlertDialog.Builder(AddActivity.this)
+                        .setMessage("Are you sure you entered the data correctly?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes, go ahead", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getUrlimmagine();
+                                Ticket biglietto = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, urlimmagine);
+                                biglietto.setUtente(utente);
+                                String uid = mDatabase.child("Tickets").push().getKey();
+                                biglietto.setUid(uid);
+                                mDatabase.child("Tickets").child(uid).setValue(biglietto);
+                                Toast.makeText(AddActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(AddActivity.this, ProfileActivity.class));
+                            }
+                        })
+                        .setNegativeButton("No, let me check", null)
+                        .show();
+
             }
 
         });
@@ -319,5 +427,232 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
+
+    private void SelectImage(){
+        final CharSequence[] items={"Camera","Album", "Back"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
+        builder.setTitle("Add Photo");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (items[i].equals("Camera")) {
+                    captureimage();
+                } else if (items[i].equals("Album")) {
+                    if (ContextCompat.checkSelfPermission(AddActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
+                        selectimage();
+                    else
+                        requeststorage();
+                } else if (items[i].equals("Back")) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void selectimage(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, SELECT_FILE);
+    }
+    private void requeststorage(){
+        ActivityCompat.requestPermissions(AddActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},1);
+    }
+    private void captureimage()
+    {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        }
+        else
+        {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Crea il file dove dovrebbe andare l'immagine
+                try {
+
+                    photoFile = createImageFile();
+                    // Continua solamente se il file è stato creato con successo
+                    if (photoFile != null) {
+                        //Toast.makeText(this, "Creato", Toast.LENGTH_SHORT).show();
+                        Uri photoURI = FileProvider.getUriForFile(this,
+                                "com.ticket.app.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, CAPTURE_IMAGE_REQUEST);
+                    }
+                }
+                catch (Exception ex) {
+                    //Toast.makeText(this, "Eccezione", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode,data);
+        if(resultCode== Activity.RESULT_OK){
+            if(requestCode==REQUEST_CAMERA){
+                bmp = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                imgview.setImageBitmap(bmp);
+                uploadCamera();
+
+            }else if(requestCode==SELECT_FILE){
+                selectedImageUri = data.getData();
+                uploadImage();
+                imgview.setImageURI(selectedImageUri);
+            }
+        }
+    }
+    private File createImageFile() throws IOException {
+        // Creazione di un file
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefisso*/
+                ".jpg",         /* suffisso */
+                storageDir      /* cartella */
+        );
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+    private void uploadImage() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading ");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        StorageReference ref = storageReference.child("Foto/" + UUID.randomUUID().toString());
+        if (selectedImageUri != null) {
+            ref.putFile(selectedImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            //Snackbar.make(v, "Upload completed", Toast.LENGTH_SHORT).show();
+                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!urlTask.isSuccessful()) ;
+                            Uri downloadUrl = urlTask.getResult();
+                            setUrlimmagine(downloadUrl);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            //Snackbar.make(v, "Upload failed, retry.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Loading: " + (int) progress + "%");
+                        }
+                    });
+        }
+    }
+
+
+    private void uploadCamera(){
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading ");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        StorageReference ref = storageReference.child("Foto/" + UUID.randomUUID().toString());
+        if (bmp!=null){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            ref.putBytes(data)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            //Snackbar.make(v, "Upload completed", Toast.LENGTH_SHORT).show();
+                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!urlTask.isSuccessful());
+                            Uri downloadUrl = urlTask.getResult();
+                            setUrlimmagine(downloadUrl);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            //Snackbar.make(v, "Upload failed, retry.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Loading: "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                captureimage();
+            }
+        }
+        if (requestCode==1)
+        {
+            if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                selectimage();
+        }
+    }
+    public void setUrlimmagine(Uri prova)
+    {
+        urlimmagine=new String(prova.toString());
+    }
+    public String getUrlimmagine()
+    {
+        return urlimmagine;
+    }
+
+    private void closeKeyboard(){
+        View vista = this.getCurrentFocus();
+        if (vista!=null){
+            InputMethodManager inputt = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputt.hideSoftInputFromWindow(vista.getWindowToken(),0);
+        }
+    }
+
+    ValueEventListener evento = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                User user = snap.getValue(User.class);
+                if (!(user.getName().equals("")))
+                    //name.setText("Name: " + user.getName() + " " + user.getSurname());
+                if (user.getCell() != null)
+                    cell=user.getCell();
+
+            }
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
+
 
 }

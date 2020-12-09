@@ -52,8 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                @Override
+                public void onClick(View view) {
 
                 if (input_email.getText().toString().isEmpty()||!input_email.getText().toString().contains("@")||input_pass.getText().toString().isEmpty()||input_pass.getText().toString().length()<6 || !input_pass.getText().toString().equals(confirm_pass.getText().toString()) )
                 {
