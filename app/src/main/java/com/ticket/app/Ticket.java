@@ -93,7 +93,7 @@ public class Ticket {
     public void setCity(String city) {
         City = city;
     }
-    public void setAge(String price) {
+    public void setPrice(String price) {
         Price = price;
     }
 
