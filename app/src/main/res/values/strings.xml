@@ -10,7 +10,7 @@
 
 
     <string-array name="regionArray">
-        <item> </item>
+        <item></item>
         <item>Abruzzo</item>
         <item>Basilicata</item>
         <item>Calabria</item>

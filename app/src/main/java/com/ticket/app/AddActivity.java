@@ -71,6 +71,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     String addname, addprice, adddesc;
     String region, city, category, finaltext;
     String cell;
+    String missingFields = "";
 
     private DatabaseReference mDatabase, TicketsRef;
     private FirebaseAuth auth;
@@ -365,19 +366,42 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             public void onClick(View view) {
                 addname = et_name.getText().toString().trim();
                 addprice = et_price.getText().toString().trim();
+
+                if(!(et_name.getText().toString().trim().equals("")))
+                    addname = et_name.getText().toString().trim();
+                else
+                    missingFields = missingFields + " Name";
+
+                if(!(et_price.getText().toString().trim().equals("")))
+                    addprice = et_price.getText().toString().trim();
+                else
+                    missingFields = missingFields + " Price";
+
                 if(!(et_description.getText().toString().trim().equals("")))
                     adddesc = et_description.getText().toString().trim();
                 else
-                    adddesc = "NO DESCRIPTION ADDED";
-                if (spinner.getSelectedItem()!=null && spinner2.getSelectedItem() !=null) {
-                    region = spinner.getSelectedItem().toString();
-                    city = spinner2.getSelectedItem().toString();
+                    missingFields = missingFields + " Description";
+
+                if (spinner.getSelectedItem() !=null) {
+                    if (spinner.getSelectedItem().toString().equals("")) {
+                        missingFields = missingFields + " Region";
+                    } else {
+                        region = spinner.getSelectedItem().toString();
+                    }
                 }
-                else {
-                    region = "";
-                    city = "";
+
+                if (spinner2.getSelectedItem() !=null) {
+                    if (spinner2.getSelectedItem().toString().equals("")) {
+                        missingFields = missingFields + " City";
+                    } else {
+                        city = spinner2.getSelectedItem().toString();
+                    }
+                } else {
+                    missingFields = missingFields + " City";
                 }
+
                 category = categoryNames[spin.getSelectedItemPosition()];
+
                 finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
 
                 new AlertDialog.Builder(AddActivity.this)
@@ -385,20 +409,41 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                         .setCancelable(false)
                         .setPositiveButton("Yes, go ahead", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                getUrlimage();
-                                Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, urlimage);
-                                ticket.setUtente(utente);
-                                String uid = mDatabase.child("Tickets").push().getKey();
-                                ticket.setUid(uid);
-                                mDatabase.child("Tickets").child(uid).setValue(ticket);
-                                Toast.makeText(AddActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(AddActivity.this, ProfileActivity.class));
+                                if (missingFields == "") {
+                                        getUrlimage();
+                                        if (urlimage == null) {
+                                            new AlertDialog.Builder(AddActivity.this)
+                                                    .setMessage("Image Missing")
+                                                    .setCancelable(false)
+                                                    .setNegativeButton("Ok, I'll check again", null)
+                                                    .show();
+                                        } else {
+                                            Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, urlimage);
+                                            ticket.setUtente(utente);
+                                            String uid = mDatabase.child("Tickets").push().getKey();
+                                            ticket.setUid(uid);
+                                            mDatabase.child("Tickets").child(uid).setValue(ticket);
+                                            Toast.makeText(AddActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(AddActivity.this, ProfileActivity.class));
+                                        }
+                                } else {
+                                    new AlertDialog.Builder(AddActivity.this)
+                                            .setTitle("Fields missing\n")
+                                            .setMessage(" " + missingFields)
+                                            .setCancelable(false)
+                                            .setNegativeButton("Ok, I'll check again", null)
+                                            .show();
+                                    missingFields = "";
+                                }
+
                             }
                         })
                         .setNegativeButton("No, let me check", null)
                         .show();
 
             }
+
+
 
         });
 
@@ -642,5 +687,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     };
 
+    public boolean isEmpty(EditText et){
+        return (et != null && (et.equals("") || et.equals(" ")));
+    }
 
 }
