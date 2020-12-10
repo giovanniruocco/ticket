@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/navigation_email"
-        app:layout_constraintTop_toBottomOf="@+id/immaginelogin" />
+        app:layout_constraintTop_toBottomOf="@+id/loginImage" />
 
     <TextView
         android:id="@+id/navigation_email"
@@ -79,7 +79,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/immaginelogin" />
+        app:layout_constraintTop_toBottomOf="@+id/loginImage" />
 
 
 

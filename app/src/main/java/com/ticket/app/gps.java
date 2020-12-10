@@ -108,7 +108,7 @@ public class gps extends AppCompatActivity {
                     userProvince = userProvince.substring(13);
                 else if (userProvince.contains("Provincia dell'"))
                     userProvince = "L'" + userProvince.substring(15);
-                tv0.setText("User Regione: " + (addresses.get(0).getAdminArea()));
+                tv0.setText("User Region: " + (addresses.get(0).getAdminArea()));
                 tv.setText("User Province: " + userProvince);
                 tv2.setText("User Locality: " + (addresses.get(0).getLocality()));
                 tv3.setText("User Address: " + userAddress);

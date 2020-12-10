@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference UsersRef;
     private FirebaseAuth auth;
     private TextView tvnamelogin, tvemaillogin;
-    private ImageView immaginelogin;
+    private ImageView loginImage;
     private String user;
     private RecyclerView myrv;
     private List<Ticket> listatickets,tickets;
@@ -78,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
         }
         final GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
-        NavigationView navigescionView = (NavigationView) findViewById(R.id.nv);
-        View headerView = navigescionView.getHeaderView(0);
+        NavigationView navView = (NavigationView) findViewById(R.id.nv);
+        View headerView = navView.getHeaderView(0);
 
-        immaginelogin = (ImageView) headerView.findViewById(R.id.immaginelogin);
-        immaginelogin.setImageResource(R.drawable.ic_profile);
+        loginImage = (ImageView) headerView.findViewById(R.id.loginImage);
+        loginImage.setImageResource(R.drawable.ic_profile);
         tvnamelogin = (TextView) headerView.findViewById(R.id.navigation_name);
         tvemaillogin = (TextView) headerView.findViewById(R.id.navigation_email);
 
@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
             NavigationView navigationView = (NavigationView) findViewById(R.id.nv);
 
             Menu menu = navigationView.getMenu();
-            MenuItem registrazione = menu.findItem(R.id.nv_login);
-            registrazione.setTitle("Logout");
-            registrazione.setIcon(R.drawable.ic_logout);
+            MenuItem login = menu.findItem(R.id.nv_login);
+            login.setTitle("Logout");
+            login.setIcon(R.drawable.ic_logout);
         }
 
 
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //caricamento.setVisibility(View.INVISIBLE);
-                Toast.makeText(MainActivity.this, "ERRORE DATABASE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "DATABASE ERROR", Toast.LENGTH_SHORT).show();
             }
         });
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipelayout);

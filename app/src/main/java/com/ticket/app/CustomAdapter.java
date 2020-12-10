@@ -10,20 +10,20 @@ import android.widget.TextView;
 
 public class CustomAdapter extends BaseAdapter {
     Context context;
-    int flags[];
-    String[] countryNames;
-    LayoutInflater inflter;
+    int categories[];
+    String[] categoryNames;
+    LayoutInflater inflater;
 
-    public CustomAdapter(Context applicationContext, int[] flags, String[] countryNames) {
+    public CustomAdapter(Context applicationContext, int[] categories, String[] categoryNames) {
         this.context = applicationContext;
-        this.flags = flags;
-        this.countryNames = countryNames;
-        inflter = (LayoutInflater.from(applicationContext));
+        this.categories = categories;
+        this.categoryNames = categoryNames;
+        inflater = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return flags.length;
+        return categories.length;
     }
 
     @Override
@@ -38,11 +38,11 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.row, null);
+        view = inflater.inflate(R.layout.row, null);
         ImageView icon = (ImageView) view.findViewById(R.id.imageView);
         TextView names = (TextView) view.findViewById(R.id.textView);
-        icon.setImageResource(flags[i]);
-        names.setText(countryNames[i]);
+        icon.setImageResource(categories[i]);
+        names.setText(categoryNames[i]);
         return view;
     }
 }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.app.slice.Slice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -28,28 +27,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,10 +64,10 @@ import java.util.UUID;
 public class AddActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String[] categoryNames={"Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
-    int flags[] = {R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
+    int categories[] = {R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
     ImageView imgview;
-    String[] provincearray;
-    String[] regionearray;
+    String[] provinceArray;
+    String[] regionArray;
     String addname, addprice, adddesc;
     String region, city, category, finaltext;
     String cell;
@@ -94,12 +83,12 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     static final int REQUEST_CAMERA = 1;
     static final int CAPTURE_IMAGE_REQUEST = 1;
     private Integer SELECT_FILE=0;
-    private String urlimmagine, mCurrentPhotoPath;
+    private String urlimage, mCurrentPhotoPath;
     private Bitmap bmp;
     File photoFile = null;
     private static final String IMAGE_DIRECTORY_NAME = "BAOO";
     private EditText et_name,et_price,et_description;
-    int id_regionearray;
+    int id_regionArray;
     Location gps_loc;
     Location network_loc;
     Location final_loc;
@@ -132,7 +121,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             //name.setText(auth.getCurrentUser().getDisplayName());
 
             Query query = UsersRef.orderByChild("email").equalTo(auth.getCurrentUser().getEmail());
-            query.addListenerForSingleValueEvent(evento);
+            query.addListenerForSingleValueEvent(event);
         }
 
 
@@ -169,95 +158,95 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
                 switch (position) {
                     case 0 : //No selection
-                        id_regionearray = R.array.nullArray;
+                        id_regionArray = R.array.nullArray;
                         break;
 
                     case 1 : //Abruzzo
-                        id_regionearray = R.array.abruzzoArray;
+                        id_regionArray = R.array.abruzzoArray;
                         break;
 
                     case 2 : //Basilicata
-                        id_regionearray = R.array.basilicataArray;
+                        id_regionArray = R.array.basilicataArray;
                         break;
 
                     case 3 : //Calabria
-                        id_regionearray = R.array.calabriaArray;
+                        id_regionArray = R.array.calabriaArray;
                         break;
 
                     case 4 : //Campania
-                        id_regionearray = R.array.campaniaArray;
+                        id_regionArray = R.array.campaniaArray;
                         break;
 
                     case 5 : //Emilia
-                        id_regionearray = R.array.emiliaArray;
+                        id_regionArray = R.array.emiliaArray;
                         break;
 
                     case 6 : //Friuli
-                        id_regionearray = R.array.friuliArray;
+                        id_regionArray = R.array.friuliArray;
                         break;
 
                     case 7 : //Lazio
-                        id_regionearray = R.array.lazioArray;
+                        id_regionArray = R.array.lazioArray;
                         break;
 
                     case 8 : //Liguria
-                        id_regionearray = R.array.liguriaArray;
+                        id_regionArray = R.array.liguriaArray;
                         break;
 
                     case 9 : //Lombardia
-                        id_regionearray = R.array.lombardiaArray;
+                        id_regionArray = R.array.lombardiaArray;
                         break;
 
                     case 10 : //Marche
-                        id_regionearray = R.array.marcheArray;
+                        id_regionArray = R.array.marcheArray;
                         break;
 
                     case 11 : //Molise
-                        id_regionearray = R.array.moliseArray;
+                        id_regionArray = R.array.moliseArray;
                         break;
 
                     case 12 : //Piemonte
-                        id_regionearray = R.array.piemonteArray;
+                        id_regionArray = R.array.piemonteArray;
                         break;
 
                     case 13 : //Puglia
-                        id_regionearray = R.array.pugliaArray;
+                        id_regionArray = R.array.pugliaArray;
                         break;
 
                     case 14 : //Sardegna
-                        id_regionearray = R.array.sardegnaArray;
+                        id_regionArray = R.array.sardegnaArray;
                         break;
 
                     case 15 : //Sicilia
-                        id_regionearray = R.array.siciliaArray;
+                        id_regionArray = R.array.siciliaArray;
                         break;
 
                     case 16 : //Trentino
-                        id_regionearray = R.array.trentinoArray;
+                        id_regionArray = R.array.trentinoArray;
                         break;
 
                     case 17 : //Toscana
-                        id_regionearray = R.array.toscanaArray;
+                        id_regionArray = R.array.toscanaArray;
                         break;
 
                     case 18 : //Umbria
-                        id_regionearray = R.array.umbriaArray;
+                        id_regionArray = R.array.umbriaArray;
                         break;
 
                     case 19 : //Valle d'Aosta
-                        id_regionearray = R.array.valleArray;
+                        id_regionArray = R.array.valleArray;
                         break;
 
                     case 20 : //Veneto
-                        id_regionearray = R.array.venetoArray;
+                        id_regionArray = R.array.venetoArray;
                         break;
                 }
 
-                adapter1 = ArrayAdapter.createFromResource(getApplicationContext(), id_regionearray, android.R.layout.simple_spinner_item);
+                adapter1 = ArrayAdapter.createFromResource(getApplicationContext(), id_regionArray, android.R.layout.simple_spinner_item);
                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner2.setAdapter(adapter1);
-                regionearray = getResources().getStringArray(R.array.regionArray);
-                provincearray = getResources().getStringArray(id_regionearray);
+                regionArray = getResources().getStringArray(R.array.regionArray);
+                provinceArray = getResources().getStringArray(id_regionArray);
             }
 
             @Override
@@ -269,7 +258,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         final Spinner spin = (Spinner) findViewById(R.id.cat_spinner);
         spin.setOnItemSelectedListener(this);
 
-        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),flags,categoryNames);
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(), categories,categoryNames);
         spin.setAdapter(customAdapter);
 
 
@@ -346,8 +335,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                              }
 
                 int index = -1;
-                for (int i=0;i<regionearray.length;i++) {
-                    if (regionearray[i].equals(regione)) {
+                for (int i = 0; i< regionArray.length; i++) {
+                    if (regionArray[i].equals(regione)) {
                         index = i;
                         break;
                     }
@@ -357,15 +346,14 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //citta = "Terni";//insert code here
-                        int indexo = -1;
-                        for (int i=0;i<provincearray.length;i++) {
-                            if (provincearray[i].equals(citta)) {
-                                indexo = i;
+                        int index2 = -1;
+                        for (int i = 0; i< provinceArray.length; i++) {
+                            if (provinceArray[i].equals(citta)) {
+                                index2 = i;
                                 break;
                             }
                         }
-                        spinner2.setSelection(indexo);
+                        spinner2.setSelection(index2);
                     }
                 }, 150);
 
@@ -397,12 +385,12 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                         .setCancelable(false)
                         .setPositiveButton("Yes, go ahead", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                getUrlimmagine();
-                                Ticket biglietto = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, urlimmagine);
-                                biglietto.setUtente(utente);
+                                getUrlimage();
+                                Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, urlimage);
+                                ticket.setUtente(utente);
                                 String uid = mDatabase.child("Tickets").push().getKey();
-                                biglietto.setUid(uid);
-                                mDatabase.child("Tickets").child(uid).setValue(biglietto);
+                                ticket.setUid(uid);
+                                mDatabase.child("Tickets").child(uid).setValue(ticket);
                                 Toast.makeText(AddActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(AddActivity.this, ProfileActivity.class));
                             }
@@ -542,7 +530,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!urlTask.isSuccessful()) ;
                             Uri downloadUrl = urlTask.getResult();
-                            setUrlimmagine(downloadUrl);
+                            setUrlimage(downloadUrl);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -584,7 +572,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!urlTask.isSuccessful());
                             Uri downloadUrl = urlTask.getResult();
-                            setUrlimmagine(downloadUrl);
+                            setUrlimage(downloadUrl);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -617,24 +605,24 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 selectimage();
         }
     }
-    public void setUrlimmagine(Uri prova)
+    public void setUrlimage(Uri prova)
     {
-        urlimmagine=new String(prova.toString());
+        urlimage =new String(prova.toString());
     }
-    public String getUrlimmagine()
+    public String getUrlimage()
     {
-        return urlimmagine;
+        return urlimage;
     }
 
     private void closeKeyboard(){
         View vista = this.getCurrentFocus();
         if (vista!=null){
-            InputMethodManager inputt = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputt.hideSoftInputFromWindow(vista.getWindowToken(),0);
+            InputMethodManager input = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            input.hideSoftInputFromWindow(vista.getWindowToken(),0);
         }
     }
 
-    ValueEventListener evento = new ValueEventListener() {
+    ValueEventListener event = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             for (DataSnapshot snap : dataSnapshot.getChildren()) {
