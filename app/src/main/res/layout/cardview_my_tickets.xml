@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview_id_profile"
+    android:layout_width="match_parent"
+    android:layout_height="190dp"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    cardview:cardCornerRadius="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="190dp">
+
+        <TextView
+            android:id="@+id/ticket_price_profile"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="35dp"
+            android:fontFamily="@font/productsansregular"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:gravity="center|start"
+            android:text="Price:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="#2d2d2d"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            cardview:layout_constraintEnd_toEndOf="parent"
+            cardview:layout_constraintHorizontal_bias="0.0"
+            cardview:layout_constraintStart_toEndOf="@+id/ticket_img_id_profile"
+            cardview:layout_constraintTop_toBottomOf="@+id/ticket_category_id_profile" />
+
+        <ImageView
+            android:id="@+id/ticket_img_id_profile"
+            android:layout_width="210dp"
+            android:layout_height="158dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:background="#2d2d2d"
+            android:scaleType="centerCrop"
+            cardview:layout_constraintStart_toStartOf="parent"
+            cardview:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ticket_name_id_profile"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/productsansregular"
+            android:gravity="center|start|center_horizontal"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="Ticket Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="18dp"
+            android:textStyle="normal|bold"
+            cardview:layout_constraintEnd_toEndOf="parent"
+            cardview:layout_constraintStart_toEndOf="@+id/ticket_img_id_profile"
+            cardview:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ticket_category_id_profile"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/productsansregular"
+            android:gravity="center|start"
+            android:text="Category"
+            android:textColor="#2d2d2d"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textSize="18dp"
+            android:textStyle="normal|bold"
+            cardview:layout_constraintBottom_toTopOf="@+id/ticket_price_profile"
+            cardview:layout_constraintEnd_toEndOf="parent"
+            cardview:layout_constraintStart_toEndOf="@+id/ticket_img_id_profile"
+            cardview:layout_constraintTop_toBottomOf="@+id/ticket_name_id_profile"
+            cardview:layout_constraintVertical_chainStyle="spread" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
