@@ -28,7 +28,7 @@ public class TicketActivity extends AppCompatActivity {
 
 
     float x1, x2, y1, y2;
-    private TextView tvname, tvdescription, tvcategory, tvprice, tvcity, tvregion;
+    private TextView tvname, tvdescription, tvcategory, tvprice, tvcity, tvregion, tvdate;
     private ImageView img, imag;
     private boolean isOpen = false;
     private ConstraintSet layout1, layout2, layout3;
@@ -78,6 +78,7 @@ public class TicketActivity extends AppCompatActivity {
         tvcategory.setSelected(true);
         
         tvcity = (TextView) findViewById(R.id.textCity);
+        tvdate = findViewById(R.id.txtDate);
         tvregion = (TextView) findViewById(R.id.txtRegion);
         tvprice = (TextView) findViewById(R.id.textPrice);
         img = (ImageView) findViewById(R.id.ticketthumbnail);
@@ -93,6 +94,7 @@ public class TicketActivity extends AppCompatActivity {
         String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
         String City = "City: " + intent.getExtras().getString("City");
         String Region = "Region: " + intent.getExtras().getString("Region");
+        String Date = "Date: " + intent.getExtras().getString("Date");
         uid = intent.getExtras().getString("Uid");
         final String Tel = intent.getExtras().getString("Tel");
         final String Email = intent.getExtras().getString("Email");
@@ -103,6 +105,7 @@ public class TicketActivity extends AppCompatActivity {
         tvprice.setText(Price);
         tvcity.setText(City);
         tvregion.setText(Region);
+        tvdate.setText(Date);
         Picasso.get()
                 .load(image)
                 //.placeholder(R.drawable.roundloading)

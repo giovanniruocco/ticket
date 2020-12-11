@@ -12,6 +12,7 @@ public class Ticket {
     private String Price ;
     private String Email;
     private String Tel;
+    private String Date;
 
     private String Thumbnail ;
     private String utente;
@@ -19,7 +20,7 @@ public class Ticket {
 
     public Ticket() { }
 
-    public Ticket(String name, String category, String description, String region, String city, String price, String email, String tel, String thumbnail) {
+    public Ticket(String name, String category, String description, String region, String city, String price, String email, String tel, String date, String thumbnail) {
         Name = name;
         Category = category;
         Description = description;
@@ -28,6 +29,7 @@ public class Ticket {
         Price = price;
         Email = email;
         Tel = tel;
+        Date = date;
         Thumbnail=thumbnail;
     }
     public String getName() {
@@ -61,6 +63,9 @@ public class Ticket {
     public String getTel() {
         return Tel;
     }
+    public String getDate() {
+        return Date;
+    }
     public String getEmail() {
         return Email;
     }
@@ -86,6 +91,10 @@ public class Ticket {
     public void setTel(String tel) {
         Tel = tel;
     }
+    public void setDate(String date) {
+        Date = date;
+    }
+
     public void setEmail(String email) {
         Email = email;
     }

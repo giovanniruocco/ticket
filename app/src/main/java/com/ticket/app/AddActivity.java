@@ -402,10 +402,10 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
                 category = categoryNames[spin.getSelectedItemPosition()];
 
-                finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
+                //finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
 
                 new AlertDialog.Builder(AddActivity.this)
-                        .setMessage("Are you sure you entered the data correctly?")
+                        .setMessage("Are you sure you entered the data correctly? " + getCurrentTimeStamp())
                         .setCancelable(false)
                         .setPositiveButton("Yes, go ahead", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -418,7 +418,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                                     .setNegativeButton("Ok, I'll check again", null)
                                                     .show();
                                         } else {
-                                            Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, urlimage);
+                                            Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
                                             ticket.setUtente(utente);
                                             String uid = mDatabase.child("Tickets").push().getKey();
                                             ticket.setUid(uid);
@@ -658,6 +658,21 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     {
         return urlimage;
     }
+
+    public static String getCurrentTimeStamp(){
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            String currentDateTime = dateFormat.format(new Date()); // Find todays date
+
+            return currentDateTime;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
 
     private void closeKeyboard(){
         View vista = this.getCurrentFocus();
