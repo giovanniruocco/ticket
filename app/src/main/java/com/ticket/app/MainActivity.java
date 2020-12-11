@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout activity_main;
     private DatabaseReference UsersRef;
     private FirebaseAuth auth;
+    private FloatingActionButton addbutton;
     private TextView tvnamelogin, tvemaillogin;
     private ImageView loginImage;
     private String user;
@@ -101,6 +103,28 @@ public class MainActivity extends AppCompatActivity {
 
 
         listatickets = new ArrayList<>();
+
+
+        addbutton=(FloatingActionButton)findViewById(R.id.main_add);
+        addbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (auth.getCurrentUser()!=null)
+                    startActivity(new Intent(MainActivity.this, AddActivity.class));
+                else {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("You must be logged in")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok, let's go", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                }
+                            })
+                            .setNegativeButton("No, thanks", null)
+                            .show();
+                }
+            }
+        });
 
         myRef = FirebaseDatabase.getInstance().getReference("Tickets");
         myRef2 = FirebaseDatabase.getInstance().getReference("Users");
@@ -203,9 +227,9 @@ public class MainActivity extends AppCompatActivity {
                                             .show();
                                 }
                                 break;
-                            case R.id.nv_add:
+                            case R.id.nv_mytickets:
                                 if (auth.getCurrentUser() != null) {
-                                    startActivity(new Intent(MainActivity.this, AddActivity.class));
+                                    startActivity(new Intent(MainActivity.this, MyTicketsActivity.class));
                                 } else {
                                     new AlertDialog.Builder(MainActivity.this)
                                             .setMessage("You must be logged in")

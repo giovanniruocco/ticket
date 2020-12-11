@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -26,6 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.ticket.app.fileprovider"
@@ -35,14 +37,25 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-
-        <activity android:name=".AddActivity"></activity>
+        <activity
+            android:name=".MyTicketsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".AddActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".gps" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".TicketActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".TicketActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
