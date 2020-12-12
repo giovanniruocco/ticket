@@ -112,9 +112,12 @@ public class TicketActivity extends AppCompatActivity {
                 .fit()
                 .centerCrop()
                 .into(img);
-
-
-
-
     }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(TicketActivity.this,MainActivity.class));
+    }
+
+
 }

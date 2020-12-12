@@ -72,22 +72,6 @@ public class MyTicketsActivity extends AppCompatActivity {
         mDatabase=FirebaseDatabase.getInstance().getReference();
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(MyTicketsActivity.this);
-        if (acct != null && mDatabase.child("Users").child(acct.getId()).child("email").toString() != acct.getEmail())  {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-
-            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-            mDatabase.child("Users").child(personId).child("email").setValue(personEmail);
-            mDatabase.child("Users").child(personId).child("name").setValue(personGivenName);
-            mDatabase.child("Users").child(personId).child("surname").setValue(personFamilyName);
-        }
-
-
-
 
 
         welcome=(TextView)findViewById(R.id.mytickets_welcome);

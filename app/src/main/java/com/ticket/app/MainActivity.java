@@ -274,11 +274,17 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void Clicckino(View v){
-        if (auth.getCurrentUser()==null)
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        else
-            startActivity(new Intent(MainActivity.this,ProfileActivity.class));
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to close Ticket?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
 }

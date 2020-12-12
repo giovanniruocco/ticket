@@ -706,4 +706,10 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         return (et != null && (et.equals("") || et.equals(" ")));
     }
 
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AddActivity.this,MainActivity.class));
+    }
+
+
 }

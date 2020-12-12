@@ -96,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(surname.getText().toString());
                             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("cell").setValue(cell .getText().toString());
-                            startActivity(new Intent(SignUpActivity.this,ProfileActivity.class));
+                            startActivity(new Intent(SignUpActivity.this,MyTicketsActivity.class));
                         }
                     }
                 });
@@ -105,7 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(SignUpActivity.this,MainActivity.class));
+        startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
     }
 
 }

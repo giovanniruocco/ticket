@@ -106,6 +106,14 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         });
+        btnForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+            }
+
+
+        });
 
 
 
@@ -138,18 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             //mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("name").setValue("bla");
             //mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("surname").setValue("bla");
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-                }
-            }, 0);
-
-
-
-
-
+                    startActivity(new Intent(LoginActivity.this, MyTicketsActivity.class));
 
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -190,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
-            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            startActivity(new Intent(LoginActivity.this, MyTicketsActivity.class));
         }
         super.onStart();
     }
@@ -203,13 +200,16 @@ public class LoginActivity extends AppCompatActivity {
                         if(!task.isSuccessful())
                         {
                             Toast.makeText(LoginActivity.this, "Email or password are wrong", Toast.LENGTH_LONG).show();
-
                         }
                         else{
-                            startActivity(new Intent(LoginActivity.this,ProfileActivity.class));
+                            startActivity(new Intent(LoginActivity.this,MyTicketsActivity.class));
                         }
                     }
                 });
+    }
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(LoginActivity.this,MainActivity.class));
     }
 
 
