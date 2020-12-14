@@ -3,11 +3,14 @@ package com.ticket.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.Menu;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -15,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +32,7 @@ public class TicketActivity extends AppCompatActivity {
 
 
     float x1, x2, y1, y2;
-    private TextView tvname, tvdescription, tvcategory, tvprice, tvcity, tvregion, tvdate;
+    private TextView tvname, tvdescription, tvcategory, tvprice, tvcity, tvregion, tvdate, tooltxt;
     private ImageView img, imag;
     private boolean isOpen = false;
     private ConstraintSet layout1, layout2, layout3;
@@ -44,6 +48,7 @@ public class TicketActivity extends AppCompatActivity {
     private List<String> chiavi;
     GoogleSignInClient mGoogleSignInClient;
 
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,17 @@ public class TicketActivity extends AppCompatActivity {
         if (auth.getCurrentUser() != null) {
             utentecorrente = auth.getCurrentUser().getUid();
         }
+
+        toolbar = findViewById(R.id.toolbar);
+
+/*        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });*/
+
+        getSupportActionBar().hide();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -78,11 +94,12 @@ public class TicketActivity extends AppCompatActivity {
         tvcategory.setSelected(true);
         
         tvcity = (TextView) findViewById(R.id.textCity);
+        tooltxt = (TextView) findViewById(R.id.toolbarTitle);
         tvdate = findViewById(R.id.txtDate);
         tvregion = (TextView) findViewById(R.id.txtRegion);
         tvprice = (TextView) findViewById(R.id.textPrice);
         img = (ImageView) findViewById(R.id.ticketthumbnail);
-        imag = (ImageView) findViewById(R.id.categorythumbnail);
+        /*imag = (ImageView) findViewById(R.id.categorythumbnail);*/
 
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
@@ -100,6 +117,7 @@ public class TicketActivity extends AppCompatActivity {
         final String Email = intent.getExtras().getString("Email");
         final String image = intent.getExtras().getString("Thumbnail");
         tvname.setText(Name);
+        tooltxt.setText(Name);
         tvcategory.setText(Category);
         tvdescription.setText(Description);
         tvprice.setText(Price);

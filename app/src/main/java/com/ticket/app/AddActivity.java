@@ -88,7 +88,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     private String urlimage, mCurrentPhotoPath;
     private Bitmap bmp, bitmap;
     File photoFile = null;
-    private static final String IMAGE_DIRECTORY_NAME = "BAOO";
+    private static final String IMAGE_DIRECTORY_NAME = "TICKET";
     private EditText et_name,et_price,et_description;
     int id_regionArray;
     Location gps_loc;

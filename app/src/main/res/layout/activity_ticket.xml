@@ -1,151 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    tools:context=".TicketActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="6dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:id="@+id/ticketthumbnail"
+                android:layout_height="300dp"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="397dp"
+                android:layout_height="60dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title=" "
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                />
+
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--<include layout="@layout/content_scrolling" />-->
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".TicketActivity">
+
+
+            <TextView
+                android:id="@+id/textName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/productsansregular"
+
+                android:text="Ticket Name"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/productsansregular"
+                android:text="Category"
+                android:textSize="20dp"
+
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textName" />
+
+            <TextView
+                android:id="@+id/textPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/productsansregular"
+                android:text="Price"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textCategory"
+                tools:ignore="MissingConstraints" />
+
+
+            <TextView
+                android:id="@+id/textCity"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/productsansregular"
+                android:text="City"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="@+id/textPrice"
+                app:layout_constraintTop_toBottomOf="@+id/textPrice" />
+
+            <TextView
+                android:id="@+id/txtDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true"
+                android:fontFamily="@font/productsansregular"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:text="Description"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="@+id/txtRegion"
+                app:layout_constraintTop_toBottomOf="@+id/txtRegion" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:fillViewport="true"
+                android:fitsSystemWindows="true"
+                android:fontFamily="@font/productsansregular"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:text="Date"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="@+id/txtDesc"
+                app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
+
+            <TextView
+                android:id="@+id/txtRegion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/productsansregular"
+                android:text="Region"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="@+id/textCity"
+                app:layout_constraintTop_toBottomOf="@+id/textCity" />
+
+
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!--        <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_text" />-->
+
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
+        android:translationY="650dp"
         tools:context=".TicketActivity">
-
-        <ImageView
-            android:id="@+id/ticketthumbnail"
-            android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/categorythumbnail"
-            android:layout_width="112dp"
-            android:layout_height="112dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:cropToPadding="false"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@+id/ticketthumbnail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.086"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ticketthumbnail"
-            app:layout_constraintVertical_bias="0.45" />
-
-
-        <TextView
-            android:id="@+id/textName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="@font/productsansregular"
-            android:text="Ticket Name"
-            android:textSize="22dp"
-            android:textStyle="bold"
-
-            app:layout_constraintStart_toEndOf="@+id/categorythumbnail"
-            app:layout_constraintTop_toBottomOf="@+id/ticketthumbnail" />
-
-        <TextView
-            android:id="@+id/textCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/productsansregular"
-            android:text="Category"
-            android:textSize="20dp"
-            android:textStyle="bold"
-
-            app:layout_constraintStart_toEndOf="@+id/categorythumbnail"
-            app:layout_constraintTop_toBottomOf="@+id/textName" />
-
-        <TextView
-            android:id="@+id/textPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/productsansregular"
-            android:text="Price"
-            android:textSize="24dp"
-            app:layout_constraintStart_toStartOf="@+id/categorythumbnail"
-            app:layout_constraintTop_toBottomOf="@+id/textCategory" />
-
-
-        <TextView
-            android:id="@+id/textCity"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/productsansregular"
-            android:text="City"
-            android:textSize="24dp"
-            app:layout_constraintStart_toStartOf="@+id/textPrice"
-            app:layout_constraintTop_toBottomOf="@+id/textPrice" />
-
-        <TextView
-            android:id="@+id/txtDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
-            android:fontFamily="@font/productsansregular"
-            android:scrollbars="vertical"
-            android:scrollHorizontally="false"
-            android:text="Description"
-            android:textSize="24dp"
-            app:layout_constraintStart_toStartOf="@+id/txtRegion"
-            app:layout_constraintTop_toBottomOf="@+id/txtRegion" />
-
-        <TextView
-            android:id="@+id/txtDate"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
-            android:fontFamily="@font/productsansregular"
-            android:scrollbars="vertical"
-            android:scrollHorizontally="false"
-            android:text="Date"
-            android:textSize="24dp"
-            app:layout_constraintStart_toStartOf="@+id/txtDesc"
-            app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
-
-        <TextView
-            android:id="@+id/txtRegion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/productsansregular"
-            android:text="Region"
-            android:textSize="24dp"
-            app:layout_constraintStart_toStartOf="@+id/textCity"
-            app:layout_constraintTop_toBottomOf="@+id/textCity" />
-
 
         <Button
             android:id="@+id/email"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
             android:background="@color/Rosso"
-            android:fontFamily="@font/productsansbold"
 
+            android:fontFamily="@font/productsansbold"
             android:text="Email"
             app:layout_constraintEnd_toStartOf="@+id/chiama"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/chiama"
@@ -153,17 +195,30 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             android:background="#49b675"
             android:fontFamily="@font/productsansbold"
+
             android:text="Call"
 
             app:layout_constraintBaseline_toBaselineOf="@+id/email"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/email" />
 
 
-        />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+    <TextView
+        android:id="@+id/toolbarTitle"
+        android:layout_width="397dp"
+        android:layout_height="60dp"
+        android:text="Ciaone uomo aquilone"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        android:translationY="-25dp"
+        app:layout_anchor="@+id/app_bar"
+        app:layout_anchorGravity="bottom|center" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
