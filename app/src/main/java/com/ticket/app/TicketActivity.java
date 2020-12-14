@@ -53,21 +53,28 @@ public class TicketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ticket);
+
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             utentecorrente = auth.getCurrentUser().getUid();
         }
+        getSupportActionBar().hide();
+
+
+
 
         toolbar = findViewById(R.id.toolbar);
-
-/*        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });*/
+        });
 
-        getSupportActionBar().hide();
+
+
+        //getSupportActionBar().hide();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -85,7 +92,7 @@ public class TicketActivity extends AppCompatActivity {
         myRef= FirebaseDatabase.getInstance().getReference();
         myRef2 = FirebaseDatabase.getInstance().getReference("Users");
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_ticket);
+
         tickets=new HashMap<>();
         tvname = (TextView) findViewById(R.id.textName);
         tvname.setSelected(true);
@@ -94,7 +101,7 @@ public class TicketActivity extends AppCompatActivity {
         tvcategory.setSelected(true);
         
         tvcity = (TextView) findViewById(R.id.textCity);
-        tooltxt = (TextView) findViewById(R.id.toolbarTitle);
+        //tooltxt = (TextView) findViewById(R.id.toolbarTitle);
         tvdate = findViewById(R.id.txtDate);
         tvregion = (TextView) findViewById(R.id.txtRegion);
         tvprice = (TextView) findViewById(R.id.textPrice);
@@ -117,7 +124,8 @@ public class TicketActivity extends AppCompatActivity {
         final String Email = intent.getExtras().getString("Email");
         final String image = intent.getExtras().getString("Thumbnail");
         tvname.setText(Name);
-        tooltxt.setText(Name);
+        //tooltxt.setText(Name);
+        toolbar.setTitle(Name);
         tvcategory.setText(Category);
         tvdescription.setText(Description);
         tvprice.setText(Price);
