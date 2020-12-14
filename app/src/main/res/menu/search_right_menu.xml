@@ -5,7 +5,7 @@
     <item
         android:id="@+id/ordina"
         android:title="Order by"
-        android:icon="@drawable/ic_login"
+        android:icon="@drawable/ic_orderby"
         app:showAsAction="ifRoom">
     </item>
 

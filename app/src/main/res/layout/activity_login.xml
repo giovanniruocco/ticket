@@ -80,7 +80,7 @@
         android:clickable="true"
         android:fontFamily="@font/poppinsregular"
         android:text="Password lost?"
-        android:textColor="@color/prova"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -121,7 +121,7 @@
         android:clickable="true"
         android:fontFamily="@font/poppinsregular"
         android:text="Sign up"
-        android:textColor="@color/prova"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold" />
 
 

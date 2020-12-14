@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -85,7 +86,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     static final int CAPTURE_IMAGE_REQUEST = 1;
     private Integer SELECT_FILE=0;
     private String urlimage, mCurrentPhotoPath;
-    private Bitmap bmp;
+    private Bitmap bmp, bitmap;
     File photoFile = null;
     private static final String IMAGE_DIRECTORY_NAME = "BAOO";
     private EditText et_name,et_price,et_description;
@@ -405,7 +406,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 //finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
 
                 new AlertDialog.Builder(AddActivity.this)
-                        .setMessage("Are you sure you entered the data correctly? " + getCurrentTimeStamp())
+                        .setMessage("Are you sure you entered the data correctly?")
                         .setCancelable(false)
                         .setPositiveButton("Yes, go ahead", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -538,8 +539,22 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
             }else if(requestCode==SELECT_FILE){
                 selectedImageUri = data.getData();
-                uploadImage();
-                imgview.setImageURI(selectedImageUri);
+
+                //CONVERT URI INTO BITMAP
+                // Let's read picked image path using content resolver
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
+                ((Cursor) cursor).moveToFirst();
+                String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+                bmp = BitmapFactory.decodeFile(imagePath, options);
+                cursor.close(); // At the end remember to close the cursor or you will end with the RuntimeException!
+                imgview.setImageBitmap(bmp);
+                uploadCamera();
+
             }
         }
     }
@@ -558,7 +573,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-    private void uploadImage() {
+   /* private void uploadImage() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Loading ");
         progressDialog.setCancelable(false);
@@ -566,14 +581,32 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         progressDialog.show();
         StorageReference ref = storageReference.child("Foto/" + UUID.randomUUID().toString());
         if (selectedImageUri != null) {
-            ref.putFile(selectedImageUri)
+
+            // Let's read picked image path using content resolver
+            String[] filePath = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
+            ((Cursor) cursor).moveToFirst();
+            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            bitmap = BitmapFactory.decodeFile(imagePath, options);
+
+            // Do something with the bitmap
+            // At the end remember to close the cursor or you will end with the RuntimeException!
+            cursor.close();
+
+            ByteArrayOutputStream baoo = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baoo);
+            byte[] data = baoo.toByteArray();
+            ref.putBytes(data)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             //Snackbar.make(v, "Upload completed", Toast.LENGTH_SHORT).show();
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!urlTask.isSuccessful()) ;
+                            while (!urlTask.isSuccessful());
                             Uri downloadUrl = urlTask.getResult();
                             setUrlimage(downloadUrl);
                         }
@@ -588,14 +621,14 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Loading: " + (int) progress + "%");
+                            progressDialog.setMessage("Loading: "+(int)progress+"%");
                         }
                     });
         }
     }
-
+*/
 
     private void uploadCamera(){
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -606,7 +639,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         StorageReference ref = storageReference.child("Foto/" + UUID.randomUUID().toString());
         if (bmp!=null){
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 60, baos);
             byte[] data = baos.toByteArray();
             ref.putBytes(data)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

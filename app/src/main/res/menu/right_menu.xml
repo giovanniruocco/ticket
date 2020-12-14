@@ -3,15 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/app_bar_search"
+        android:title="Search"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView">
+    </item>
+
+
+    <item
         android:id="@+id/ordina"
         android:title="Order by"
-        android:icon="@drawable/ic_login"
+        android:icon="@drawable/ic_orderby"
         app:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/filtra"
         android:title="Search"
-        android:icon="@drawable/ic_login"
+        android:icon="@drawable/ic_filter"
         app:showAsAction="ifRoom">
     </item>
 

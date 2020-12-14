@@ -13,11 +13,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +40,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Collections.reverse;
@@ -43,6 +49,8 @@ import static java.util.Collections.reverse;
 public class MainActivity extends AppCompatActivity {
     private NavigationView nv;
     private DrawerLayout dl;
+    private int numero,conta=0,conto=0;
+    private SearchView searchView;
     private ActionBarDrawerToggle t;
     private DrawerLayout activity_main;
     private DatabaseReference UsersRef;
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Ticket> listatickets,tickets;
     private RecyclerViewAdapter myAdapter;
     private DatabaseReference myRef,myRef2;
+    private boolean ordine=false;
     GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -243,6 +252,34 @@ public class MainActivity extends AppCompatActivity {
                                             .show();
                                 }
                                 break;
+                            case R.id.about:
+                               // startActivity(new Intent(MainActivity.this, SliderActivity.class));
+                                break;
+                            case R.id.info:
+                                //startActivity(new Intent(MainActivity.this,DevelopersActivity.class));
+                                break;
+                            case R.id.feedback:
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setData(Uri.parse("mailto: "));
+                                String[] contatto = {"baoo@engineer.com"};
+                                intent.putExtra(Intent.EXTRA_EMAIL, contatto);
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "BAOO:Feedback");
+                                intent.putExtra(Intent.EXTRA_TEXT, "I would like to report the following bug: ");
+                                intent.setType("message/rfc822");
+                                Intent chooser = Intent.createChooser(intent, "Send Email");
+                                startActivity(chooser);
+                                break;
+                            case R.id.cheers:
+                                String urlString = "https://www.youtube.com/watch?v=6xUnSVTh8fI";
+                                Intent intento = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
+                                intento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                intento.setPackage(null);
+                                startActivity(intento);
+
+                                break;
+
+
                         }
                         return true;
                     }
@@ -250,12 +287,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (t.onOptionsItemSelected(item))
-            return true;
-        return super.onOptionsItemSelected(item);
-    }
 
     ValueEventListener evento = new ValueEventListener() {
         @Override
@@ -273,6 +304,89 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu)
+    {
+
+        MenuInflater inflauto = getMenuInflater();
+        inflauto.inflate(R.menu.right_menu,menu);
+        MenuItem cerca=menu.findItem(R.id.app_bar_search);
+        cerca.setIcon(R.drawable.ic_search);
+        searchView = (SearchView)cerca.getActionView();
+        searchView.setQueryHint("Search for name...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intento = new Intent(MainActivity.this,FilterActivity.class);
+                intento.putExtra("Name",query);
+                intento.putExtra("Provenienza",true);
+                startActivity(intento);
+                searchView.onActionViewCollapsed();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem searchViewMenuItem = menu.findItem(R.id.app_bar_search);
+        searchView = (SearchView) searchViewMenuItem.getActionView();
+        int searchImgId = getResources().getIdentifier("android:id/search_button", null, null);
+        ImageView v = (ImageView) searchView.findViewById(searchImgId);
+        v.setImageResource(R.drawable.ic_search);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(t.onOptionsItemSelected(item))
+            return true;
+        if (item.getItemId()==R.id.filtra)
+        {
+            startActivity(new Intent(MainActivity.this,FilterSearchActivity.class));
+            return true;
+        }
+
+
+        if (item.getItemId()==R.id.ordina)
+        {
+
+                            conta++;
+                            if (ordine)
+                                conta=1;
+                            ordine=false;
+                            reverse(listatickets);
+                            myAdapter=new RecyclerViewAdapter( MainActivity.this,listatickets);
+                            myrv.setAdapter(myAdapter);
+                            if(conta%2==0) {
+                                //item.setIcon(R.drawable.ic_discendant_sort);
+                                Snackbar snackBar = Snackbar.make(activity_main, "From the most recent post", Snackbar.LENGTH_SHORT);
+                                snackBar.show();
+                            }
+                            else {
+                                //item.setIcon(R.drawable.ic_ascendant_sort);
+                                Snackbar snackBar = Snackbar.make(activity_main, "From the oldest post ", Snackbar.LENGTH_SHORT);
+                                snackBar.show();
+                            }
+                        }
+
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+
 
     public void onBackPressed() {
         new AlertDialog.Builder(this)

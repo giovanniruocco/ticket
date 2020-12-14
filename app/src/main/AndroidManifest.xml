@@ -26,7 +26,6 @@
         android:roundIcon="@drawable/ic_tickets"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPasswordActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -41,6 +40,15 @@
         <activity
             android:name=".MyTicketsActivity"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".FilterActivity"
+            android:parentActivityName=".FilterSearchActivity" />
+        <activity
+            android:name=".FilterSearchActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".AddActivity"
             android:parentActivityName=".MainActivity" />
