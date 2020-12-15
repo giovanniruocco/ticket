@@ -32,9 +32,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:backgroundTint="#0000FF"
+                android:backgroundTint="#6b248c"
                 android:clickable="true"
-                app:backgroundTint="#0000FF"
+                app:backgroundTint="#6b248c"
                 app:srcCompat="@drawable/add" />
         </RelativeLayout>
 
