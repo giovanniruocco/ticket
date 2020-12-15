@@ -25,11 +25,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -51,6 +54,7 @@ public class TicketActivity extends AppCompatActivity {
     private String utentecorrente;
     private DatabaseReference myRef;
     private DatabaseReference myRef2;
+    private DatabaseReference myRef3;
     private String uid;
     private Map<String, String> tickets;
     private String[] preferiti;
@@ -58,11 +62,14 @@ public class TicketActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
 
     Toolbar toolbar;
+    private FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket);
+
+        storage = FirebaseStorage.getInstance();
 
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
@@ -100,6 +107,7 @@ public class TicketActivity extends AppCompatActivity {
 
         myRef= FirebaseDatabase.getInstance().getReference();
         myRef2 = FirebaseDatabase.getInstance().getReference("Users");
+        myRef3 = FirebaseDatabase.getInstance().getReference("Tickets");
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         tickets=new HashMap<>();
@@ -115,19 +123,19 @@ public class TicketActivity extends AppCompatActivity {
         tvregion = (TextView) findViewById(R.id.txtRegion);
         tvprice = (TextView) findViewById(R.id.textPrice);
         img = (ImageView) findViewById(R.id.ticketthumbnail);
-        /*imag = (ImageView) findViewById(R.id.categorythumbnail);*/
+        imag = (ImageView) findViewById(R.id.categorythumbnail);
 
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         // Ricezione dei dati
         Intent intent = getIntent();
-        String Name = intent.getExtras().getString("Name");
-        String Category =  intent.getExtras().getString("Category");
-        String Price = "Price: " + intent.getExtras().getString("Price");
-        String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
-        String City = "City: " + intent.getExtras().getString("City");
-        String Region = "Region: " + intent.getExtras().getString("Region");
-        String Date = "Date: " + intent.getExtras().getString("Date");
+        final String Name = intent.getExtras().getString("Name");
+        final String Category =  intent.getExtras().getString("Category");
+        final String Price = "Price: " + intent.getExtras().getString("Price");
+        final String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
+        final String City = "City: " + intent.getExtras().getString("City");
+        final String Region = "Region: " + intent.getExtras().getString("Region");
+        final String Date = "Date: " + intent.getExtras().getString("Date");
         uid = intent.getExtras().getString("Uid");
         final String Tel = intent.getExtras().getString("Tel");
         final String Email = intent.getExtras().getString("Email");
@@ -143,6 +151,37 @@ public class TicketActivity extends AppCompatActivity {
         tvdate.setText(Date);
         Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
 
+        switch (Category) {
+            case "Music" :
+                imag.setImageResource(R.drawable.ic_music);
+                break;
+
+            case "Football" :
+                imag.setImageResource(R.drawable.ic_football);
+                break;
+
+            case "Theater" :
+                imag.setImageResource(R.drawable.ic_theater);
+                break;
+
+            case "Cinema" :
+                imag.setImageResource(R.drawable.ic_popcorn);
+                break;
+
+            case "Flights" :
+                imag.setImageResource(R.drawable.ic_airplane);
+                break;
+
+            case "Train" :
+                imag.setImageResource(R.drawable.ic_train);
+                break;
+
+            case "Other events" :
+                imag.setImageResource(R.drawable.ic_more);
+                break;
+        }
+
+
         Picasso.get()
                 .load(image)
                 //.placeholder(R.drawable.roundloading)
@@ -157,6 +196,53 @@ public class TicketActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
+                    final CharSequence[] items={"Edit", "Delete", "Back"};
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TicketActivity.this);
+                    builder.setTitle("Edit Ticket");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (items[i].equals("Edit")) {
+
+                                Intent intento = new Intent(TicketActivity.this, EditActivity.class);
+                                intento.putExtra("Name", Name);
+                                intento.putExtra("Category", Category);
+                                intento.putExtra("Description", Description);
+                                intento.putExtra("Price", Price);
+                                intento.putExtra("City", City);
+                                intento.putExtra("Region", Region);
+                                intento.putExtra("Image", image);
+                                startActivity(intento);
+
+                            } else if (items[i].equals("Delete")) {
+
+                                new AlertDialog.Builder(TicketActivity.this)
+                                        .setMessage("Are you sure you want delete " + Name +"?")
+                                        .setCancelable(true)
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                myRef3.child(uid).setValue(null);
+                                                StorageReference canc = storage.getReferenceFromUrl(image);
+                                                canc.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                    }
+                                                });
+                                                startActivity(new Intent(TicketActivity.this, MyTicketsActivity.class) );
+                                            }
+                                        })
+                                        .setNegativeButton("No", null)
+                                        .show();
+
+                            } else if (items[i].equals("Back")) {
+                                dialogInterface.dismiss();
+                            }
+                        }
+                    });
+                    builder.show();
+
 
                 }
 

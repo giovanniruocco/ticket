@@ -158,15 +158,18 @@
                 app:layout_constraintStart_toStartOf="@+id/textCity"
                 app:layout_constraintTop_toBottomOf="@+id/textCity" />
 
+            <ImageView
+                android:id="@+id/categorythumbnail"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="14dp"
+                app:layout_constraintStart_toEndOf="@+id/textCategory"
+                app:layout_constraintTop_toBottomOf="@+id/textName" />
+
 
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!--        <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/large_text" />-->
 
     </androidx.core.widget.NestedScrollView>
 
@@ -187,36 +190,6 @@
         android:layout_height="match_parent"
         android:translationY="650dp"
         tools:context=".TicketActivity">
-
-        <Button
-            android:id="@+id/email"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:background="@color/Rosso"
-
-            android:fontFamily="@font/productsansbold"
-            android:text="Email"
-            app:layout_constraintEnd_toStartOf="@+id/chiama"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/chiama"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="#49b675"
-            android:fontFamily="@font/productsansbold"
-
-            android:text="Call"
-
-            app:layout_constraintBaseline_toBaselineOf="@+id/email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/email" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

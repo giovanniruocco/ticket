@@ -51,6 +51,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -62,7 +63,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 
-public class AddActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     String[] categoryNames={"Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
     int categories[] = {R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
@@ -112,6 +113,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         imgview = findViewById(R.id.immagineviewID);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        add_btn.setText("EDIT");
 
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -262,74 +265,115 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
 
 
+        final Intent intent = getIntent();
+        final String editName = intent.getExtras().getString("Name");
+        final String editCategory =  intent.getExtras().getString("Category");
+        final String editDescription = intent.getExtras().getString("Description");
+        final String editPrice = intent.getExtras().getString("Price");
+        final String editCity = intent.getExtras().getString("City");
+        final String editRegion = intent.getExtras().getString("Region");
+        final String editImage = intent.getExtras().getString("Image");
+
+        et_name.setText(editName);
+        et_description.setText(editDescription);
+        et_price.setText(editPrice);
+
+        int indexC = -1;
+        for (int i = 0; i< categoryNames.length; i++) {
+            if (categoryNames[i].equals(editCategory)) {
+                indexC = i;
+                break;
+            }
+        }
+
+        spin.setSelection(indexC);
+
+        Picasso.get()
+                .load(editImage)
+                .fit()
+                .centerCrop()
+                .into(imgview);
+
+        /*
+        String descrizione= Name + "'s description:\n" + Description;
+
+        String citta= "City: " + City;
+        final String eig = intent.getExtras().getString("Age");
+        if(Integer.parseInt(eig)==1)  annio=" year";
+        final String Age = "Age: " + eig + annio;
+        final String Tel = intent.getExtras().getString("Tel");
+        final String Email = intent.getExtras().getString("Email");
+        final String Uid = intent.getExtras().getString("Uid");
+        final String utente=auth.getCurrentUser().getUid();*/
+
 //Performing action onItemSelected and onNothing selected
 
         gippiesse.setOnClickListener(new View.OnClickListener() {
-                                         @Override
-                                         public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                                             if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                                                 ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-
-                                             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                    ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
 
 
-                                             if (ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                                                     && ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                                                     && ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-                                                 Toast.makeText(AddActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
-                                                 return;
-                                             }
-
-                                             try {
-
-                                                 gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                                 network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                                             } catch (Exception e) {
-                                                 e.printStackTrace();
-                                             }
-
-                                             if (gps_loc != null) {
-                                                 final_loc = gps_loc;
-                                                 latitude = final_loc.getLatitude();
-                                                 longitude = final_loc.getLongitude();
-                                             } else if (network_loc != null) {
-                                                 final_loc = network_loc;
-                                                 latitude = final_loc.getLatitude();
-                                                 longitude = final_loc.getLongitude();
-                                             } else {
-                                                 latitude = 0.0;
-                                                 longitude = 0.0;
-                                             }
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-                                             //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+                if (ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(EditActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                                             try {
+                try {
 
-                                                 Geocoder geocoder = new Geocoder(AddActivity.this, Locale.getDefault());
-                                                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                                                 if (addresses != null && addresses.size() > 0) {
-                                                     userProvince = addresses.get(0).getSubAdminArea();
-                                                     userAddress = addresses.get(0).getAddressLine(0);
-                                                     if (userProvince.contains("Città Metropolitana di "))
-                                                         userProvince = userProvince.substring(23);
-                                                     else if (userProvince.contains("Provincia di "))
-                                                         userProvince = userProvince.substring(13);
-                                                     else if (userProvince.contains("Provincia dell'"))
-                                                         userProvince = "L'" + userProvince.substring(15);
-                                                     regione = addresses.get(0).getAdminArea();
-                                                     citta = userProvince;
+                    gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-                                                 } else {
-                                                     userProvince = "Unknown";
-                                                 }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                                             } catch (Exception e) {
-                                                 e.printStackTrace();
-                                             }
+                if (gps_loc != null) {
+                    final_loc = gps_loc;
+                    latitude = final_loc.getLatitude();
+                    longitude = final_loc.getLongitude();
+                } else if (network_loc != null) {
+                    final_loc = network_loc;
+                    latitude = final_loc.getLatitude();
+                    longitude = final_loc.getLongitude();
+                } else {
+                    latitude = 0.0;
+                    longitude = 0.0;
+                }
+
+
+                //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+                try {
+
+                    Geocoder geocoder = new Geocoder(EditActivity.this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                    if (addresses != null && addresses.size() > 0) {
+                        userProvince = addresses.get(0).getSubAdminArea();
+                        userAddress = addresses.get(0).getAddressLine(0);
+                        if (userProvince.contains("Città Metropolitana di "))
+                            userProvince = userProvince.substring(23);
+                        else if (userProvince.contains("Provincia di "))
+                            userProvince = userProvince.substring(13);
+                        else if (userProvince.contains("Provincia dell'"))
+                            userProvince = "L'" + userProvince.substring(15);
+                        regione = addresses.get(0).getAdminArea();
+                        citta = userProvince;
+
+                    } else {
+                        userProvince = "Unknown";
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 int index = -1;
                 for (int i = 0; i< regionArray.length; i++) {
@@ -400,30 +444,30 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
                 //finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
 
-                new AlertDialog.Builder(AddActivity.this)
+                new AlertDialog.Builder(EditActivity.this)
                         .setMessage("Are you sure you entered the data correctly?")
                         .setCancelable(false)
                         .setPositiveButton("Yes, go ahead", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (missingFields == "") {
-                                        getUrlimage();
-                                        if (urlimage == null) {
-                                            new AlertDialog.Builder(AddActivity.this)
-                                                    .setMessage("Image Missing")
-                                                    .setCancelable(false)
-                                                    .setNegativeButton("Ok, I'll check again", null)
-                                                    .show();
-                                        } else {
-                                            Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
-                                            ticket.setUtente(utente);
-                                            String uid = mDatabase.child("Tickets").push().getKey();
-                                            ticket.setUid(uid);
-                                            mDatabase.child("Tickets").child(uid).setValue(ticket);
-                                            Toast.makeText(AddActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(AddActivity.this, ProfileActivity.class));
-                                        }
+                                    getUrlimage();
+                                    if (urlimage == null) {
+                                        new AlertDialog.Builder(EditActivity.this)
+                                                .setMessage("Image Missing")
+                                                .setCancelable(false)
+                                                .setNegativeButton("Ok, I'll check again", null)
+                                                .show();
+                                    } else {
+                                        Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
+                                        ticket.setUtente(utente);
+                                        String uid = mDatabase.child("Tickets").push().getKey();
+                                        ticket.setUid(uid);
+                                        mDatabase.child("Tickets").child(uid).setValue(ticket);
+                                        Toast.makeText(EditActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(EditActivity.this, ProfileActivity.class));
+                                    }
                                 } else {
-                                    new AlertDialog.Builder(AddActivity.this)
+                                    new AlertDialog.Builder(EditActivity.this)
                                             .setTitle("Fields missing\n")
                                             .setMessage(" " + missingFields)
                                             .setCancelable(false)
@@ -459,7 +503,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
     private void SelectImage(){
         final CharSequence[] items={"Camera","Album", "Back"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
         builder.setTitle("Add Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
@@ -468,7 +512,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 if (items[i].equals("Camera")) {
                     captureimage();
                 } else if (items[i].equals("Album")) {
-                    if (ContextCompat.checkSelfPermission(AddActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
+                    if (ContextCompat.checkSelfPermission(EditActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
                         selectimage();
                     else
                         requeststorage();
@@ -486,7 +530,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         startActivityForResult(intent, SELECT_FILE);
     }
     private void requeststorage(){
-        ActivityCompat.requestPermissions(AddActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},1);
+        ActivityCompat.requestPermissions(EditActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},1);
     }
     private void captureimage()
     {
@@ -717,8 +761,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 User user = snap.getValue(User.class);
                 if (!(user.getName().equals("")))
                     //name.setText("Name: " + user.getName() + " " + user.getSurname());
-                if (user.getCell() != null)
-                    cell=user.getCell();
+                    if (user.getCell() != null)
+                        cell=user.getCell();
 
             }
 
@@ -736,7 +780,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(AddActivity.this,MainActivity.class));
+        startActivity(new Intent(EditActivity.this,MainActivity.class));
     }
 
 
