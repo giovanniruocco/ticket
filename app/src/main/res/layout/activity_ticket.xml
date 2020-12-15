@@ -87,10 +87,22 @@
                 android:fontFamily="@font/productsansregular"
                 android:text="Category"
                 android:textSize="20dp"
-
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textName" />
+
+            <TextView
+                android:id="@+id/textPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/productsansregular"
+                android:text="Price"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textCategory"
+                tools:ignore="MissingConstraints" />
 
 
             <ImageView
@@ -123,30 +135,18 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
-            <TextView
-                android:id="@+id/textPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="50dp"
-                android:fontFamily="@font/productsansregular"
-                android:text="Price"
-                android:textSize="24dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textCategory"
-                tools:ignore="MissingConstraints" />
-
 
             <TextView
                 android:id="@+id/textCity"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/productsansregular"
                 android:text="City"
                 android:textSize="24dp"
-                app:layout_constraintStart_toStartOf="@+id/textPrice"
-                app:layout_constraintTop_toBottomOf="@+id/textPrice" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textCategory" />
 
             <TextView
                 android:id="@+id/txtDesc"

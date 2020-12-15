@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -180,4 +184,25 @@ public class ProfileActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(ProfileActivity.this,MainActivity.class));
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+
+        MenuInflater inflauto = getMenuInflater();
+        inflauto.inflate(R.menu.profile_right_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId()==R.id.edit)
+        {
+            Toast.makeText(ProfileActivity.this, "EDITO", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

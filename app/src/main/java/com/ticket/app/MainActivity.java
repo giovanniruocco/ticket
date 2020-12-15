@@ -222,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nv_profile:
                                 if (auth.getCurrentUser() != null) {
                                     startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                                    Toast.makeText(MainActivity.this, FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_LONG).show();
                                 } else {
                                     new AlertDialog.Builder(MainActivity.this)
                                             .setMessage("You must be logged in")
