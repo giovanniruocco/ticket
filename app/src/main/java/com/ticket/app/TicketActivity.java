@@ -1,6 +1,11 @@
 package com.ticket.app;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Menu;
@@ -8,17 +13,20 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,6 +47,7 @@ public class TicketActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
     private Vibrator myVib;
     private FirebaseAuth auth;
+    private FloatingActionButton floatingtool;
     private String utentecorrente;
     private DatabaseReference myRef;
     private DatabaseReference myRef2;
@@ -62,7 +71,7 @@ public class TicketActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-
+        floatingtool = findViewById(R.id.floating_action_tool);
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -132,12 +141,89 @@ public class TicketActivity extends AppCompatActivity {
         tvcity.setText(City);
         tvregion.setText(Region);
         tvdate.setText(Date);
+        Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
         Picasso.get()
                 .load(image)
                 //.placeholder(R.drawable.roundloading)
                 .fit()
                 .centerCrop()
                 .into(img);
+
+        if (Email.equals(auth.getCurrentUser().getEmail())) {
+            floatingtool.setImageResource(R.drawable.ic_mode_edit_black);
+
+            floatingtool.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            });
+
+        }
+        else{
+            floatingtool.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
+
+                    final CharSequence[] items={"Call", "Email", "Back"};
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TicketActivity.this);
+                    builder.setTitle("Contact");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (items[i].equals("Call")) {
+                                if (auth.getCurrentUser() != null) {
+                                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                                    intent.setData(Uri.parse("tel:" + Tel));
+                                    startActivity(intent);
+
+                                } else
+                                    Toast.makeText(TicketActivity.this, "You must be logged in.", Toast.LENGTH_SHORT).show();
+                            } else if (items[i].equals("Email")) {
+                                if (auth.getCurrentUser() != null) {
+                                    Intent intent = new Intent(Intent.ACTION_SEND);
+                                    intent.setData(Uri.parse("mailto: "));
+                                    String[] contatto = {Email};
+                                    intent.putExtra(Intent.EXTRA_EMAIL, contatto);
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Ticket");
+                                    intent.putExtra(Intent.EXTRA_TEXT, "Cia fra.");
+                                    intent.setType("message/rfc822");
+                                    Intent chooser = Intent.createChooser(intent, "Send Email");
+                                    startActivity(chooser);
+                                } else
+                                    Toast.makeText(TicketActivity.this, "You must be logged in.", Toast.LENGTH_SHORT).show();
+
+
+                            } else if (items[i].equals("Back")) {
+                                dialogInterface.dismiss();
+                            }
+                        }
+                    });
+                    builder.show();
+
+
+
+
+
+
+                }
+
+
+            });
+
+        }
+
+
+
+
+
     }
 
     public void onBackPressed() {

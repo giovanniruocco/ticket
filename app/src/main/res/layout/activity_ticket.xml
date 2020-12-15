@@ -171,14 +171,16 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:src="@drawable/add"
+        android:id="@+id/floating_action_tool"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@drawable/ic_contact_black"
+        android:translationX="-10dp"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|right|end"
-        />
+        app:pressedTranslationZ="12dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

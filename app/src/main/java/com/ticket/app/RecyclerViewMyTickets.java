@@ -83,27 +83,26 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
         Tel=mData.get(position).getTel();
         Email=mData.get(position).getEmail();
         Thumbnail=mData.get(position).getThumbnail();
-       /*
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ProfileDogActivity.class);
-                // passing data to the dog activity
+                Intent intent = new Intent(mContext, TicketActivity.class);
                 intent.putExtra("Name",mData.get(position).getName());
-                intent.putExtra("Breed",mData.get(position).getCategory());
+                intent.putExtra("Category",mData.get(position).getCategory());
                 intent.putExtra("Description",mData.get(position).getDescription());
                 intent.putExtra("Region",mData.get(position).getRegion());
                 intent.putExtra("City",mData.get(position).getCity());
                 intent.putExtra("Price",mData.get(position).getPrice());
-                intent.putExtra("Date",mData.get(position).getDate());
-                intent.putExtra("Tel",mData.get(position).getTel());
                 intent.putExtra("Email",mData.get(position).getEmail());
+                intent.putExtra("Tel",mData.get(position).getTel());
+                intent.putExtra("Date",mData.get(position).getDate());
                 intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
                 intent.putExtra("Uid",mData.get(position).getUid());
                 mContext.startActivity(intent);
             }
         });
-*/
+
 
        /*
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener(){
