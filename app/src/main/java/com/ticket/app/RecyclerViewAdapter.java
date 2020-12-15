@@ -19,6 +19,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext ;
     private List<Ticket> mData ;
+    static private ImageView cat_image;
 
     public RecyclerViewAdapter(Context mContext, List<Ticket> mData) {
         this.mContext = mContext;
@@ -38,6 +39,38 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Ticket currentticket= mData.get(position);
         holder.tv_ticket_name.setText(mData.get(position).getName());
         holder.tv_ticket_category.setText(mData.get(position).getCategory());
+
+        switch (mData.get(position).getCategory()) {
+            case "Music" :
+                cat_image.setImageResource(R.drawable.ic_music);
+                break;
+
+            case "Football" :
+                cat_image.setImageResource(R.drawable.ic_football);
+                break;
+
+            case "Theater" :
+                cat_image.setImageResource(R.drawable.ic_theater);
+                break;
+
+            case "Cinema" :
+                cat_image.setImageResource(R.drawable.ic_popcorn);
+                break;
+
+            case "Flights" :
+                cat_image.setImageResource(R.drawable.ic_airplane);
+                break;
+
+            case "Train" :
+                cat_image.setImageResource(R.drawable.ic_train);
+                break;
+
+            case "Other events" :
+                cat_image.setImageResource(R.drawable.ic_more);
+                break;
+        }
+
+        holder.tv_ticket_price.setText(mData.get(position).getPrice() + " €");
         Picasso.get()
                 .load(currentticket.getThumbnail())
                 //.placeholder(R.drawable.caricacuore)
@@ -72,13 +105,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_ticket_name;
         TextView tv_ticket_category;
+        TextView tv_ticket_price;
         ImageView img_ticket_thumbnail;
         CardView cardView ;
         public MyViewHolder(View itemView) {
             super(itemView);
             tv_ticket_name = (TextView) itemView.findViewById(R.id.ticket_name_id) ;
             tv_ticket_category=(TextView) itemView.findViewById(R.id.ticket_category_id);
+            tv_ticket_price=(TextView) itemView.findViewById(R.id.ticket_price_id);
             img_ticket_thumbnail = (ImageView) itemView.findViewById(R.id.ticket_img_id);
+            cat_image = (ImageView) itemView.findViewById(R.id.cat_img);
             cardView = (CardView) itemView.findViewById(R.id.cardview_id);
         }
     }
