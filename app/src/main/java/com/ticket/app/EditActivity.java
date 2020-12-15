@@ -70,6 +70,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     ImageView imgview;
     String[] provinceArray;
     String[] regionArray;
+    String[] cityArray;
     String addname, addprice, adddesc;
     String region, city, category, finaltext;
     String cell;
@@ -145,6 +146,9 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
         final Spinner spinner = findViewById(R.id.spinner);
         final Spinner spinner2 = findViewById(R.id.spinner2);
+        regionArray = getResources().getStringArray(R.array.regionArray);
+        cityArray = getResources().getStringArray(R.array.cityArray);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.regionArray, android.R.layout.simple_spinner_item);
@@ -278,6 +282,8 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         et_description.setText(editDescription);
         et_price.setText(editPrice);
 
+        Toast.makeText(EditActivity.this, editRegion, Toast.LENGTH_SHORT).show();
+
         int indexC = -1;
         for (int i = 0; i< categoryNames.length; i++) {
             if (categoryNames[i].equals(editCategory)) {
@@ -286,7 +292,133 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
 
+        int indexR = -1;
+        for (int i = 0; i< regionArray.length; i++) {
+            if (regionArray[i].equals(editRegion)) {
+                indexR = i;
+                break;
+            }
+        }
+
         spin.setSelection(indexC);
+        spinner.setSelection(indexR);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<CharSequence> adapter1;
+
+                switch (position) {
+                    case 0 : //No selection
+                        id_regionArray = R.array.nullArray;
+                        break;
+
+                    case 1 : //Abruzzo
+                        id_regionArray = R.array.abruzzoArray;
+                        break;
+
+                    case 2 : //Basilicata
+                        id_regionArray = R.array.basilicataArray;
+                        break;
+
+                    case 3 : //Calabria
+                        id_regionArray = R.array.calabriaArray;
+                        break;
+
+                    case 4 : //Campania
+                        id_regionArray = R.array.campaniaArray;
+                        break;
+
+                    case 5 : //Emilia
+                        id_regionArray = R.array.emiliaArray;
+                        break;
+
+                    case 6 : //Friuli
+                        id_regionArray = R.array.friuliArray;
+                        break;
+
+                    case 7 : //Lazio
+                        id_regionArray = R.array.lazioArray;
+                        break;
+
+                    case 8 : //Liguria
+                        id_regionArray = R.array.liguriaArray;
+                        break;
+
+                    case 9 : //Lombardia
+                        id_regionArray = R.array.lombardiaArray;
+                        break;
+
+                    case 10 : //Marche
+                        id_regionArray = R.array.marcheArray;
+                        break;
+
+                    case 11 : //Molise
+                        id_regionArray = R.array.moliseArray;
+                        break;
+
+                    case 12 : //Piemonte
+                        id_regionArray = R.array.piemonteArray;
+                        break;
+
+                    case 13 : //Puglia
+                        id_regionArray = R.array.pugliaArray;
+                        break;
+
+                    case 14 : //Sardegna
+                        id_regionArray = R.array.sardegnaArray;
+                        break;
+
+                    case 15 : //Sicilia
+                        id_regionArray = R.array.siciliaArray;
+                        break;
+
+                    case 16 : //Trentino
+                        id_regionArray = R.array.trentinoArray;
+                        break;
+
+                    case 17 : //Toscana
+                        id_regionArray = R.array.toscanaArray;
+                        break;
+
+                    case 18 : //Umbria
+                        id_regionArray = R.array.umbriaArray;
+                        break;
+
+                    case 19 : //Valle d'Aosta
+                        id_regionArray = R.array.valleArray;
+                        break;
+
+                    case 20 : //Veneto
+                        id_regionArray = R.array.venetoArray;
+                        break;
+                }
+
+                adapter1 = ArrayAdapter.createFromResource(getApplicationContext(), id_regionArray, android.R.layout.simple_spinner_item);
+                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner2.setAdapter(adapter1);
+                regionArray = getResources().getStringArray(R.array.regionArray);
+                provinceArray = getResources().getStringArray(id_regionArray);
+
+                int indexP = -1;
+                for (int i = 0; i< provinceArray.length; i++) {
+                    if (provinceArray[i].equals(editCity)) {
+                        indexP = i;
+                        break;
+                    }
+                }
+
+                spinner2.setSelection(indexP);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                (( ArrayAdapter<CharSequence>) spinner2.getAdapter()).clear();
+            }
+        });
+
+
 
         Picasso.get()
                 .load(editImage)

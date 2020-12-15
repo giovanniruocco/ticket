@@ -134,7 +134,9 @@ public class TicketActivity extends AppCompatActivity {
         final String Price = "Price: " + intent.getExtras().getString("Price");
         final String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
         final String City = "City: " + intent.getExtras().getString("City");
+        final String intentCity = intent.getExtras().getString("City");
         final String Region = "Region: " + intent.getExtras().getString("Region");
+        final String intentRegion = intent.getExtras().getString("Region");
         final String Date = "Date: " + intent.getExtras().getString("Date");
         uid = intent.getExtras().getString("Uid");
         final String Tel = intent.getExtras().getString("Tel");
@@ -211,8 +213,8 @@ public class TicketActivity extends AppCompatActivity {
                                 intento.putExtra("Category", Category);
                                 intento.putExtra("Description", Description);
                                 intento.putExtra("Price", Price);
-                                intento.putExtra("City", City);
-                                intento.putExtra("Region", Region);
+                                intento.putExtra("City", intentCity);
+                                intento.putExtra("Region", intentRegion);
                                 intento.putExtra("Image", image);
                                 startActivity(intento);
 
