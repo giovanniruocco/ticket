@@ -277,6 +277,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         final String editCity = intent.getExtras().getString("City");
         final String editRegion = intent.getExtras().getString("Region");
         final String editImage = intent.getExtras().getString("Image");
+        final String editUid = intent.getExtras().getString("Uid");
 
         et_name.setText(editName);
         et_description.setText(editDescription);
@@ -426,17 +427,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                 .centerCrop()
                 .into(imgview);
 
-        /*
-        String descrizione= Name + "'s description:\n" + Description;
-
-        String citta= "City: " + City;
-        final String eig = intent.getExtras().getString("Age");
-        if(Integer.parseInt(eig)==1)  annio=" year";
-        final String Age = "Age: " + eig + annio;
-        final String Tel = intent.getExtras().getString("Tel");
-        final String Email = intent.getExtras().getString("Email");
-        final String Uid = intent.getExtras().getString("Uid");
-        final String utente=auth.getCurrentUser().getUid();*/
 
 //Performing action onItemSelected and onNothing selected
 
@@ -583,19 +573,25 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                             public void onClick(DialogInterface dialog, int id) {
                                 if (missingFields == "") {
                                     getUrlimage();
-                                    if (urlimage == null) {
+                                    if (urlimage == null && editImage == null) {
                                         new AlertDialog.Builder(EditActivity.this)
                                                 .setMessage("Image Missing")
                                                 .setCancelable(false)
                                                 .setNegativeButton("Ok, I'll check again", null)
                                                 .show();
                                     } else {
-                                        Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
+                                        Ticket ticket;
+                                        if (urlimage != null) {
+                                            ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
+                                        } else {
+                                            ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), editImage);
+                                        }
                                         ticket.setUtente(utente);
-                                        String uid = mDatabase.child("Tickets").push().getKey();
-                                        ticket.setUid(uid);
-                                        mDatabase.child("Tickets").child(uid).setValue(ticket);
-                                        Toast.makeText(EditActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
+                                        //String uid = mDatabase.child("Tickets").push().getKey();
+                                        ticket.setUid(editUid);
+                                        mDatabase.child("Tickets").child(editUid).setValue(null);
+                                        mDatabase.child("Tickets").child(editUid).setValue(ticket);
+                                        Toast.makeText(EditActivity.this, "Congratulations, you edited your post!", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(EditActivity.this, ProfileActivity.class));
                                     }
                                 } else {
@@ -744,62 +740,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-   /* private void uploadImage() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading ");
-        progressDialog.setCancelable(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-        StorageReference ref = storageReference.child("Foto/" + UUID.randomUUID().toString());
-        if (selectedImageUri != null) {
 
-            // Let's read picked image path using content resolver
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
-            ((Cursor) cursor).moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            bitmap = BitmapFactory.decodeFile(imagePath, options);
-
-            // Do something with the bitmap
-            // At the end remember to close the cursor or you will end with the RuntimeException!
-            cursor.close();
-
-            ByteArrayOutputStream baoo = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baoo);
-            byte[] data = baoo.toByteArray();
-            ref.putBytes(data)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            //Snackbar.make(v, "Upload completed", Toast.LENGTH_SHORT).show();
-                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!urlTask.isSuccessful());
-                            Uri downloadUrl = urlTask.getResult();
-                            setUrlimage(downloadUrl);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            //Snackbar.make(v, "Upload failed, retry.", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Loading: "+(int)progress+"%");
-                        }
-                    });
-        }
-    }
-*/
 
     private void uploadCamera(){
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -905,10 +846,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }
     };
-
-    public boolean isEmpty(EditText et){
-        return (et != null && (et.equals("") || et.equals(" ")));
-    }
 
     public void onBackPressed() {
         super.onBackPressed();

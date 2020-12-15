@@ -26,7 +26,6 @@
         android:roundIcon="@drawable/ic_tickets"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -41,6 +40,11 @@
         <activity
             android:name=".MyTicketsActivity"
             android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".EditActivity"
+            android:parentActivityName=".MyTicketsActivity" />
+
         <activity
             android:name=".FilterActivity"
             android:parentActivityName=".FilterSearchActivity" />

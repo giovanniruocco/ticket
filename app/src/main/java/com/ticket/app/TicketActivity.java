@@ -132,7 +132,9 @@ public class TicketActivity extends AppCompatActivity {
         final String Name = intent.getExtras().getString("Name");
         final String Category =  intent.getExtras().getString("Category");
         final String Price = "Price: " + intent.getExtras().getString("Price");
+        final String intentPrice = intent.getExtras().getString("Price");
         final String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
+        final String intentDescription = intent.getExtras().getString("Description");
         final String City = "City: " + intent.getExtras().getString("City");
         final String intentCity = intent.getExtras().getString("City");
         final String Region = "Region: " + intent.getExtras().getString("Region");
@@ -143,11 +145,10 @@ public class TicketActivity extends AppCompatActivity {
         final String Email = intent.getExtras().getString("Email");
         final String image = intent.getExtras().getString("Thumbnail");
         tvname.setText(Name);
-        //tooltxt.setText(Name);
         toolbar.setTitle(Name);
         tvcategory.setText(Category);
         tvdescription.setText(Description);
-        tvprice.setText(Price);
+        tvprice.setText(Price + " €");
         tvcity.setText(City);
         tvregion.setText(Region);
         tvdate.setText(Date);
@@ -211,11 +212,13 @@ public class TicketActivity extends AppCompatActivity {
                                 Intent intento = new Intent(TicketActivity.this, EditActivity.class);
                                 intento.putExtra("Name", Name);
                                 intento.putExtra("Category", Category);
-                                intento.putExtra("Description", Description);
-                                intento.putExtra("Price", Price);
+                                intento.putExtra("Description", intentDescription);
+                                intento.putExtra("Price", intentPrice);
                                 intento.putExtra("City", intentCity);
                                 intento.putExtra("Region", intentRegion);
                                 intento.putExtra("Image", image);
+                                intento.putExtra("Uid", uid);
+
                                 startActivity(intento);
 
                             } else if (items[i].equals("Delete")) {

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,8 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference UsersRef;
     private String user;
 
-    TextView name, mail, cell;
-    Button logout, gippiesse;
+    TextView name, mail, cell, tv_name;
+    /*Button logout, gippiesse;*/
     GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -50,9 +51,12 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         setTitle("Profile");
 
-        Button refresh = findViewById(R.id.refresh);
+        ImageView loginImage = (ImageView) findViewById(R.id.loginImage);
+        loginImage.setImageResource(R.drawable.ic_profile);
 
-        refresh.setOnClickListener(new View.OnClickListener() {
+        /*Button refresh = findViewById(R.id.refresh);*/
+
+        /*refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -64,18 +68,19 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Refresh", Toast.LENGTH_SHORT).show();
 
             }
-        });
+        });*/
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
 
 
         auth = FirebaseAuth.getInstance();
-        logout = findViewById(R.id.logout);
-        gippiesse = findViewById(R.id.gippiesse);
+       /* logout = findViewById(R.id.logout);
+        gippiesse = findViewById(R.id.gippiesse);*/
         name = findViewById(R.id.name);
         mail = findViewById(R.id.mail);
         cell = findViewById(R.id.cell);
+        tv_name = findViewById(R.id.tv_name);
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (auth.getCurrentUser() != null) {
             //name.setText(auth.getCurrentUser().getDisplayName());
-            mail.setText("Email: " + auth.getCurrentUser().getEmail());
+            mail.setText(auth.getCurrentUser().getEmail());
             cell.setText("Cellulare non inserito");
             Query query = UsersRef.orderByChild("email").equalTo(auth.getCurrentUser().getEmail());
             query.addListenerForSingleValueEvent(evento);
@@ -113,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
 
-        logout.setOnClickListener(new View.OnClickListener() {
+ /*       logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 auth.signOut();
@@ -133,12 +138,12 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(new Intent(ProfileActivity.this, gps.class));
 
                     Toast.makeText(ProfileActivity.this, "GPS", Toast.LENGTH_SHORT).show();
-                } /*else
+                } *//*else
                     Toast.makeText(ProfileActivity.this, "GPS Permission denied", Toast.LENGTH_SHORT).show();
-                    */
+                    *//*
 
             }
-        });
+        });*/
 
 
     }
@@ -148,10 +153,12 @@ public class ProfileActivity extends AppCompatActivity {
         public void onDataChange(DataSnapshot dataSnapshot) {
             for (DataSnapshot snap : dataSnapshot.getChildren()) {
                 User user = snap.getValue(User.class);
-                if (!(user.getName().equals("")))
-                    name.setText("Name: " + user.getName() + " " + user.getSurname());
+                if (!(user.getName().equals(""))) {
+                    name.setText(user.getName() + " " + user.getSurname());
+                    tv_name.setText(user.getName() + " " + user.getSurname());
+                }
                 if (user.getCell() != null)
-                    cell.setText("Cell: " + user.getCell());
+                    cell.setText( user.getCell());
 
             }
 

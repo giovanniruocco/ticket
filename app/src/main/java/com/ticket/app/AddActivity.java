@@ -568,63 +568,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-   /* private void uploadImage() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading ");
-        progressDialog.setCancelable(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
-        StorageReference ref = storageReference.child("Foto/" + UUID.randomUUID().toString());
-        if (selectedImageUri != null) {
-
-            // Let's read picked image path using content resolver
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
-            ((Cursor) cursor).moveToFirst();
-            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            bitmap = BitmapFactory.decodeFile(imagePath, options);
-
-            // Do something with the bitmap
-            // At the end remember to close the cursor or you will end with the RuntimeException!
-            cursor.close();
-
-            ByteArrayOutputStream baoo = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baoo);
-            byte[] data = baoo.toByteArray();
-            ref.putBytes(data)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            //Snackbar.make(v, "Upload completed", Toast.LENGTH_SHORT).show();
-                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!urlTask.isSuccessful());
-                            Uri downloadUrl = urlTask.getResult();
-                            setUrlimage(downloadUrl);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            //Snackbar.make(v, "Upload failed, retry.", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Loading: "+(int)progress+"%");
-                        }
-                    });
-        }
-    }
-*/
-
     private void uploadCamera(){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Loading ");
@@ -729,10 +672,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
         }
     };
-
-    public boolean isEmpty(EditText et){
-        return (et != null && (et.equals("") || et.equals(" ")));
-    }
 
     public void onBackPressed() {
         super.onBackPressed();
