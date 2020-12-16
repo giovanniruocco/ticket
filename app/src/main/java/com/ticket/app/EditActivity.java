@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -79,6 +80,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     private DatabaseReference mDatabase, TicketsRef;
     private FirebaseAuth auth;
     private DatabaseReference UsersRef;
+    private Vibrator myVib;
 
 
     private FirebaseStorage storage;
@@ -114,7 +116,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         imgview = findViewById(R.id.immagineviewID);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
+        myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         add_btn.setText("EDIT");
 
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -134,6 +136,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         add_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                myVib.vibrate(25);
                 SelectImage();
                 //Toast.makeText(getApplicationContext(),"Ammo", Toast.LENGTH_LONG).show();
             }
@@ -526,6 +529,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                myVib.vibrate(25);
                 addname = et_name.getText().toString().trim();
                 addprice = et_price.getText().toString().trim();
 
@@ -638,13 +642,16 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals("Camera")) {
+                    myVib.vibrate(25);
                     captureimage();
                 } else if (items[i].equals("Album")) {
+                    myVib.vibrate(25);
                     if (ContextCompat.checkSelfPermission(EditActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
                         selectimage();
                     else
                         requeststorage();
                 } else if (items[i].equals("Back")) {
+                    myVib.vibrate(25);
                     dialogInterface.dismiss();
                 }
             }

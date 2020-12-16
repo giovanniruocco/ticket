@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference myRef,myRef2;
     private boolean ordine=false;
     GoogleSignInClient mGoogleSignInClient;
+    private Vibrator myVib;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         listatickets = new ArrayList<>();
-
+        myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         addbutton=(FloatingActionButton)findViewById(R.id.main_add);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myVib.vibrate(25);
                 if (auth.getCurrentUser()!=null)
                     startActivity(new Intent(MainActivity.this, AddActivity.class));
                 else {
@@ -209,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
                         switch (id) {
 
                             case R.id.nv_login:
+                                myVib.vibrate(25);
                                 if (auth.getCurrentUser() != null) {
                                     auth.signOut();
                                     mGoogleSignInClient.signOut();

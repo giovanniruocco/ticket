@@ -51,7 +51,7 @@ public class TicketActivity extends AppCompatActivity {
     private Vibrator myVib;
     private FirebaseAuth auth;
     private FloatingActionButton floatingtool;
-    private String utentecorrente;
+    private String loggeduser, utentecorrente;
     private DatabaseReference myRef;
     private DatabaseReference myRef2;
     private DatabaseReference myRef3;
@@ -152,7 +152,7 @@ public class TicketActivity extends AppCompatActivity {
         tvcity.setText(City);
         tvregion.setText(Region);
         tvdate.setText(Date);
-        Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
 
         switch (Category) {
             case "Music" :
@@ -192,13 +192,22 @@ public class TicketActivity extends AppCompatActivity {
                 .centerCrop()
                 .into(img);
 
-        if (Email.equals(auth.getCurrentUser().getEmail())) {
+
+        if (auth.getCurrentUser()!=null)
+            loggeduser = auth.getCurrentUser().getEmail();
+        else
+            loggeduser = "";
+
+
+
+        if (Email.equals(loggeduser)) {
             floatingtool.setImageResource(R.drawable.ic_mode_edit_black);
 
             floatingtool.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
+                    myVib.vibrate(25);
 
                     final CharSequence[] items={"Edit", "Delete", "Back"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(TicketActivity.this);
@@ -208,7 +217,7 @@ public class TicketActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if (items[i].equals("Edit")) {
-
+                                myVib.vibrate(25);
                                 Intent intento = new Intent(TicketActivity.this, EditActivity.class);
                                 intento.putExtra("Name", Name);
                                 intento.putExtra("Category", Category);
@@ -222,7 +231,7 @@ public class TicketActivity extends AppCompatActivity {
                                 startActivity(intento);
 
                             } else if (items[i].equals("Delete")) {
-
+                                myVib.vibrate(25);
                                 new AlertDialog.Builder(TicketActivity.this)
                                         .setMessage("Are you sure you want delete " + Name +"?")
                                         .setCancelable(true)
@@ -242,6 +251,7 @@ public class TicketActivity extends AppCompatActivity {
                                         .show();
 
                             } else if (items[i].equals("Back")) {
+                                myVib.vibrate(25);
                                 dialogInterface.dismiss();
                             }
                         }
@@ -259,8 +269,8 @@ public class TicketActivity extends AppCompatActivity {
             floatingtool.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(TicketActivity.this, Email + "\n" + auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
 
+                    myVib.vibrate(25);
 
                     final CharSequence[] items={"Call", "Email", "Back"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(TicketActivity.this);
@@ -270,6 +280,7 @@ public class TicketActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             if (items[i].equals("Call")) {
+                                myVib.vibrate(25);
                                 if (auth.getCurrentUser() != null) {
                                     Intent intent = new Intent(Intent.ACTION_DIAL);
                                     intent.setData(Uri.parse("tel:" + Tel));
@@ -278,6 +289,7 @@ public class TicketActivity extends AppCompatActivity {
                                 } else
                                     Toast.makeText(TicketActivity.this, "You must be logged in.", Toast.LENGTH_SHORT).show();
                             } else if (items[i].equals("Email")) {
+                                myVib.vibrate(25);
                                 if (auth.getCurrentUser() != null) {
                                     Intent intent = new Intent(Intent.ACTION_SEND);
                                     intent.setData(Uri.parse("mailto: "));
@@ -293,6 +305,7 @@ public class TicketActivity extends AppCompatActivity {
 
 
                             } else if (items[i].equals("Back")) {
+                                myVib.vibrate(25);
                                 dialogInterface.dismiss();
                             }
                         }
