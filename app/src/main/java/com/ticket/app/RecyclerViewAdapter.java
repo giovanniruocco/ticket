@@ -19,7 +19,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext ;
     private List<Ticket> mData ;
-    static private ImageView cat_image;
 
     public RecyclerViewAdapter(Context mContext, List<Ticket> mData) {
         this.mContext = mContext;
@@ -40,33 +39,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tv_ticket_name.setText(mData.get(position).getName());
         holder.tv_ticket_category.setText(mData.get(position).getCategory());
 
-        switch (mData.get(position).getCategory()) {
+        switch (currentticket.getCategory()) {
             case "Music" :
-                cat_image.setImageResource(R.drawable.ic_music);
+                holder.cat_image.setImageResource(R.drawable.ic_football);
                 break;
 
             case "Football" :
-                cat_image.setImageResource(R.drawable.ic_football);
+                holder.cat_image.setImageResource(R.drawable.ic_football);
                 break;
 
             case "Theater" :
-                cat_image.setImageResource(R.drawable.ic_theater);
+                holder.cat_image.setImageResource(R.drawable.ic_theater);
                 break;
 
             case "Cinema" :
-                cat_image.setImageResource(R.drawable.ic_popcorn);
+                holder.cat_image.setImageResource(R.drawable.ic_popcorn);
                 break;
 
             case "Flights" :
-                cat_image.setImageResource(R.drawable.ic_airplane);
+                holder.cat_image.setImageResource(R.drawable.ic_airplane);
                 break;
 
             case "Train" :
-                cat_image.setImageResource(R.drawable.ic_train);
+                holder.cat_image.setImageResource(R.drawable.ic_train);
                 break;
 
             case "Other events" :
-                cat_image.setImageResource(R.drawable.ic_more);
+                holder.cat_image.setImageResource(R.drawable.ic_more);
                 break;
         }
 
@@ -106,7 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView tv_ticket_name;
         TextView tv_ticket_category;
         TextView tv_ticket_price;
-        ImageView img_ticket_thumbnail;
+        ImageView img_ticket_thumbnail, cat_image;
         CardView cardView ;
         public MyViewHolder(View itemView) {
             super(itemView);

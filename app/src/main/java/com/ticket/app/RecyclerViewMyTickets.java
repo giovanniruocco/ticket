@@ -30,6 +30,7 @@ import static android.content.Context.VIBRATOR_SERVICE;
 public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTickets.MyViewHolder> {
     private Context mContext ;
     private List<Ticket> mData ;
+    static private ImageView cat_image;
     private String uid;
     private Vibrator myVib;
     private DatabaseReference myRef;
@@ -183,6 +184,7 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
             tv_ticket_category=(TextView) itemView.findViewById(R.id.ticket_category_id_profile);
             tv_ticket_price=(TextView)itemView.findViewById(R.id.ticket_price_profile);
             img_ticket_thumbnail = (ImageView) itemView.findViewById(R.id.ticket_img_id_profile);
+            cat_image = (ImageView) itemView.findViewById(R.id.cat_img);
             cardView = (CardView) itemView.findViewById(R.id.cardview_id_profile);
         }
     }

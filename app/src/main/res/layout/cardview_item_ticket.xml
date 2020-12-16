@@ -34,8 +34,10 @@
 
         <TextView
             android:id="@+id/ticket_name_id"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_width="189dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:fontFamily="@font/productsansregular"
             android:gravity="center|start|center_horizontal"
@@ -44,56 +46,61 @@
             android:text="Ticket Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="19dp"
-            cardview:layout_constraintBottom_toBottomOf="parent"
-            cardview:layout_constraintEnd_toStartOf="@+id/ticket_category_id"
-            cardview:layout_constraintStart_toStartOf="@+id/ticket_img_id"
-            cardview:layout_constraintTop_toBottomOf="@id/ticket_img_id" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/ticket_category_id"
-            android:layout_width="144dp"
-            android:layout_height="22dp"
+            android:layout_width="107dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="32dp"
             android:ellipsize="end"
             android:fontFamily="@font/ubunturegular"
-            android:gravity="center"
+            android:gravity="center|right"
             android:maxLines="1"
             android:text="Category"
-            android:textAlignment="center"
+            android:textAlignment="gravity"
             android:textColor="#2d2d2d"
             android:textSize="14dp"
-            android:textStyle="normal|bold|italic"
-            cardview:layout_constraintBottom_toBottomOf="parent"
-            cardview:layout_constraintEnd_toEndOf="@+id/ticket_img_id"
-            cardview:layout_constraintStart_toEndOf="@+id/ticket_name_id"
-            cardview:layout_constraintTop_toTopOf="@+id/ticket_name_id"
-            cardview:layout_constraintVertical_bias="0.0" />
+            android:textStyle="normal|bold"
+            app:layout_constraintBottom_toTopOf="@+id/ticket_price_id"
+            app:layout_constraintStart_toEndOf="@+id/ticket_name_id" />
 
         <TextView
             android:id="@+id/ticket_price_id"
-            android:layout_width="144dp"
-            android:layout_height="23dp"
+            android:layout_width="107dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:fontFamily="@font/ubunturegular"
             android:gravity="center"
             android:maxLines="1"
             android:text="Price"
-            android:textAlignment="center"
+            android:textAlignment="textEnd"
             android:textColor="#2d2d2d"
             android:textSize="14dp"
-            android:textStyle="normal|bold|italic"
+            android:textStyle="normal|bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ticket_name_id"
-            app:layout_constraintTop_toBottomOf="@+id/ticket_category_id"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toEndOf="@+id/ticket_name_id" />
 
         <ImageView
             android:id="@+id/cat_img"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@+id/ticket_price_id"
             app:layout_constraintStart_toEndOf="@+id/ticket_category_id"
-            app:layout_constraintTop_toTopOf="@+id/ticket_category_id"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/ticket_category_id" />
+
+        <ImageView
+            android:id="@+id/euro_img"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_coins"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/ticket_price_id"
+            app:layout_constraintTop_toBottomOf="@+id/cat_img" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
