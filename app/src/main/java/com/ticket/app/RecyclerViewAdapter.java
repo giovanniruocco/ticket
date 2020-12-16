@@ -41,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         switch (currentticket.getCategory()) {
             case "Music" :
-                holder.cat_image.setImageResource(R.drawable.ic_football);
+                holder.cat_image.setImageResource(R.drawable.ic_music);
                 break;
 
             case "Football" :
