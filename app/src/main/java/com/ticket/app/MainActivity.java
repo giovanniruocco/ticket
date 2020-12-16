@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;

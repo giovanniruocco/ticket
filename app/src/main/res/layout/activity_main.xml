@@ -15,6 +15,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_id"
+            android:clipToPadding="false"
+            android:paddingTop="0dp"
+            android:paddingBottom="32dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
