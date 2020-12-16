@@ -132,12 +132,12 @@ public class EditProfileActivity extends AppCompatActivity {
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(surname.getText().toString());
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("cell").setValue(cell.getText().toString());
-
+            getUrlimage();
             if (urlimage != null)
             {
                 mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("image").setValue(urlimage);
             }
-            Toast.makeText(EditProfileActivity.this, currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditProfileActivity.this, getUrlimage(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
         }
 
