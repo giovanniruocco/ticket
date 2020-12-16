@@ -493,7 +493,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         startActivityForResult(intent, SELECT_FILE);
     }
     private void requeststorage(){
-        ActivityCompat.requestPermissions(AddActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},1);
+        ActivityCompat.requestPermissions(AddActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},2);
     }
     private void captureimage()
     {
@@ -622,7 +622,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 captureimage();
             }
         }
-        if (requestCode==1)
+        if (requestCode==2)
         {
             if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
                 selectimage();
