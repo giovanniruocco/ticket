@@ -225,7 +225,9 @@ public class ProfileActivity extends AppCompatActivity {
             intento.putExtra("Cell", user_tel);
             intento.putExtra("Email", user_email);
             intento.putExtra("Image", user_image);
+            overridePendingTransition(0, 0);
             startActivity(intento);
+            overridePendingTransition(0, 0);
         }
 
         return super.onOptionsItemSelected(item);

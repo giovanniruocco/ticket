@@ -152,6 +152,10 @@ public class EditProfileActivity extends AppCompatActivity {
         myVib.vibrate(25);
         SelectImage();
     }
+    public void ClickEdit(View v){
+        myVib.vibrate(25);
+        SelectImage();
+    }
 
     private void SelectImage(){
         final CharSequence[] items={"Camera","Album", "Back"};
