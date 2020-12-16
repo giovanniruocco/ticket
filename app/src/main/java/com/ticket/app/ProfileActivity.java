@@ -47,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String user_name, user_surname, user_tel, user_email;
 
 
-    TextView name, mail, cell, tv_name;
+    TextView name, surname, mail, cell, tv_name;
     /*Button logout, gippiesse;*/
     GoogleSignInClient mGoogleSignInClient;
 
@@ -84,6 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
        /* logout = findViewById(R.id.logout);
         gippiesse = findViewById(R.id.gippiesse);*/
         name = findViewById(R.id.name);
+        surname = findViewById(R.id.surname);
         mail = findViewById(R.id.mail);
         cell = findViewById(R.id.cell);
         tv_name = findViewById(R.id.tv_name);
@@ -163,7 +164,8 @@ public class ProfileActivity extends AppCompatActivity {
                     user_name=user.getName();
                     user_surname= user.getSurname();
                     user_email = user.getEmail();
-                    name.setText(user.getName() + " " + user.getSurname());
+                    name.setText(user.getName());
+                    surname.setText(user.getSurname());
                     tv_name.setText(user.getName() + " " + user.getSurname());
                 }
                 if (user.getCell() != null)

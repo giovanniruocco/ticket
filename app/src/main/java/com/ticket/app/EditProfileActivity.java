@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +21,16 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private String editName,editSurname,editCell,editMail;
     private DatabaseReference mDatabase;
-    private EditText name, cell;
+    private EditText name, surname, cell;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        setTitle("Edit Profile");
+
+        ImageView profile_img = (ImageView) findViewById(R.id.profile_img);
+        profile_img.setImageResource(R.drawable.ic_profile);
 
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
@@ -40,7 +45,9 @@ public class EditProfileActivity extends AppCompatActivity {
         TextView tvname = findViewById(R.id.tv_name);
         tvname.setText(editName + " " + editSurname);
         name = findViewById(R.id.name);
-        name.setText(editName + " " + editSurname);
+        surname = findViewById(R.id.surname);
+        name.setText(editName);
+        surname.setText(editSurname);
         cell = findViewById(R.id.cell);
         cell.setText(editCell);
     }
@@ -64,8 +71,8 @@ public class EditProfileActivity extends AppCompatActivity {
             //Toast.makeText(EditProfileActivity.this, "Cia", Toast.LENGTH_SHORT).show();
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).setValue(null);
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("email").setValue(editMail);
-            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(editName);
-            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(editSurname);
+            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
+            mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("surname").setValue(surname.getText().toString());
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("cell").setValue(cell.getText().toString());
             Toast.makeText(EditProfileActivity.this, currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
