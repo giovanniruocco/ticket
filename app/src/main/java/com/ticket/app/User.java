@@ -6,18 +6,19 @@ import java.util.Map;
 public class User {
 
     //private Map<String,String> Preferiti;
-    private String email, name, surname, cell;
+    private String email, name, surname, cell, image;
 
     public User(){
     }
 
 
-    public User (String email, String name, String surname, String cell)
+    public User (String email, String name, String surname, String cell, String image)
     {
         this.surname=surname;
         this.name=name;
         this.email=email;
         this.cell=cell;
+        this.image=image;
     }
 
     public String getName() {
@@ -50,5 +51,13 @@ public class User {
 
     public void setCell(String cell) {
         this.cell = cell;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

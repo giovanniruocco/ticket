@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference UsersRef;
     private String user;
-    private String user_name, user_surname, user_tel, user_email;
+    private String user_name, user_surname, user_tel, user_email, user_image;
+    ImageView profileImage;
 
 
     TextView name, surname, mail, cell, tv_name;
@@ -57,8 +59,8 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         setTitle("Profile");
 
-        ImageView loginImage = (ImageView) findViewById(R.id.loginImage);
-        loginImage.setImageResource(R.drawable.ic_profile);
+        profileImage = (ImageView) findViewById(R.id.profileImage);
+        profileImage.setImageResource(R.drawable.ic_profile);
 
         /*Button refresh = findViewById(R.id.refresh);*/
 
@@ -168,9 +170,19 @@ public class ProfileActivity extends AppCompatActivity {
                     surname.setText(user.getSurname());
                     tv_name.setText(user.getName() + " " + user.getSurname());
                 }
-                if (user.getCell() != null)
+                if (user.getCell() != null) {
                     user_tel = user.getCell();
-                    cell.setText( user.getCell());
+                    cell.setText(user.getCell());
+                }
+                if (user.getImage() != null) {
+                    user_image = user.getImage();
+                    Picasso.get()
+                            .load(user_image)
+                            //.placeholder(R.drawable.roundloading)
+                            .fit()
+                            .centerCrop()
+                            .into(profileImage);
+                }
 
             }
 
@@ -212,6 +224,7 @@ public class ProfileActivity extends AppCompatActivity {
             intento.putExtra("Surname", user_surname);
             intento.putExtra("Cell", user_tel);
             intento.putExtra("Email", user_email);
+            intento.putExtra("Image", user_image);
             startActivity(intento);
         }
 
