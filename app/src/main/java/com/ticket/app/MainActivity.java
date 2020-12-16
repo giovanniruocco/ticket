@@ -38,6 +38,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton addbutton;
     private TextView tvnamelogin, tvemaillogin;
     private ImageView loginImage;
-    private String user;
+    private String user, user_image;
     private RecyclerView myrv;
     private List<Ticket> listatickets,tickets;
     private RecyclerViewAdapter myAdapter;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -288,8 +288,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-
-
     ValueEventListener evento = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -297,6 +295,16 @@ public class MainActivity extends AppCompatActivity {
                 User user = snap.getValue(User.class);
                 tvnamelogin.setText(user.getName() + " " + user.getSurname());
                 tvemaillogin.setText(user.getEmail());
+
+                if (user.getImage() != null) {
+                    user_image = user.getImage();
+                    Picasso.get()
+                            .load(user_image)
+                            //.placeholder(R.drawable.roundloading)
+                            .fit()
+                            .centerCrop()
+                            .into(loginImage);
+                }
             }
 
         }
@@ -359,7 +367,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId()==R.id.ordina)
         {
-
                             conta++;
                             if (ordine)
                                 conta=1;
@@ -379,16 +386,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-
-
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
-
 
     public void onBackPressed() {
         new AlertDialog.Builder(this)

@@ -98,6 +98,7 @@ public class EditProfileActivity extends AppCompatActivity {
         cell = findViewById(R.id.cell);
         cell.setText(editCell);
         profileimage = (ImageView) findViewById(R.id.profile_img);
+        profileimage.setImageResource(R.drawable.ic_profile);
 
         Picasso.get()
                 .load(editImage)
@@ -136,6 +137,8 @@ public class EditProfileActivity extends AppCompatActivity {
             if (urlimage != null)
             {
                 mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("image").setValue(urlimage);
+            } else {
+                mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("image").setValue(editImage);
             }
             Toast.makeText(EditProfileActivity.this, getUrlimage(), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class));
