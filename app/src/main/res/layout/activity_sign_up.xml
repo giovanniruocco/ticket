@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="false"
-        android:background="@color/colorAccent" />
+        android:background="@drawable/ic_tickets" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@+id/input_usersurname"

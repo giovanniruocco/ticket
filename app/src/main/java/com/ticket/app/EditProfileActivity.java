@@ -100,13 +100,14 @@ public class EditProfileActivity extends AppCompatActivity {
         profileimage = (ImageView) findViewById(R.id.profile_img);
         profileimage.setImageResource(R.drawable.ic_profile);
 
-        Picasso.get()
-                .load(editImage)
-                //.placeholder(R.drawable.roundloading)
-                .fit()
-                .centerCrop()
-                .into(profileimage);
-
+        if (editImage != null){
+            Picasso.get()
+                    .load(editImage)
+                    //.placeholder(R.drawable.roundloading)
+                    .fit()
+                    .centerCrop()
+                    .into(profileimage);
+        }
 
 
     }

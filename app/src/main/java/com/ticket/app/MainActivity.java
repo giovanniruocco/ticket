@@ -389,6 +389,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void Click(View v){
+        myVib.vibrate(25);
+        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+    }
+
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to close Ticket?")

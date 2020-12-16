@@ -131,7 +131,7 @@
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorAccent" />
+        android:background="@drawable/ic_tickets" />
 
 
 
