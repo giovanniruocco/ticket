@@ -44,6 +44,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference UsersRef;
     private String user;
+    private String user_name, user_surname, user_tel, user_email;
+
 
     TextView name, mail, cell, tv_name;
     /*Button logout, gippiesse;*/
@@ -158,10 +160,14 @@ public class ProfileActivity extends AppCompatActivity {
             for (DataSnapshot snap : dataSnapshot.getChildren()) {
                 User user = snap.getValue(User.class);
                 if (!(user.getName().equals(""))) {
+                    user_name=user.getName();
+                    user_surname= user.getSurname();
+                    user_email = user.getEmail();
                     name.setText(user.getName() + " " + user.getSurname());
                     tv_name.setText(user.getName() + " " + user.getSurname());
                 }
                 if (user.getCell() != null)
+                    user_tel = user.getCell();
                     cell.setText( user.getCell());
 
             }
@@ -199,7 +205,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (item.getItemId()==R.id.edit)
         {
-            Toast.makeText(ProfileActivity.this, "EDITO", Toast.LENGTH_SHORT).show();
+            Intent intento = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            intento.putExtra("Name", user_name);
+            intento.putExtra("Surname", user_surname);
+            intento.putExtra("Cell", user_tel);
+            intento.putExtra("Email", user_email);
+            startActivity(intento);
         }
 
         return super.onOptionsItemSelected(item);

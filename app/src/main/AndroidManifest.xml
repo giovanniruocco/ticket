@@ -27,6 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.ticket.app.fileprovider"
@@ -37,14 +38,16 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
+        <activity
+            android:name=".EditProfileActivity"
+            android:parentActivityName=".ProfileActivity" />
         <activity
             android:name=".MyTicketsActivity"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".EditActivity"
             android:parentActivityName=".MyTicketsActivity" />
-
         <activity
             android:name=".FilterActivity"
             android:parentActivityName=".FilterSearchActivity" />
