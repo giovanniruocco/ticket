@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -74,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final String PREFS_NAME = "MyPrefsFile";
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        if (settings.getBoolean("my_first_time", true)) {
+            //the app is being launched for first time, do something
+            startActivity(new Intent(MainActivity.this, SliderActivity.class));
+            // first time task
+
+            // record the fact that the app has been started at least once
+            settings.edit().putBoolean("my_first_time", false).commit();
+        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -277,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 break;
                             case R.id.about:
-                               // startActivity(new Intent(MainActivity.this, SliderActivity.class));
+                                startActivity(new Intent(MainActivity.this, SliderActivity.class));
                                 break;
                             case R.id.info:
                                 //startActivity(new Intent(MainActivity.this,DevelopersActivity.class));
@@ -322,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                     user_image = user.getImage();
                     Picasso.get()
                             .load(user_image)
-                            //.placeholder(R.drawable.roundloading)
+                            .placeholder(R.drawable.roundloading)
                             .fit()
                             .centerCrop()
                             .into(loginImage);

@@ -187,7 +187,7 @@ public class TicketActivity extends AppCompatActivity {
 
         Picasso.get()
                 .load(image)
-                //.placeholder(R.drawable.roundloading)
+                .placeholder(R.drawable.roundloading)
                 .fit()
                 .centerCrop()
                 .into(img);

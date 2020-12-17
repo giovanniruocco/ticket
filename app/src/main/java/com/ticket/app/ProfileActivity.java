@@ -178,7 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
                     user_image = user.getImage();
                     Picasso.get()
                             .load(user_image)
-                            //.placeholder(R.drawable.roundloading)
+                            .placeholder(R.drawable.roundloading)
                             .fit()
                             .centerCrop()
                             .into(profileImage);

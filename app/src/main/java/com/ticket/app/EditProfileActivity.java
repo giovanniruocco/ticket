@@ -103,7 +103,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (editImage != null){
             Picasso.get()
                     .load(editImage)
-                    //.placeholder(R.drawable.roundloading)
+                    .placeholder(R.drawable.roundloading)
                     .fit()
                     .centerCrop()
                     .into(profileimage);
