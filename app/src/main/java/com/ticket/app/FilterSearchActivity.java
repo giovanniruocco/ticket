@@ -34,7 +34,7 @@ import java.util.Locale;
 
 public class FilterSearchActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private SeekBar ftage;
-    private AutoCompleteTextView ftbreed,ftcity;
+    private AutoCompleteTextView ftcity;
     private RadioGroup groupgender;
     private RadioButton genderbutton;
     private TextView fttextage;

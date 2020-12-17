@@ -285,9 +285,9 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.feedback:
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setData(Uri.parse("mailto: "));
-                                String[] contatto = {"baoo@engineer.com"};
+                                String[] contatto = {"ticket@engineer.com"};
                                 intent.putExtra(Intent.EXTRA_EMAIL, contatto);
-                                intent.putExtra(Intent.EXTRA_SUBJECT, "BAOO:Feedback");
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "Ticket:Feedback");
                                 intent.putExtra(Intent.EXTRA_TEXT, "I would like to report the following bug: ");
                                 intent.setType("message/rfc822");
                                 Intent chooser = Intent.createChooser(intent, "Send Email");

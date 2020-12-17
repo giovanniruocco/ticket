@@ -72,7 +72,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tv_ticket_price.setText(mData.get(position).getPrice() + " €");
         Picasso.get()
                 .load(currentticket.getThumbnail())
-                //.placeholder(R.drawable.caricacuore)
+                .placeholder(R.drawable.ic_ripple)
                 .fit()
                 .centerCrop()
                 .into(holder.img_ticket_thumbnail);

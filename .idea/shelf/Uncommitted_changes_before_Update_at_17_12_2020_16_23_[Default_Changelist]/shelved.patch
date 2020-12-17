@@ -1,0 +1,28 @@
+Index: app/src/main/res/layout/navigation_header.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/linearLayout\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"180dp\"\r\n    android:gravity=\"bottom\"\r\n    android:theme=\"@style/ThemeOverlay.AppCompat.Dark\">\r\n\r\n    <ImageView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:background=\"#6204BF\"\r\n        tools:layout_editor_absoluteX=\"0dp\"\r\n        tools:layout_editor_absoluteY=\"0dp\" />\r\n\r\n    <de.hdodenhof.circleimageview.CircleImageView\r\n        android:id=\"@+id/loginImage\"\r\n        android:layout_width=\"90dp\"\r\n        android:layout_height=\"90dp\"\r\n        android:layout_marginStart=\"10dp\"\r\n        android:layout_marginTop=\"15dp\"\r\n        android:contentDescription=\"Navigation Header\"\r\n        android:cropToPadding=\"false\"\r\n        android:scaleType=\"centerCrop\"\r\n        android:clickable=\"true\"\r\n        android:onClick=\"Click\"\r\n        app:civ_border_color=\"#9b22d4\"\r\n        app:civ_border_width=\"2dp\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        tools:ignore=\"MissingClass\" />\r\n\r\n    />\r\n\r\n    <TextView\r\n        android:id=\"@+id/navigation_name\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:layout_marginEnd=\"20dp\"\r\n        android:layout_marginBottom=\"5dp\"\r\n        android:fontFamily=\"@font/productsansregular\"\r\n        android:paddingTop=\"8dp\"\r\n        android:text=\"Ticket\"\r\n        android:maxLines=\"1\"\r\n        android:lines=\"1\"\r\n        android:ellipsize=\"end\"\r\n        android:scrollHorizontally=\"true\"\r\n        android:textAppearance=\"@style/TextAppearance.AppCompat.Body1\"\r\n        android:textSize=\"14dp\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textStyle=\"bold\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/navigation_email\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"@+id/navigation_email\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/loginImage\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/navigation_email\"\r\n        android:layout_width=\"0dp\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_marginStart=\"20dp\"\r\n        android:layout_marginTop=\"40dp\"\r\n        android:layout_marginEnd=\"20dp\"\r\n        android:layout_marginBottom=\"10dp\"\r\n        android:fontFamily=\"@font/productsansregular\"\r\n        android:maxLines=\"1\"\r\n        android:lines=\"1\"\r\n        android:ellipsize=\"end\"\r\n\r\n        android:text=\"\"\r\n        android:textColor=\"#FFFFFF\"\r\n        android:textAppearance=\"@style/TextAppearance.AppCompat.Body1\"\r\n        android:textSize=\"16dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/loginImage\" />\r\n\r\n\r\n\r\n\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/navigation_header.xml	(revision 765b73e9a15efa104d48467062aab78c7b801d1b)
++++ app/src/main/res/layout/navigation_header.xml	(date 1608218504421)
+@@ -19,15 +19,15 @@
+         android:id="@+id/loginImage"
+         android:layout_width="90dp"
+         android:layout_height="90dp"
+-        android:layout_marginStart="10dp"
+         android:layout_marginTop="15dp"
++        android:clickable="true"
+         android:contentDescription="Navigation Header"
+         android:cropToPadding="false"
+-        android:scaleType="centerCrop"
+-        android:clickable="true"
+         android:onClick="Click"
++        android:scaleType="centerCrop"
+         app:civ_border_color="#9b22d4"
+         app:civ_border_width="2dp"
++        app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         tools:ignore="MissingClass" />

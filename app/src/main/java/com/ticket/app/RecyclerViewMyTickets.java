@@ -104,67 +104,6 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
             }
         });
 
-
-       /*
-        holder.cardView.setOnLongClickListener(new View.OnLongClickListener(){
-            @Override
-            public boolean onLongClick(View v) {
-                final CharSequence[] items={"Edit dog", "Delete dog","Back"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("What do you want to do?");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (items[i].equals("Edit dog")) {
-                            Intent intento = new Intent(mContext,EditActivity.class);
-                            intento.putExtra("Name",mData.get(position).getName());
-                            intento.putExtra("Breed",mData.get(position).getBreed());
-                            intento.putExtra("Description",mData.get(position).getDescription());
-                            intento.putExtra("Gender",mData.get(position).getGender());
-                            intento.putExtra("City",mData.get(position).getCity());
-                            intento.putExtra("Age",mData.get(position).getAge());
-                            intento.putExtra("Tel",mData.get(position).getTel());
-                            intento.putExtra("Email",mData.get(position).getEmail());
-                            intento.putExtra("Image",mData.get(position).getThumbnail());
-                            intento.putExtra("Uid",mData.get(position).getUid());
-                            mContext.startActivity(intento);
-                            dialogInterface.dismiss();
-                        }else if (items[i].equals("Back")) {
-                            dialogInterface.dismiss();
-                        }
-                        else if (items[i].equals("Delete dog"))
-                        {
-                            dialogInterface.dismiss();
-
-                            new AlertDialog.Builder(mContext)
-                                    .setMessage("Are you sure you want to delete " + mData.get(position).getName() +"?")
-                                    .setCancelable(true)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            myRef.child(mData.get(position).getUid()).setValue(null);
-                                            StorageReference cancella = storage.getReferenceFromUrl(mData.get(position).getThumbnail());
-                                            cancella.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                }
-                                            });
-                                            mContext.startActivity(new Intent(mContext,ProfileActivity.class));
-                                        }
-                                    })
-                                    .setNegativeButton("No", null)
-                                    .show();
-                        }
-                    }
-                });
-                builder.show();
-                myVib=(Vibrator) mContext.getSystemService(VIBRATOR_SERVICE);
-                return true;
-            }
-        });
-
-        */
-
     }
 
     @Override
