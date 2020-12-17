@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipelayout);
-        swipeRefreshLayout.setColorSchemeResources(R.color.prova, R.color.Rosso, R.color.verde);
+        swipeRefreshLayout.setColorSchemeResources(R.color.viola, R.color.Rosso, R.color.verde);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                                     @Override
                                                     public void onRefresh() {
