@@ -11,9 +11,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -70,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean ordine=false;
     GoogleSignInClient mGoogleSignInClient;
     private Vibrator myVib;
+    private SensorManager mSensorManager;
+    private ShakeEventListener mSensorListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,20 @@ public class MainActivity extends AppCompatActivity {
             // record the fact that the app has been started at least once
             settings.edit().putBoolean("my_first_time", false).commit();
         }
+
+
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+            public void onShake() {
+                Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+                changeOrder();
+            }
+        });
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -403,23 +422,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId()==R.id.ordina)
         {
-                            conta++;
-                            if (ordine)
-                                conta=1;
-                            ordine=false;
-                            reverse(listatickets);
-                            myAdapter=new RecyclerViewAdapter( MainActivity.this,listatickets);
-                            myrv.setAdapter(myAdapter);
-                            if(conta%2==0) {
-                                //item.setIcon(R.drawable.ic_discendant_sort);
-                                Snackbar snackBar = Snackbar.make(activity_main, "From the most recent post", Snackbar.LENGTH_SHORT);
-                                snackBar.show();
-                            }
-                            else {
-                                //item.setIcon(R.drawable.ic_ascendant_sort);
-                                Snackbar snackBar = Snackbar.make(activity_main, "From the oldest post ", Snackbar.LENGTH_SHORT);
-                                snackBar.show();
-                            }
+                     changeOrder();
                         }
 
         return super.onOptionsItemSelected(item);
@@ -443,6 +446,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
+    }
+
     public void onBackPressed() {
         addbutton.hide();
         new AlertDialog.Builder(this)
@@ -455,6 +472,26 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    private void changeOrder(){
+        conta++;
+        if (ordine)
+            conta=1;
+        ordine=false;
+        reverse(listatickets);
+        myAdapter=new RecyclerViewAdapter( MainActivity.this,listatickets);
+        myrv.setAdapter(myAdapter);
+        if(conta%2==0) {
+            //item.setIcon(R.drawable.ic_discendant_sort);
+            Snackbar snackBar = Snackbar.make(activity_main, "From the most recent post", Snackbar.LENGTH_SHORT);
+            snackBar.show();
+        }
+        else {
+            //item.setIcon(R.drawable.ic_ascendant_sort);
+            Snackbar snackBar = Snackbar.make(activity_main, "From the oldest post ", Snackbar.LENGTH_SHORT);
+            snackBar.show();
+        }
     }
 
 }
