@@ -28,6 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -116,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         addbutton=(FloatingActionButton)findViewById(R.id.main_add);
+        MotionSpec hide_spec = MotionSpec.createFromResource(MainActivity.this , R.animator.hide_spec);
+        addbutton.setHideMotionSpec(hide_spec);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +144,18 @@ public class MainActivity extends AppCompatActivity {
         myRef2 = FirebaseDatabase.getInstance().getReference("Users");
         myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myrv.setLayoutManager(new GridLayoutManager(this, 1));
+
+        myrv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    addbutton.hide();
+                } else if (dy < 0) {
+                    addbutton.show();
+                }
+            }
+        });
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -395,6 +410,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
+        addbutton.hide();
         new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to close Ticket?")
                 .setCancelable(false)
