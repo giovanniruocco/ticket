@@ -153,6 +153,7 @@ public class FilterActivity extends AppCompatActivity {
                 else {
                     filtro.setText(resultText);
                     errore.setVisibility(View.INVISIBLE);
+                    reverse(listatickets);
                     myAdapter=new RecyclerViewAdapter( FilterActivity.this,listatickets);
                     myrv.setAdapter(myAdapter);
                 }

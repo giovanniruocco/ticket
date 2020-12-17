@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,12 +39,14 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
     private RadioButton genderbutton;
     private TextView fttextage;
     private Button ftbutton;
+    private Vibrator myVib;
     String[] provinceArray;
     String[] regionArray;
     String addname, addprice, adddesc;
     String region, city, category, finaltext;
     String cell;
     String missingFields = "";
+    Spinner spinner, spinner2;
     int id_regionArray;
     Location gps_loc;
     Location network_loc;
@@ -64,13 +67,14 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_search);
         setTitle("Filter");
+        myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         Button gippiesse = findViewById(R.id.gippiesse);
         Button search_btn = findViewById(R.id.search_button);
 
 
-        final Spinner spinner = findViewById(R.id.reg_spinner);
-        final Spinner spinner2 = findViewById(R.id.city_spinner);
+        spinner = findViewById(R.id.reg_spinner);
+        spinner2 = findViewById(R.id.city_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.regionArray, android.R.layout.simple_spinner_item);
@@ -193,93 +197,8 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
         gippiesse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (ContextCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                    ActivityCompat.requestPermissions(FilterSearchActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-                if (ActivityCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(FilterSearchActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                try {
-
-                    gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (gps_loc != null) {
-                    final_loc = gps_loc;
-                    latitude = final_loc.getLatitude();
-                    longitude = final_loc.getLongitude();
-                } else if (network_loc != null) {
-                    final_loc = network_loc;
-                    latitude = final_loc.getLatitude();
-                    longitude = final_loc.getLongitude();
-                } else {
-                    latitude = 0.0;
-                    longitude = 0.0;
-                }
-
-
-                //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-                try {
-
-                    Geocoder geocoder = new Geocoder(FilterSearchActivity.this, Locale.getDefault());
-                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                    if (addresses != null && addresses.size() > 0) {
-                        userProvince = addresses.get(0).getSubAdminArea();
-                        userAddress = addresses.get(0).getAddressLine(0);
-                        if (userProvince.contains("Città Metropolitana di "))
-                            userProvince = userProvince.substring(23);
-                        else if (userProvince.contains("Provincia di "))
-                            userProvince = userProvince.substring(13);
-                        else if (userProvince.contains("Provincia dell'"))
-                            userProvince = "L'" + userProvince.substring(15);
-                        regione = addresses.get(0).getAdminArea();
-                        citta = userProvince;
-
-                    } else {
-                        userProvince = "Unknown";
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                int index = -1;
-                for (int i = 0; i< regionArray.length; i++) {
-                    if (regionArray[i].equals(regione)) {
-                        index = i;
-                        break;
-                    }
-                }
-                spinner.setSelection(index);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        int index2 = -1;
-                        for (int i = 0; i< provinceArray.length; i++) {
-                            if (provinceArray[i].equals(citta)) {
-                                index2 = i;
-                                break;
-                            }
-                        }
-                        spinner2.setSelection(index2);
-                    }
-                }, 150);
-
+                myVib.vibrate(25);
+                useGPS();
             }
         });
 
@@ -339,6 +258,107 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
 
     }
 
+
+
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode==1)
+        {
+            if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                useGPS();
+        }
+    }
+
+    private void useGPS() {
+
+
+        if (ContextCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(FilterSearchActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+        if (ActivityCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(FilterSearchActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(FilterSearchActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+
+            gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (gps_loc != null) {
+            final_loc = gps_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        } else if (network_loc != null) {
+            final_loc = network_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        } else {
+            latitude = 0.0;
+            longitude = 0.0;
+        }
+
+
+        //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+        try {
+
+            Geocoder geocoder = new Geocoder(FilterSearchActivity.this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                userProvince = addresses.get(0).getSubAdminArea();
+                userAddress = addresses.get(0).getAddressLine(0);
+                if (userProvince.contains("Città Metropolitana di "))
+                    userProvince = userProvince.substring(23);
+                else if (userProvince.contains("Provincia di "))
+                    userProvince = userProvince.substring(13);
+                else if (userProvince.contains("Provincia dell'"))
+                    userProvince = "L'" + userProvince.substring(15);
+                regione = addresses.get(0).getAdminArea();
+                citta = userProvince;
+
+            } else {
+                userProvince = "Unknown";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int index = -1;
+        for (int i = 0; i< regionArray.length; i++) {
+            if (regionArray[i].equals(regione)) {
+                index = i;
+                break;
+            }
+        }
+        spinner.setSelection(index);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int index2 = -1;
+                for (int i = 0; i< provinceArray.length; i++) {
+                    if (provinceArray[i].equals(citta)) {
+                        index2 = i;
+                        break;
+                    }
+                }
+                spinner2.setSelection(index2);
+            }
+        }, 150);
+
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

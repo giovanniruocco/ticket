@@ -74,6 +74,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     String region, city, category, finaltext;
     String cell;
     String missingFields = "";
+    Spinner spinner,spinner2;
 
     private DatabaseReference mDatabase, TicketsRef;
     private FirebaseAuth auth;
@@ -142,8 +143,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         et_price = (EditText) findViewById(R.id.add_price);
 
 
-        final Spinner spinner = findViewById(R.id.spinner);
-        final Spinner spinner2 = findViewById(R.id.spinner2);
+        spinner = findViewById(R.id.spinner);
+        spinner2 = findViewById(R.id.spinner2);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.regionArray, android.R.layout.simple_spinner_item);
@@ -270,94 +271,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                          @Override
                                          public void onClick(View view) {
                                              myVib.vibrate(25);
-
-                                             if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                                                 ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-
-                                             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-                                             if (ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                                                     && ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                                                     && ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-                                                 Toast.makeText(AddActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
-                                                 return;
-                                             }
-
-                                             try {
-
-                                                 gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                                 network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                                             } catch (Exception e) {
-                                                 e.printStackTrace();
-                                             }
-
-                                             if (gps_loc != null) {
-                                                 final_loc = gps_loc;
-                                                 latitude = final_loc.getLatitude();
-                                                 longitude = final_loc.getLongitude();
-                                             } else if (network_loc != null) {
-                                                 final_loc = network_loc;
-                                                 latitude = final_loc.getLatitude();
-                                                 longitude = final_loc.getLongitude();
-                                             } else {
-                                                 latitude = 0.0;
-                                                 longitude = 0.0;
-                                             }
-
-
-                                             //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-                                             try {
-
-                                                 Geocoder geocoder = new Geocoder(AddActivity.this, Locale.getDefault());
-                                                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                                                 if (addresses != null && addresses.size() > 0) {
-                                                     userProvince = addresses.get(0).getSubAdminArea();
-                                                     userAddress = addresses.get(0).getAddressLine(0);
-                                                     if (userProvince.contains("Città Metropolitana di "))
-                                                         userProvince = userProvince.substring(23);
-                                                     else if (userProvince.contains("Provincia di "))
-                                                         userProvince = userProvince.substring(13);
-                                                     else if (userProvince.contains("Provincia dell'"))
-                                                         userProvince = "L'" + userProvince.substring(15);
-                                                     regione = addresses.get(0).getAdminArea();
-                                                     citta = userProvince;
-
-                                                 } else {
-                                                     userProvince = "Unknown";
-                                                 }
-
-                                             } catch (Exception e) {
-                                                 e.printStackTrace();
-                                             }
-
-                int index = -1;
-                for (int i = 0; i< regionArray.length; i++) {
-                    if (regionArray[i].equals(regione)) {
-                        index = i;
-                        break;
-                    }
-                }
-                spinner.setSelection(index);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        int index2 = -1;
-                        for (int i = 0; i< provinceArray.length; i++) {
-                            if (provinceArray[i].equals(citta)) {
-                                index2 = i;
-                                break;
-                            }
-                        }
-                        spinner2.setSelection(index2);
-                    }
-                }, 150);
-
-            }
+                                             useGPS();
+                                         }
         });
 
         add_btn.setOnClickListener(new View.OnClickListener() {
@@ -615,6 +530,99 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                     });
         }
     }
+
+    public void useGPS(){
+
+                if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                    ActivityCompat.requestPermissions(AddActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+                if (ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(AddActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                try {
+
+                    gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (gps_loc != null) {
+                    final_loc = gps_loc;
+                    latitude = final_loc.getLatitude();
+                    longitude = final_loc.getLongitude();
+                } else if (network_loc != null) {
+                    final_loc = network_loc;
+                    latitude = final_loc.getLatitude();
+                    longitude = final_loc.getLongitude();
+                } else {
+                    latitude = 0.0;
+                    longitude = 0.0;
+                }
+
+
+                //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+                try {
+
+                    Geocoder geocoder = new Geocoder(AddActivity.this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                    if (addresses != null && addresses.size() > 0) {
+                        userProvince = addresses.get(0).getSubAdminArea();
+                        userAddress = addresses.get(0).getAddressLine(0);
+                        if (userProvince.contains("Città Metropolitana di "))
+                            userProvince = userProvince.substring(23);
+                        else if (userProvince.contains("Provincia di "))
+                            userProvince = userProvince.substring(13);
+                        else if (userProvince.contains("Provincia dell'"))
+                            userProvince = "L'" + userProvince.substring(15);
+                        regione = addresses.get(0).getAdminArea();
+                        citta = userProvince;
+
+                    } else {
+                        userProvince = "Unknown";
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                int index = -1;
+                for (int i = 0; i< regionArray.length; i++) {
+                    if (regionArray[i].equals(regione)) {
+                        index = i;
+                        break;
+                    }
+                }
+                spinner.setSelection(index);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        int index2 = -1;
+                        for (int i = 0; i< provinceArray.length; i++) {
+                            if (provinceArray[i].equals(citta)) {
+                                index2 = i;
+                                break;
+                            }
+                        }
+                        spinner2.setSelection(index2);
+                    }
+                }, 150);
+
+            }
+
+
+
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -626,6 +634,11 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         {
             if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
                 selectimage();
+        }
+        if (requestCode==1)
+        {
+            if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                useGPS();
         }
     }
     public void setUrlimage(Uri prova)

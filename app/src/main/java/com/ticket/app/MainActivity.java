@@ -406,7 +406,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void Click(View v){
         myVib.vibrate(25);
-        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+        } else {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setMessage("You must be logged in")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok, let's go", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        }
+                    })
+                    .setNegativeButton("No, thanks", null)
+                    .show();
+        }
     }
 
     public void onBackPressed() {
