@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
+import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -149,8 +150,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {
+                    /*ObjectAnimator animation = ObjectAnimator.ofFloat(addbutton, "translationY", 260f);
+                    animation.setDuration(60);
+                    animation.start();*/
                     addbutton.hide();
                 } else if (dy < 0) {
+                    /*ObjectAnimator animation = ObjectAnimator.ofFloat(addbutton, "translationY", -9.5f);
+                    animation.setDuration(60);
+                    animation.start();*/
                     addbutton.show();
                 }
             }
