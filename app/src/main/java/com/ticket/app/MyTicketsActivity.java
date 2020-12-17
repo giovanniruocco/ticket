@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -97,6 +98,8 @@ public class MyTicketsActivity extends AppCompatActivity {
         myrv = (RecyclerView) findViewById(R.id.mytickets_recyclerview);
         myrv.setLayoutManager(new GridLayoutManager(this, 1));
         final Intent intentmain = new Intent(this, MainActivity.class);
+        MotionSpec hide_spec = MotionSpec.createFromResource(MyTicketsActivity.this , R.animator.hide_spec);
+        addticket.setHideMotionSpec(hide_spec);
         addticket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +108,23 @@ public class MyTicketsActivity extends AppCompatActivity {
                 else {
                     startActivity(new Intent(MyTicketsActivity.this, LoginActivity.class));
                     Toast.makeText(MyTicketsActivity.this, "You must be logged in", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        myrv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    /*ObjectAnimator animation = ObjectAnimator.ofFloat(addbutton, "translationY", 260f);
+                    animation.setDuration(60);
+                    animation.start();*/
+                    addticket.hide();
+                } else if (dy < 0) {
+                    /*ObjectAnimator animation = ObjectAnimator.ofFloat(addbutton, "translationY", -9.5f);
+                    animation.setDuration(60);
+                    animation.start();*/
+                    addticket.show();
                 }
             }
         });
