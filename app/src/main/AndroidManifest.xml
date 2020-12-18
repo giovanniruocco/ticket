@@ -26,7 +26,7 @@
         android:roundIcon="@drawable/ic_tickets"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SliderActivity"></activity>
+        <activity android:name=".SliderActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -37,6 +37,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".EditProfileActivity"

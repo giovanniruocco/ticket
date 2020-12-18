@@ -260,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
                                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                                 } else {
                                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                                    Toast.makeText(MainActivity.this, "Loginno ", Toast.LENGTH_LONG).show();
                                 }
                                 break;
 
