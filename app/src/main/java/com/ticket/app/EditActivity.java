@@ -307,7 +307,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         et_description.setText(editDescription);
         et_price.setText(editPrice);
 
-        Toast.makeText(EditActivity.this, editRegion, Toast.LENGTH_SHORT).show();
 
         int indexC = -1;
         for (int i = 0; i< categoryNames.length; i++) {
