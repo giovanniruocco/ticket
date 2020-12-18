@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.SensorManager;
+import android.hardware.Sensor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,6 +23,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,6 +37,9 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
+
+
+
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -74,12 +82,14 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     String region, city, category, finaltext;
     String cell;
     String missingFields = "";
-    Spinner spinner,spinner2;
+    Spinner spinner,spinner2, spin;
 
     private DatabaseReference mDatabase, TicketsRef;
     private FirebaseAuth auth;
     private DatabaseReference UsersRef;
     private Vibrator myVib;
+    private SensorManager mSensorManager;
+    private ShakeEventListener mSensorListener;
 
 
     private FirebaseStorage storage;
@@ -105,6 +115,18 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+            public void onShake() {
+                Toast.makeText(AddActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+                clearActivity();
+            }
+        });
+
         TicketsRef = FirebaseDatabase.getInstance().getReference("Tickets");
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
@@ -117,6 +139,9 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         storageReference = storage.getReference();
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
+
+
+
 
         auth = FirebaseAuth.getInstance();
         final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -257,7 +282,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
-        final Spinner spin = (Spinner) findViewById(R.id.cat_spinner);
+        spin = (Spinner) findViewById(R.id.cat_spinner);
         spin.setOnItemSelectedListener(this);
 
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(), categories,categoryNames);
@@ -339,7 +364,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                             ticket.setUid(uid);
                                             mDatabase.child("Tickets").child(uid).setValue(ticket);
                                             Toast.makeText(AddActivity.this, "Congratulations, you've added your new post!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(AddActivity.this, ProfileActivity.class));
+                                            startActivity(new Intent(AddActivity.this, MyTicketsActivity.class));
                                         }
                                 } else {
                                     new AlertDialog.Builder(AddActivity.this)
@@ -692,6 +717,57 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
         }
     };
+
+    private void clearActivity() {
+        et_name.setText("");
+        et_description.setText("");
+        et_price.setText("");
+        spinner.setSelection(0);
+        spinner2.setSelection(0);
+        spin.setSelection(0);
+        urlimage=null;
+        imgview.setImageResource(R.drawable.ic_addphoto);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+
+        MenuInflater inflauto = getMenuInflater();
+        inflauto.inflate(R.menu.add_right_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId()==R.id.hint)
+        {
+            Toast.makeText(AddActivity.this, "Shake to clear data", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
 
     public void onBackPressed() {
         super.onBackPressed();

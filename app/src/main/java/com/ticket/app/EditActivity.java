@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,6 +23,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -76,11 +81,14 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     String region, city, category, finaltext;
     String cell;
     String missingFields = "";
+    Spinner spinner, spinner2, spin;
 
     private DatabaseReference mDatabase, TicketsRef;
     private FirebaseAuth auth;
     private DatabaseReference UsersRef;
     private Vibrator myVib;
+    private SensorManager mSensorManager;
+    private ShakeEventListener mSensorListener;
 
 
     private FirebaseStorage storage;
@@ -106,6 +114,19 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+            public void onShake() {
+                Toast.makeText(EditActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+                clearActivity();
+            }
+        });
+
+
         TicketsRef = FirebaseDatabase.getInstance().getReference("Tickets");
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
@@ -147,8 +168,8 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         et_price = (EditText) findViewById(R.id.add_price);
 
 
-        final Spinner spinner = findViewById(R.id.spinner);
-        final Spinner spinner2 = findViewById(R.id.spinner2);
+        spinner = findViewById(R.id.spinner);
+        spinner2 = findViewById(R.id.spinner2);
         regionArray = getResources().getStringArray(R.array.regionArray);
         cityArray = getResources().getStringArray(R.array.cityArray);
 
@@ -264,7 +285,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
-        final Spinner spin = (Spinner) findViewById(R.id.cat_spinner);
+        spin = (Spinner) findViewById(R.id.cat_spinner);
         spin.setOnItemSelectedListener(this);
 
         CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(), categories,categoryNames);
@@ -436,93 +457,8 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         gippiesse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                    ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-                if (ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(EditActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                try {
-
-                    gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (gps_loc != null) {
-                    final_loc = gps_loc;
-                    latitude = final_loc.getLatitude();
-                    longitude = final_loc.getLongitude();
-                } else if (network_loc != null) {
-                    final_loc = network_loc;
-                    latitude = final_loc.getLatitude();
-                    longitude = final_loc.getLongitude();
-                } else {
-                    latitude = 0.0;
-                    longitude = 0.0;
-                }
-
-
-                //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-
-                try {
-
-                    Geocoder geocoder = new Geocoder(EditActivity.this, Locale.getDefault());
-                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                    if (addresses != null && addresses.size() > 0) {
-                        userProvince = addresses.get(0).getSubAdminArea();
-                        userAddress = addresses.get(0).getAddressLine(0);
-                        if (userProvince.contains("Città Metropolitana di "))
-                            userProvince = userProvince.substring(23);
-                        else if (userProvince.contains("Provincia di "))
-                            userProvince = userProvince.substring(13);
-                        else if (userProvince.contains("Provincia dell'"))
-                            userProvince = "L'" + userProvince.substring(15);
-                        regione = addresses.get(0).getAdminArea();
-                        citta = userProvince;
-
-                    } else {
-                        userProvince = "Unknown";
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                int index = -1;
-                for (int i = 0; i< regionArray.length; i++) {
-                    if (regionArray[i].equals(regione)) {
-                        index = i;
-                        break;
-                    }
-                }
-                spinner.setSelection(index);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        int index2 = -1;
-                        for (int i = 0; i< provinceArray.length; i++) {
-                            if (provinceArray[i].equals(citta)) {
-                                index2 = i;
-                                break;
-                            }
-                        }
-                        spinner2.setSelection(index2);
-                    }
-                }, 150);
-
+                myVib.vibrate(25);
+                useGPS();
             }
         });
 
@@ -789,6 +725,100 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                     });
         }
     }
+
+
+    public void useGPS(){
+
+        if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+        if (ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(EditActivity.this, "Permesso concesso", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+
+            gps_loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            network_loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (gps_loc != null) {
+            final_loc = gps_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        } else if (network_loc != null) {
+            final_loc = network_loc;
+            latitude = final_loc.getLatitude();
+            longitude = final_loc.getLongitude();
+        } else {
+            latitude = 0.0;
+            longitude = 0.0;
+        }
+
+
+        //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE}, 1);
+
+        try {
+
+            Geocoder geocoder = new Geocoder(EditActivity.this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                userProvince = addresses.get(0).getSubAdminArea();
+                userAddress = addresses.get(0).getAddressLine(0);
+                if (userProvince.contains("Città Metropolitana di "))
+                    userProvince = userProvince.substring(23);
+                else if (userProvince.contains("Provincia di "))
+                    userProvince = userProvince.substring(13);
+                else if (userProvince.contains("Provincia dell'"))
+                    userProvince = "L'" + userProvince.substring(15);
+                regione = addresses.get(0).getAdminArea();
+                citta = userProvince;
+
+            } else {
+                userProvince = "Unknown";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int index = -1;
+        for (int i = 0; i< regionArray.length; i++) {
+            if (regionArray[i].equals(regione)) {
+                index = i;
+                break;
+            }
+        }
+        spinner.setSelection(index);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int index2 = -1;
+                for (int i = 0; i< provinceArray.length; i++) {
+                    if (provinceArray[i].equals(citta)) {
+                        index2 = i;
+                        break;
+                    }
+                }
+                spinner2.setSelection(index2);
+            }
+        }, 150);
+
+    }
+
+
+
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -853,6 +883,56 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }
     };
+
+    private void clearActivity() {
+        et_name.setText("");
+        et_description.setText("");
+        et_price.setText("");
+        spinner.setSelection(0);
+        spinner2.setSelection(0);
+        spin.setSelection(0);
+        urlimage=null;
+        imgview.setImageResource(R.drawable.ic_addphoto);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
+    }
+
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+
+        MenuInflater inflauto = getMenuInflater();
+        inflauto.inflate(R.menu.add_right_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId()==R.id.hint)
+        {
+            Toast.makeText(EditActivity.this, "Shake to clear data", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public void onBackPressed() {
         super.onBackPressed();

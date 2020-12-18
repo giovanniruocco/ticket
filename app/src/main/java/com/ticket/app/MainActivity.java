@@ -95,19 +95,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensorListener = new ShakeEventListener();
-
-        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
-
-            public void onShake() {
-                Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
-                changeOrder();
-            }
-        });
-
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -413,17 +400,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(t.onOptionsItemSelected(item))
             return true;
-        if (item.getItemId()==R.id.filtra)
-        {
+        if (item.getItemId()==R.id.filtra) {
             startActivity(new Intent(MainActivity.this,FilterSearchActivity.class));
             return true;
         }
 
 
         if (item.getItemId()==R.id.ordina)
-        {
-                     changeOrder();
-                        }
+            changeOrder();
 
         return super.onOptionsItemSelected(item);
     }
@@ -446,19 +430,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mSensorManager.registerListener(mSensorListener,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_UI);
-    }
-
-    @Override
-    protected void onPause() {
-        mSensorManager.unregisterListener(mSensorListener);
-        super.onPause();
-    }
 
     public void onBackPressed() {
         addbutton.hide();
