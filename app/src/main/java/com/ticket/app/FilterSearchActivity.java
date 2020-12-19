@@ -58,7 +58,7 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
 
 
     String[] categoryNames={"Any event", "Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
-    int categories[] = {R.drawable.ic_more, R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
+    int categories[] = {R.drawable.ic_mytickets, R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
 
 
 
