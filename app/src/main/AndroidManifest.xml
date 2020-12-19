@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".UserChatActivity"></activity>
-        <activity android:name=".ChatActivity" />
+
         <activity android:name=".SliderActivity" />
 
         <provider
@@ -51,6 +51,9 @@
         <activity
             android:name=".EditProfileActivity"
             android:parentActivityName=".ProfileActivity" />
+        <activity
+            android:name=".ChatActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyTicketsActivity"
             android:parentActivityName=".MainActivity" />

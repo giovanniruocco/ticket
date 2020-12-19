@@ -34,11 +34,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
 
-        TextView messageTxt;
+        TextView messageTxt, nameTxt;
 
         public SentMessageHolder(@NonNull View itemView) {
             super(itemView);
-
+            nameTxt = itemView.findViewById(R.id.nameSentTxt);
             messageTxt = itemView.findViewById(R.id.sentTxt);
         }
     }
@@ -149,6 +149,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 if (message.has("message")) {
 
                     SentMessageHolder messageHolder = (SentMessageHolder) holder;
+                    messageHolder.nameTxt.setText(message.getString("name") + " (Me)");
                     messageHolder.messageTxt.setText(message.getString("message"));
 
                 } else {
