@@ -58,7 +58,7 @@ public class SliderActivity extends AppCompatActivity implements View.OnClickLis
         mDots = new TextView[3];
         if(Dots_Layout!=null)
             Dots_Layout.removeAllViews();
-        dots= new ImageView[5];
+        dots= new ImageView[6];
         for (int i=0;i<dots.length;i++)
         {
             dots[i]= new ImageView(this);

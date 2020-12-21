@@ -312,15 +312,6 @@ public class MainActivity extends AppCompatActivity {
                                 Intent chooser = Intent.createChooser(intent, "Send Email");
                                 startActivity(chooser);
                                 break;
-                            case R.id.cheers:
-                                String urlString = "https://www.youtube.com/watch?v=6xUnSVTh8fI";
-                                Intent intento = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
-                                intento.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                intento.setPackage(null);
-                                startActivity(intento);
-
-                                break;
 
                             case R.id.nv_chat:
                                 if (auth.getCurrentUser() != null) {
