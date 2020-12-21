@@ -25,7 +25,7 @@
             android:background="#2d2d2d"
             android:scaleType="centerCrop"
             android:translationY="-10dp"
-            app:layout_constraintDimensionRatio="H,4:3"
+
             app:layout_constraintHorizontal_bias="0.0"
             cardview:layout_constraintBottom_toTopOf="@id/ticket_name_id"
             cardview:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
             android:id="@+id/ticket_category_id"
             android:layout_width="107dp"
             android:layout_height="25dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginEnd="12dp"
             android:ellipsize="end"
             android:fontFamily="@font/ubunturegular"
             android:gravity="center|right"
@@ -63,15 +63,33 @@
             android:textColor="#2d2d2d"
             android:textSize="14dp"
             android:textStyle="normal|bold"
-            app:layout_constraintBottom_toTopOf="@+id/ticket_price_id"
-            app:layout_constraintStart_toEndOf="@+id/ticket_name_id" />
+            app:layout_constraintEnd_toStartOf="@+id/cat_img"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_img_id" />
+
+        <ImageView
+            android:id="@+id/cat_img"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_img_id" />
+
+        <ImageView
+            android:id="@+id/euro_img"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/ic_coins"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cat_img" />
 
         <TextView
             android:id="@+id/ticket_price_id"
             android:layout_width="107dp"
             android:layout_height="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
             android:ellipsize="end"
             android:fontFamily="@font/ubunturegular"
             android:gravity="center"
@@ -81,26 +99,8 @@
             android:textColor="#2d2d2d"
             android:textSize="14dp"
             android:textStyle="normal|bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ticket_name_id" />
-
-        <ImageView
-            android:id="@+id/cat_img"
-            android:layout_width="28dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/ticket_price_id"
-            app:layout_constraintStart_toEndOf="@+id/ticket_category_id"
-            app:layout_constraintTop_toTopOf="@+id/ticket_category_id" />
-
-        <ImageView
-            android:id="@+id/euro_img"
-            android:layout_width="28dp"
-            android:layout_height="24dp"
-            android:background="@drawable/ic_coins"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@+id/ticket_price_id"
-            app:layout_constraintTop_toBottomOf="@+id/cat_img" />
+            app:layout_constraintEnd_toStartOf="@+id/euro_img"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_category_id" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
