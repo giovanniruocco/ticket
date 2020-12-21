@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -44,7 +45,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private String name, email;
     private WebSocket webSocket;
     //private String SERVER_PATH = "ws://10.0.2.2:3000";
-    private String SERVER_PATH = "ws://192.168.1.6:3000";
+    private String SERVER_PATH = "ws://192.168.1.10:3000";
     private EditText messageEdit;
     private ImageView sendBtn;
     private ImageView sendBtnGrey;
@@ -53,12 +54,13 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private MessageAdapter messageAdapter;
     private FirebaseAuth auth;
     private DatabaseReference myRef2;
+    private boolean prova = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        setTitle("Chatroom");
+        setTitle("Chat room");
 
         auth = FirebaseAuth.getInstance();
 
@@ -71,13 +73,30 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         initiateSocketConnection();
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!prova)
+                    Toast.makeText(ChatActivity.this,
+                            "Socket connection Failed!",
+                            Toast.LENGTH_SHORT).show();
+            }
+        }, 300);
+
+
+
+
     }
 
     private void initiateSocketConnection() {
 
+
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(SERVER_PATH).build();
+
         webSocket = client.newWebSocket(request, new SocketListener());
+
 
     }
 
@@ -122,40 +141,54 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         public void onOpen(WebSocket webSocket, Response response) {
             super.onOpen(webSocket, response);
 
-            runOnUiThread(() -> {
-                Toast.makeText(ChatActivity.this,
-                        "Socket Connection Successful!",
-                        Toast.LENGTH_SHORT).show();
+            runOnUiThread(new Runnable() {
 
-                initializeView();
+                @Override
+                public void run() {
+
+                    prova = true;
+
+                    if (prova) {
+
+                        Toast.makeText(ChatActivity.this,
+                                "Socket Connection Successful!",
+                                Toast.LENGTH_SHORT).show();
+
+                        initializeView();
+                    }
+                }
             });
 
         }
 
         @Override
-        public void onMessage(WebSocket webSocket, String text) {
+        public void onMessage(WebSocket webSocket, final String text) {
             super.onMessage(webSocket, text);
 
-            runOnUiThread(() -> {
+            runOnUiThread(new Runnable() {
 
-                try {
-                    JSONObject jsonObject = new JSONObject(text);
-                    jsonObject.put("isSent", false);
+                @Override
+                public void run() {
 
-                    messageAdapter.addItem(jsonObject);
+                    try {
+                        JSONObject jsonObject = new JSONObject(text);
+                        jsonObject.put("isSent", false);
 
-                    recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                        messageAdapter.addItem(jsonObject);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
             });
 
         }
     }
 
     private void initializeView() {
+
 
         messageEdit = findViewById(R.id.messageEdit);
         sendBtn = findViewById(R.id.sendBtn);
@@ -171,26 +204,29 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         messageEdit.addTextChangedListener(this);
 
-        sendBtn.setOnClickListener(v -> {
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            if (!(messageEdit.getText().toString().equals(""))) {
+                if (!(messageEdit.getText().toString().equals(""))) {
 
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("name", name);
-                    jsonObject.put("message", messageEdit.getText().toString());
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("name", name);
+                        jsonObject.put("message", messageEdit.getText().toString());
 
-                    webSocket.send(jsonObject.toString());
+                        webSocket.send(jsonObject.toString());
 
-                    jsonObject.put("isSent", true);
-                    messageAdapter.addItem(jsonObject);
+                        jsonObject.put("isSent", true);
+                        messageAdapter.addItem(jsonObject);
 
-                    recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
 
-                    resetMessageEdit();
+                        resetMessageEdit();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
