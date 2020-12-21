@@ -22,8 +22,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
     private static final int TYPE_MESSAGE_SENT = 0;
     private static final int TYPE_MESSAGE_RECEIVED = 1;
-    private static final int TYPE_IMAGE_SENT = 2;
-    private static final int TYPE_IMAGE_RECEIVED = 3;
 
     private LayoutInflater inflater;
     private List<JSONObject> messages = new ArrayList<>();
@@ -43,16 +41,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class SentImageHolder extends RecyclerView.ViewHolder {
-
-        ImageView imageView;
-
-        public SentImageHolder(@NonNull View itemView) {
-            super(itemView);
-
-            imageView = itemView.findViewById(R.id.imageView);
-        }
-    }
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
 
@@ -66,19 +54,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class ReceivedImageHolder extends RecyclerView.ViewHolder {
-
-        ImageView imageView;
-        TextView nameTxt;
-
-        public ReceivedImageHolder(@NonNull View itemView) {
-            super(itemView);
-
-            imageView = itemView.findViewById(R.id.imageView);
-            nameTxt = itemView.findViewById(R.id.nameTxt);
-
-        }
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -87,18 +62,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         try {
             if (message.getBoolean("isSent")) {
-
-                if (message.has("message"))
                     return TYPE_MESSAGE_SENT;
-                else
-                    return TYPE_IMAGE_SENT;
 
             } else {
-
-                if (message.has("message"))
                     return TYPE_MESSAGE_RECEIVED;
-                else
-                    return TYPE_IMAGE_RECEIVED;
 
             }
         } catch (JSONException e) {
@@ -123,16 +90,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 view = inflater.inflate(R.layout.item_received_message, parent, false);
                 return new ReceivedMessageHolder(view);
 
-            case TYPE_IMAGE_SENT:
-
-                view = inflater.inflate(R.layout.item_sent_image, parent, false);
-                return new SentImageHolder(view);
-
-            case TYPE_IMAGE_RECEIVED:
-
-                view = inflater.inflate(R.layout.item_received_photo, parent, false);
-                return new ReceivedImageHolder(view);
-
         }
 
         return null;
@@ -146,50 +103,25 @@ public class MessageAdapter extends RecyclerView.Adapter {
         try {
             if (message.getBoolean("isSent")) {
 
-                if (message.has("message")) {
-
                     SentMessageHolder messageHolder = (SentMessageHolder) holder;
                     messageHolder.nameTxt.setText(message.getString("name") + " (Me)");
                     messageHolder.messageTxt.setText(message.getString("message"));
 
-                } else {
 
-                    SentImageHolder imageHolder = (SentImageHolder) holder;
-                    Bitmap bitmap = getBitmapFromString(message.getString("image"));
-
-                    imageHolder.imageView.setImageBitmap(bitmap);
-
-                }
 
             } else {
 
-                if (message.has("message")) {
 
                     ReceivedMessageHolder messageHolder = (ReceivedMessageHolder) holder;
                     messageHolder.nameTxt.setText(message.getString("name"));
                     messageHolder.messageTxt.setText(message.getString("message"));
 
-                } else {
-
-                    ReceivedImageHolder imageHolder = (ReceivedImageHolder) holder;
-                    imageHolder.nameTxt.setText(message.getString("name"));
-
-                    Bitmap bitmap = getBitmapFromString(message.getString("image"));
-                    imageHolder.imageView.setImageBitmap(bitmap);
-
-                }
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-    }
-
-    private Bitmap getBitmapFromString(String image) {
-
-        byte[] bytes = Base64.decode(image, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     @Override

@@ -15,11 +15,6 @@
         android:icon="@drawable/ic_mytickets">
     </item>
 
-    <item
-        android:id="@+id/nv_chat"
-        android:title="Chatroom"
-        android:icon="@drawable/ic_chat">
-    </item>
 
     <item
         android:id="@+id/nv_login"
@@ -49,6 +44,17 @@
                 android:id="@+id/info"
                 android:title="Developers"
                 android:icon="@drawable/ic_developer">
+            </item>
+        </menu>
+    </item>
+
+
+    <item android:title="Personal server function">
+        <menu>
+            <item
+                android:id="@+id/nv_chat"
+                android:title="Chatroom"
+                android:icon="@drawable/ic_chat">
             </item>
         </menu>
     </item>

@@ -3,12 +3,14 @@ package com.ticket.app;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -42,9 +44,10 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private String name, email;
     private WebSocket webSocket;
     //private String SERVER_PATH = "ws://10.0.2.2:3000";
-    private String SERVER_PATH = "ws://192.168.1.6:3000";
+    private String SERVER_PATH = "ws://192.168.1.10:3000";
     private EditText messageEdit;
-    private View sendBtn, pickImgBtn;
+    private ImageView sendBtn;
+    private ImageView sendBtnGrey;
     private RecyclerView recyclerView;
     private int IMAGE_REQUEST_ID = 1;
     private MessageAdapter messageAdapter;
@@ -96,9 +99,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         if (string.isEmpty()) {
             resetMessageEdit();
         } else {
-
-            sendBtn.setVisibility(View.VISIBLE);
-            pickImgBtn.setVisibility(View.INVISIBLE);
+            sendBtn.setColorFilter(Color.argb(255, 0, 0, 0));
         }
 
     }
@@ -108,8 +109,8 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         messageEdit.removeTextChangedListener(this);
 
         messageEdit.setText("");
-        sendBtn.setVisibility(View.INVISIBLE);
-        pickImgBtn.setVisibility(View.VISIBLE);
+        sendBtn.setColorFilter(Color.argb(255, 105, 105, 105));
+
 
         messageEdit.addTextChangedListener(this);
 
@@ -158,7 +159,8 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         messageEdit = findViewById(R.id.messageEdit);
         sendBtn = findViewById(R.id.sendBtn);
-        pickImgBtn = findViewById(R.id.pickImgBtn);
+
+
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -171,35 +173,29 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         sendBtn.setOnClickListener(v -> {
 
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("name", name);
-                jsonObject.put("message", messageEdit.getText().toString());
+            if (!(messageEdit.getText().toString().equals(""))) {
 
-                webSocket.send(jsonObject.toString());
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("name", name);
+                    jsonObject.put("message", messageEdit.getText().toString());
 
-                jsonObject.put("isSent", true);
-                messageAdapter.addItem(jsonObject);
+                    webSocket.send(jsonObject.toString());
 
-                recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                    jsonObject.put("isSent", true);
+                    messageAdapter.addItem(jsonObject);
 
-                resetMessageEdit();
+                    recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    resetMessageEdit();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-
         });
 
-        pickImgBtn.setOnClickListener(v -> {
 
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-
-            startActivityForResult(Intent.createChooser(intent, "Pick image"),
-                    IMAGE_REQUEST_ID);
-
-        });
 
     }
 
