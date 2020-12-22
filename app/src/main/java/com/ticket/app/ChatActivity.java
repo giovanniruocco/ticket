@@ -45,12 +45,10 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private String name, email;
     private WebSocket webSocket;
     //private String SERVER_PATH = "ws://10.0.2.2:3000";
-    private String SERVER_PATH = "ws://192.168.1.10:3000";
+    private String SERVER_PATH = "ws://192.168.1.7:3000";
     private EditText messageEdit;
     private ImageView sendBtn;
-    private ImageView sendBtnGrey;
     private RecyclerView recyclerView;
-    private int IMAGE_REQUEST_ID = 1;
     private MessageAdapter messageAdapter;
     private FirebaseAuth auth;
     private DatabaseReference myRef2;
@@ -83,9 +81,6 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
                             Toast.LENGTH_SHORT).show();
             }
         }, 300);
-
-
-
 
     }
 
@@ -235,53 +230,6 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == IMAGE_REQUEST_ID && resultCode == RESULT_OK) {
-
-            try {
-                InputStream is = getContentResolver().openInputStream(data.getData());
-                Bitmap image = BitmapFactory.decodeStream(is);
-
-                sendImage(image);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-    private void sendImage(Bitmap image) {
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
-
-        String base64String = Base64.encodeToString(outputStream.toByteArray(),
-                Base64.DEFAULT);
-
-        JSONObject jsonObject = new JSONObject();
-
-        try {
-            jsonObject.put("name", name);
-            jsonObject.put("image", base64String);
-
-            webSocket.send(jsonObject.toString());
-
-            jsonObject.put("isSent", true);
-
-            messageAdapter.addItem(jsonObject);
-
-            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     ValueEventListener evento = new ValueEventListener() {
     @Override
