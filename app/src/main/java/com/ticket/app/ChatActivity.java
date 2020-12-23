@@ -1,5 +1,6 @@
 package com.ticket.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +47,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private String name, email;
     private WebSocket webSocket;
     //private String SERVER_PATH = "ws://10.0.2.2:3000";
-    private String SERVER_PATH = "ws://192.168.1.7:3000";
+    private String SERVER_PATH = "ws://192.168.1.9:3000";
     private EditText messageEdit;
     private ImageView sendBtn;
     private RecyclerView recyclerView;
@@ -59,6 +61,9 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         setTitle("Chat room");
+
+        sendBtn = findViewById(R.id.sendBtn);
+        sendBtn.setImageAlpha(50);
 
         auth = FirebaseAuth.getInstance();
 
@@ -75,12 +80,33 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!prova)
-                    Toast.makeText(ChatActivity.this,
-                            "Socket connection Failed!",
-                            Toast.LENGTH_SHORT).show();
+                if (!prova) {
+
+                    new AlertDialog.Builder(ChatActivity.this)
+                            .setMessage("Socket Connection Failed")
+                            .setCancelable(false)
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    finish();
+                                    overridePendingTransition(0, 0);
+                                    startActivity(getIntent());
+                                    overridePendingTransition(0, 0);
+                                }
+                            })
+                            .setNegativeButton("Back",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(ChatActivity.this, MainActivity.class));
+                                }
+                            })
+                            .show();
+
+                    /*
+                    Toast.makeText(ChatActivity.this, "Socket connection Failed!", Toast.LENGTH_SHORT).show();
+
+*/
+                }
             }
-        }, 300);
+        }, 250);
 
     }
 
@@ -113,7 +139,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         if (string.isEmpty()) {
             resetMessageEdit();
         } else {
-            sendBtn.setColorFilter(Color.argb(255, 0, 0, 0));
+            sendBtn.setImageAlpha(255);
         }
 
     }
@@ -123,8 +149,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         messageEdit.removeTextChangedListener(this);
 
         messageEdit.setText("");
-        sendBtn.setColorFilter(Color.argb(255, 105, 105, 105));
-
+        sendBtn.setImageAlpha(50);
 
         messageEdit.addTextChangedListener(this);
 
@@ -186,7 +211,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
 
         messageEdit = findViewById(R.id.messageEdit);
-        sendBtn = findViewById(R.id.sendBtn);
+
 
 
 
