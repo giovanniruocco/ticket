@@ -43,7 +43,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
                     Adds the given amount to a Calendar field.
              */
         // Add 3 days to Calendar
-        calendar.add(Calendar.DATE, 3);
+        //calendar.add(Calendar.DATE, 3);
 
             /*
                 getTimeInMillis()
@@ -67,7 +67,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         // Subtract 6 days from Calendar updated date
         //calendar.add(Calendar.DATE, -6);
-
+       /* dpd.getDatePicker().setCalendarViewShown(true);
+        dpd.getDatePicker().setSpinnersShown(false);*/
         // Set the Calendar new date as minimum date of date picker
         dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
@@ -79,7 +80,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     public void onDateSet(DatePicker view, int year, int month, int day){
         // Do something with the chosen date
-        TextView tv = (TextView) getActivity().findViewById(R.id.tv);
         EditText et_date = (EditText) getActivity().findViewById(R.id.add_date);
 
         // Create a Date variable/object with user chosen date
