@@ -30,9 +30,9 @@
 
         <Spinner
             android:id="@+id/cat_spinner"
-            android:layout_width="372dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,15 +59,14 @@
 
         <Spinner
             android:id="@+id/reg_spinner"
-            android:layout_width="372dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_region">
-        </Spinner>
+            app:layout_constraintTop_toBottomOf="@+id/text_region"></Spinner>
 
         <TextView
             android:id="@+id/text_city"
@@ -87,15 +86,14 @@
 
         <Spinner
             android:id="@+id/city_spinner"
-            android:layout_width="372dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_city">
-        </Spinner>
+            app:layout_constraintTop_toBottomOf="@+id/text_city"></Spinner>
 
 
         <Button
@@ -106,9 +104,11 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="16dp"
             android:background="#49b675"
             android:fontFamily="@font/productsansbold"
             android:text="SEARCH"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
