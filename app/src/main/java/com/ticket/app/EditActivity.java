@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +30,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -63,6 +65,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +82,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     String[] cityArray;
     String addname, addprice, adddesc;
     String region, city, category, finaltext;
-    String cell;
+    String cell, eventdate;
     String missingFields = "";
     Spinner spinner, spinner2, spin;
 
@@ -101,7 +104,9 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
     private Bitmap bmp, bitmap;
     File photoFile = null;
     private static final String IMAGE_DIRECTORY_NAME = "TICKET";
-    private EditText et_name,et_price,et_description;
+    private EditText et_name,et_price,et_description, et_date;
+    private Calendar myCalendar;
+    private DatePickerDialog.OnDateSetListener date;
     int id_regionArray;
     Location gps_loc;
     Location network_loc;
@@ -163,9 +168,37 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+
+        myCalendar = Calendar.getInstance();
+
+        et_date= (EditText) findViewById(R.id.add_date);
+        date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        et_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(EditActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
         et_name = (EditText) findViewById(R.id.add_name);
         et_description = (EditText) findViewById(R.id.add_description);
         et_price = (EditText) findViewById(R.id.add_price);
+        et_date = (EditText) findViewById(R.id.add_date);
 
 
         spinner = findViewById(R.id.spinner);
@@ -297,6 +330,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         final String editName = intent.getExtras().getString("Name");
         final String editCategory =  intent.getExtras().getString("Category");
         final String editDescription = intent.getExtras().getString("Description");
+        final String editEventdate = intent.getExtras().getString("Eventdate");
         final String editPrice = intent.getExtras().getString("Price");
         final String editCity = intent.getExtras().getString("City");
         final String editRegion = intent.getExtras().getString("Region");
@@ -306,6 +340,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         et_name.setText(editName);
         et_description.setText(editDescription);
         et_price.setText(editPrice);
+        et_date.setText(editEventdate);
 
 
         int indexC = -1;
@@ -467,6 +502,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                 myVib.vibrate(25);
                 addname = et_name.getText().toString().trim();
                 addprice = et_price.getText().toString().trim();
+                eventdate = et_date.getText().toString().trim();
 
                 if(!(et_name.getText().toString().trim().equals("")))
                     addname = et_name.getText().toString().trim();
@@ -521,9 +557,9 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                                     } else {
                                         Ticket ticket;
                                         if (urlimage != null) {
-                                            ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
+                                            ticket = new Ticket(addname, category, eventdate, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
                                         } else {
-                                            ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), editImage);
+                                            ticket = new Ticket(addname, category, eventdate, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), editImage);
                                         }
                                         ticket.setUtente(utente);
                                         //String uid = mDatabase.child("Tickets").push().getKey();
@@ -531,7 +567,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                                         mDatabase.child("Tickets").child(editUid).setValue(null);
                                         mDatabase.child("Tickets").child(editUid).setValue(ticket);
                                         Toast.makeText(EditActivity.this, "Congratulations, you edited your post!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(EditActivity.this, ProfileActivity.class));
+                                        startActivity(new Intent(EditActivity.this, MyTicketsActivity.class));
                                     }
                                 } else {
                                     new AlertDialog.Builder(EditActivity.this)
@@ -931,6 +967,13 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        et_date.setText(sdf.format(myCalendar.getTime()));
     }
 
     public void onBackPressed() {

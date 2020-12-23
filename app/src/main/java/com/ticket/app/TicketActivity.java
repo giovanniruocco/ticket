@@ -43,7 +43,7 @@ public class TicketActivity extends AppCompatActivity {
 
 
     float x1, x2, y1, y2;
-    private TextView tvname, tvdescription, tvcategory, tvprice, tvcity, tvregion, tvdate, tooltxt;
+    private TextView tvname, tvdescription, tvcategory, tvprice, tvcity, tvregion, tvdate, tveventdate;
     private ImageView img, imag;
     private boolean isOpen = false;
     private ConstraintSet layout1, layout2, layout3;
@@ -118,7 +118,7 @@ public class TicketActivity extends AppCompatActivity {
         tvcategory.setSelected(true);
         
         tvcity = (TextView) findViewById(R.id.textCity);
-        //tooltxt = (TextView) findViewById(R.id.toolbarTitle);
+        tveventdate = (TextView) findViewById(R.id.textEventdate);
         tvdate = findViewById(R.id.txtDate);
         tvregion = (TextView) findViewById(R.id.txtRegion);
         tvprice = (TextView) findViewById(R.id.textPrice);
@@ -135,11 +135,13 @@ public class TicketActivity extends AppCompatActivity {
         final String intentPrice = intent.getExtras().getString("Price");
         final String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
         final String intentDescription = intent.getExtras().getString("Description");
+        final String intentEventdate = intent.getExtras().getString("Eventdate");
         final String City = "City: " + intent.getExtras().getString("City");
         final String intentCity = intent.getExtras().getString("City");
         final String Region = "Region: " + intent.getExtras().getString("Region");
         final String intentRegion = intent.getExtras().getString("Region");
         final String Date = "Date: " + intent.getExtras().getString("Date");
+        final String Eventdate = "Event Date: " + intent.getExtras().getString("Eventdate");
         uid = intent.getExtras().getString("Uid");
         final String Tel = intent.getExtras().getString("Tel");
         final String Email = intent.getExtras().getString("Email");
@@ -152,6 +154,7 @@ public class TicketActivity extends AppCompatActivity {
         tvcity.setText(City);
         tvregion.setText(Region);
         tvdate.setText(Date);
+        tveventdate.setText(Eventdate);
 
 
         switch (Category) {
@@ -221,6 +224,7 @@ public class TicketActivity extends AppCompatActivity {
                                 Intent intento = new Intent(TicketActivity.this, EditActivity.class);
                                 intento.putExtra("Name", Name);
                                 intento.putExtra("Category", Category);
+                                intento.putExtra("Eventdate", intentEventdate);
                                 intento.putExtra("Description", intentDescription);
                                 intento.putExtra("Price", intentPrice);
                                 intento.putExtra("City", intentCity);

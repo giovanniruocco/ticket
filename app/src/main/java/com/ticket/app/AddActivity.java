@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +30,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -65,6 +67,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -80,7 +83,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     String[] regionArray;
     String addname, addprice, adddesc;
     String region, city, category, finaltext;
-    String cell;
+    String cell, eventdate;
     String missingFields = "";
     Spinner spinner,spinner2, spin;
 
@@ -102,7 +105,9 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     private Bitmap bmp, bitmap;
     File photoFile = null;
     private static final String IMAGE_DIRECTORY_NAME = "TICKET";
-    private EditText et_name,et_price,et_description;
+    private EditText et_name,et_price,et_description, et_date;
+    private Calendar myCalendar;
+    private DatePickerDialog.OnDateSetListener date;
     int id_regionArray;
     Location gps_loc;
     Location network_loc;
@@ -162,6 +167,36 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 SelectImage();
             }
         });
+
+        myCalendar = Calendar.getInstance();
+
+        et_date= (EditText) findViewById(R.id.add_date);
+        date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        et_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(AddActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+
+
 
         et_name = (EditText) findViewById(R.id.add_name);
         et_description = (EditText) findViewById(R.id.add_description);
@@ -306,6 +341,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                 myVib.vibrate(25);
                 addname = et_name.getText().toString().trim();
                 addprice = et_price.getText().toString().trim();
+                eventdate = et_date.getText().toString().trim();
 
                 if(!(et_name.getText().toString().trim().equals("")))
                     addname = et_name.getText().toString().trim();
@@ -358,7 +394,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                                     .setNegativeButton("Ok, I'll check again", null)
                                                     .show();
                                         } else {
-                                            Ticket ticket = new Ticket(addname, category, adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
+                                            Ticket ticket = new Ticket(addname, category, eventdate,  adddesc, region, city, addprice, email, cell, getCurrentTimeStamp(), urlimage);
                                             ticket.setUtente(utente);
                                             String uid = mDatabase.child("Tickets").push().getKey();
                                             ticket.setUid(uid);
@@ -763,6 +799,13 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        et_date.setText(sdf.format(myCalendar.getTime()));
     }
 
 

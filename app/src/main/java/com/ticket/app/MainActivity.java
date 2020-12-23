@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(new Intent(MainActivity.this, SliderActivity.class));
                                 break;
                             case R.id.info:
-                                //startActivity(new Intent(MainActivity.this,DevelopersActivity.class));
+                                startActivity(new Intent(MainActivity.this,DeveloperActivity.class));
                                 break;
                             case R.id.feedback:
                                 Intent intent = new Intent(Intent.ACTION_SEND);

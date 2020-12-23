@@ -137,16 +137,30 @@
 
 
             <TextView
-                android:id="@+id/textCity"
+                android:id="@+id/textEventdate"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="50dp"
                 android:fontFamily="@font/productsansregular"
-                android:text="City"
+                android:text="Event Date"
                 android:textSize="24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textCategory" />
+
+
+
+            <TextView
+                android:id="@+id/textCity"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/productsansregular"
+                android:text="City"
+                android:textSize="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textEventdate" />
 
             <TextView
                 android:id="@+id/txtDesc"

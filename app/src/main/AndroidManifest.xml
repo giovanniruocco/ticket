@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".DeveloperActivity"></activity>
         <activity android:name=".SliderActivity" />
 
         <provider
@@ -84,9 +84,7 @@
         <activity
             android:name=".TicketActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

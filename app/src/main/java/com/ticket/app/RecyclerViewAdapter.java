@@ -38,6 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Ticket currentticket= mData.get(position);
         holder.tv_ticket_name.setText(mData.get(position).getName());
         holder.tv_ticket_category.setText(mData.get(position).getCategory());
+        holder.tv_ticket_eventdate.setText(mData.get(position).getEventdate());
 
         switch (currentticket.getCategory()) {
             case "Music" :
@@ -89,6 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("Email",mData.get(position).getEmail());
                 intent.putExtra("Tel",mData.get(position).getTel());
                 intent.putExtra("Date",mData.get(position).getDate());
+                intent.putExtra("Eventdate",mData.get(position).getEventdate());
                 intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
                 intent.putExtra("Uid",mData.get(position).getUid());
                 mContext.startActivity(intent);
@@ -104,6 +106,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_ticket_name;
         TextView tv_ticket_category;
+        TextView tv_ticket_eventdate;
         TextView tv_ticket_price;
         ImageView img_ticket_thumbnail, cat_image;
         CardView cardView ;
@@ -111,6 +114,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             tv_ticket_name = (TextView) itemView.findViewById(R.id.ticket_name_id) ;
             tv_ticket_category=(TextView) itemView.findViewById(R.id.ticket_category_id);
+            tv_ticket_eventdate=(TextView) itemView.findViewById(R.id.ticket_date_id);
             tv_ticket_price=(TextView) itemView.findViewById(R.id.ticket_price_id);
             img_ticket_thumbnail = (ImageView) itemView.findViewById(R.id.ticket_img_id);
             cat_image = (ImageView) itemView.findViewById(R.id.cat_img);

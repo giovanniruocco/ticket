@@ -34,7 +34,7 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
     private String uid;
     private Vibrator myVib;
     private DatabaseReference myRef;
-    private String Name,Category,Description,Price,Date,Tel,Email,Region,City,Thumbnail,Utente;
+    private String Name,Category,Description,Price,Date,Tel,Email,Region,City,Thumbnail,Utente, Eventdate;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -81,6 +81,7 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
         City=mData.get(position).getCity();
         Price=mData.get(position).getPrice();
         Date=mData.get(position).getDate();
+        Eventdate = mData.get(position).getEventdate();
         Tel=mData.get(position).getTel();
         Email=mData.get(position).getEmail();
         Thumbnail=mData.get(position).getThumbnail();
@@ -98,6 +99,7 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
                 intent.putExtra("Email",mData.get(position).getEmail());
                 intent.putExtra("Tel",mData.get(position).getTel());
                 intent.putExtra("Date",mData.get(position).getDate());
+                intent.putExtra("Eventdate",mData.get(position).getEventdate());
                 intent.putExtra("Thumbnail",mData.get(position).getThumbnail());
                 intent.putExtra("Uid",mData.get(position).getUid());
                 mContext.startActivity(intent);

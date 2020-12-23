@@ -13,6 +13,7 @@ public class Ticket {
     private String Email;
     private String Tel;
     private String Date;
+    private String Eventdate;
 
     private String Thumbnail ;
     private String utente;
@@ -20,9 +21,10 @@ public class Ticket {
 
     public Ticket() { }
 
-    public Ticket(String name, String category, String description, String region, String city, String price, String email, String tel, String date, String thumbnail) {
+    public Ticket(String name, String category, String eventdate, String description, String region, String city, String price, String email, String tel, String date, String thumbnail) {
         Name = name;
         Category = category;
+        Eventdate = eventdate;
         Description = description;
         Region = region;
         City = city;
@@ -66,6 +68,9 @@ public class Ticket {
     public String getDate() {
         return Date;
     }
+    public String getEventdate() {
+        return Eventdate;
+    }
     public String getEmail() {
         return Email;
     }
@@ -93,6 +98,9 @@ public class Ticket {
     }
     public void setDate(String date) {
         Date = date;
+    }
+    public void setEventdate(String eventdate) {
+        Eventdate = eventdate;
     }
 
     public void setEmail(String email) {

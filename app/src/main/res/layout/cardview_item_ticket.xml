@@ -34,20 +34,38 @@
 
         <TextView
             android:id="@+id/ticket_name_id"
-            android:layout_width="189dp"
-            android:layout_height="49dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="107dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="40dp"
             android:ellipsize="end"
-            android:fontFamily="@font/productsansregular"
+            android:fontFamily="@font/ubunturegular"
             android:gravity="center|start|center_horizontal"
             android:lines="2"
             android:maxLines="2"
             android:text="Ticket Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="19dp"
+            android:textSize="14dp"
+            android:textStyle="normal|bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/ticket_name_img" />
+
+        <TextView
+            android:id="@+id/ticket_date_id"
+            android:layout_width="107dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ubunturegular"
+            android:gravity="center|start|center_horizontal"
+            android:maxLines="1"
+            android:text="Ticket Date"
+            android:textColor="#2d2d2d"
+            android:textSize="14dp"
+            android:textStyle="normal|bold"
+            app:layout_constraintStart_toEndOf="@+id/calendar_img"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_name_id" />
 
         <TextView
             android:id="@+id/ticket_category_id"
@@ -67,8 +85,27 @@
             app:layout_constraintTop_toBottomOf="@+id/ticket_img_id" />
 
         <ImageView
+            android:id="@+id/calendar_img"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_calendar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_name_img" />
+
+        <ImageView
+            android:id="@+id/ticket_name_img"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_mytickets"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_img_id" />
+
+        <ImageView
             android:id="@+id/cat_img"
-            android:layout_width="28dp"
+            android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +113,7 @@
 
         <ImageView
             android:id="@+id/euro_img"
-            android:layout_width="28dp"
+            android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
