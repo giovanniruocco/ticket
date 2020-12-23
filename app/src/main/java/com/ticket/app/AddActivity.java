@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -47,6 +49,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,6 +71,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,7 +113,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
     private static final String IMAGE_DIRECTORY_NAME = "TICKET";
     private EditText et_name,et_price,et_description, et_date;
     private Calendar myCalendar;
-    private DatePickerDialog.OnDateSetListener date;
+    private DatePicker dateP;
+    private DatePickerDialog.OnDateSetListener date, date2;
     int id_regionArray;
     Location gps_loc;
     Location network_loc;
@@ -176,7 +183,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -185,16 +191,31 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
         };
 
+/*
+        datePicker.setMinDate(System.currentTimeMillis() - 1000);
+*/
+
+        dateP = new DatePickerDialog(AddActivity.this, date, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).getDatePicker();
+
+        dateP.setMinDate(System.currentTimeMillis() - 1000);
+
         et_date.setOnClickListener(new View.OnClickListener() {
-            @Override
+         @Override
             public void onClick(View view) {
-                new DatePickerDialog(AddActivity.this, date, myCalendar
+                /*new DatePickerDialog(AddActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();*/
+
+             // Initialize a new date picker dialog fragment
+             DialogFragment dFragment = new DatePickerFragment();
+
+             // Show the date picker dialog fragment
+             dFragment.show(getSupportFragmentManager(), "Date Picker");
             }
+
         });
-
-
 
 
 

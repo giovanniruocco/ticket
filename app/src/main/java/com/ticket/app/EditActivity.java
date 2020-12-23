@@ -44,6 +44,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -189,9 +190,15 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(EditActivity.this, date, myCalendar
+                /*new DatePickerDialog(EditActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();*/
+
+                DialogFragment dFragment = new DatePickerFragment();
+
+                // Show the date picker dialog fragment
+                dFragment.show(getSupportFragmentManager(), "Date Picker");
+
             }
         });
 
