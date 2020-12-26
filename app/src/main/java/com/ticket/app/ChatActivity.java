@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,8 +47,8 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
     private String name, email;
     private WebSocket webSocket;
-    //private String SERVER_PATH = "ws://10.0.2.2:3000";
-    private String SERVER_PATH = "ws://192.168.1.9:3000";
+    //private String SERVER_PATH = "ws://10.0.2.2:8000";
+    private String SERVER_PATH = "ws://192.168.1.7:8000";
     private EditText messageEdit;
     private ImageView sendBtn;
     private RecyclerView recyclerView;
@@ -272,5 +273,19 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     public void onCancelled(DatabaseError databaseError) {
     }
 };
+
+    public void onBackPressed() {
+        webSocket.close(1000, "bye");
+        startActivity(new Intent(ChatActivity.this,MainActivity.class));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return false;
+    }
 
 }
