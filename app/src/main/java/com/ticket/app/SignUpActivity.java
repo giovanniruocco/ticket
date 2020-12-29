@@ -70,7 +70,6 @@ public class SignUpActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(LoginActivity.this, "Ammor", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             }
 

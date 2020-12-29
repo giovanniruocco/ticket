@@ -128,7 +128,6 @@ public class EditProfileActivity extends AppCompatActivity {
         if (item.getItemId()==R.id.done)
         {
             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-            //Toast.makeText(EditProfileActivity.this, "Cia", Toast.LENGTH_SHORT).show();
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).setValue(null);
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("email").setValue(editMail);
             mDatabase.child("Users").child(currentFirebaseUser.getUid()).child("name").setValue(name.getText().toString());
@@ -207,7 +206,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     photoFile = createImageFile();
                     // Continua solamente se il file è stato creato con successo
                     if (photoFile != null) {
-                        //Toast.makeText(this, "Creato", Toast.LENGTH_SHORT).show();
                         Uri photoURI = FileProvider.getUriForFile(this,
                                 "com.ticket.app.fileprovider",
                                 photoFile);
@@ -216,8 +214,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 }
                 catch (Exception ex) {
-                    //Toast.makeText(this, "Eccezione", Toast.LENGTH_SHORT).show();
-                }
+                   }
             }
             else
             {

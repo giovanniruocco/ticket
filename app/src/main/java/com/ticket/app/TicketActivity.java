@@ -78,6 +78,7 @@ public class TicketActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
+
         floatingtool = findViewById(R.id.floating_action_tool);
 
         toolbar = findViewById(R.id.toolbar);
@@ -286,9 +287,16 @@ public class TicketActivity extends AppCompatActivity {
                             if (items[i].equals("Call")) {
                                 myVib.vibrate(25);
                                 if (auth.getCurrentUser() != null) {
-                                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                                    intent.setData(Uri.parse("tel:" + Tel));
-                                    startActivity(intent);
+
+                                    if (Tel == null) {
+                                        Toast.makeText(TicketActivity.this, "Telephone number is not available", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                                        intent.setData(Uri.parse("tel:" + Tel));
+                                        startActivity(intent);
+                                    }
+
 
                                 } else
                                     Toast.makeText(TicketActivity.this, "You must be logged in.", Toast.LENGTH_SHORT).show();

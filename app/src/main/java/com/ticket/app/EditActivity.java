@@ -165,8 +165,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
                 myVib.vibrate(25);
                 SelectImage();
-                //Toast.makeText(getApplicationContext(),"Ammo", Toast.LENGTH_LONG).show();
-            }
+               }
         });
 
 
@@ -603,7 +602,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
-        //Toast.makeText(getApplicationContext(), categoryNames[position], Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -661,7 +659,6 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                     photoFile = createImageFile();
                     // Continua solamente se il file è stato creato con successo
                     if (photoFile != null) {
-                        //Toast.makeText(this, "Creato", Toast.LENGTH_SHORT).show();
                         Uri photoURI = FileProvider.getUriForFile(this,
                                 "com.ticket.app.fileprovider",
                                 photoFile);
@@ -670,8 +667,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 }
                 catch (Exception ex) {
-                    //Toast.makeText(this, "Eccezione", Toast.LENGTH_SHORT).show();
-                }
+                   }
             }
             else
             {
@@ -930,6 +926,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         et_name.setText("");
         et_description.setText("");
         et_price.setText("");
+        et_date.setText("");
         spinner.setSelection(0);
         spinner2.setSelection(0);
         spin.setSelection(0);

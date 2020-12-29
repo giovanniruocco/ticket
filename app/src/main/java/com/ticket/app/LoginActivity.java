@@ -88,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(LoginActivity.this, "Ammor", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
             }
 
@@ -165,8 +164,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(LoginActivity.this, "Ammor", Toast.LENGTH_LONG).show();
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_LONG).show();

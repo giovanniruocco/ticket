@@ -450,8 +450,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
-        //Toast.makeText(getApplicationContext(), categoryNames[position], Toast.LENGTH_SHORT).show();
-    }
+  }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -508,7 +507,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                     photoFile = createImageFile();
                     // Continua solamente se il file è stato creato con successo
                     if (photoFile != null) {
-                        //Toast.makeText(this, "Creato", Toast.LENGTH_SHORT).show();
                         Uri photoURI = FileProvider.getUriForFile(this,
                                 "com.ticket.app.fileprovider",
                                 photoFile);
@@ -517,8 +515,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                     }
                 }
                 catch (Exception ex) {
-                    //Toast.makeText(this, "Eccezione", Toast.LENGTH_SHORT).show();
-                }
+                  }
             }
             else
             {
@@ -779,6 +776,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         et_name.setText("");
         et_description.setText("");
         et_price.setText("");
+        et_date.setText("");
         spinner.setSelection(0);
         spinner2.setSelection(0);
         spin.setSelection(0);
