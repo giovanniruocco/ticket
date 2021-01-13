@@ -311,8 +311,8 @@ public class TicketActivity extends AppCompatActivity {
                                     intent.setData(Uri.parse("mailto: "));
                                     String[] contatto = {Email};
                                     intent.putExtra(Intent.EXTRA_EMAIL, contatto);
-                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Ticket");
-                                    intent.putExtra(Intent.EXTRA_TEXT, "Cia fra.");
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Ticket4Sale");
+                                    intent.putExtra(Intent.EXTRA_TEXT, "Hi, I'm interested in your ticket " + "\"" + Name + "\".");
                                     intent.setType("message/rfc822");
                                     Intent chooser = Intent.createChooser(intent, "Send Email");
                                     startActivity(chooser);
