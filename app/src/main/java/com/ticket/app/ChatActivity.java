@@ -48,7 +48,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private String name, email;
     private WebSocket webSocket;
     //private String SERVER_PATH = "ws://10.0.2.2:8000";
-    private String SERVER_PATH = "ws://192.168.1.7:8000";
+    private String SERVER_PATH = "ws://192.168.1.9:8000";
     private EditText messageEdit;
     private ImageView sendBtn;
     private RecyclerView recyclerView;
@@ -264,7 +264,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         {
             User user=snap.getValue(User.class);
 
-                name = user.getName() + " " + user.getSurname();
+                name = user.getName().substring(0, 1).toUpperCase() + user.getName().substring(1) + " " + user.getSurname().substring(0, 1).toUpperCase() + user.getSurname().substring(1);
 
         }
     }
