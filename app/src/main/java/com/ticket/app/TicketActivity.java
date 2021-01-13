@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -88,8 +89,7 @@ public class TicketActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
+        toolbar.setSelected(true);
 
         //getSupportActionBar().hide();
 
@@ -114,6 +114,10 @@ public class TicketActivity extends AppCompatActivity {
         tickets=new HashMap<>();
         tvname = (TextView) findViewById(R.id.textName);
         tvname.setSelected(true);
+        tvname.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvname.setSingleLine(true);
+        tvname.setMarqueeRepeatLimit(-1);
+
         tvdescription = (TextView) findViewById(R.id.txtDesc);
         tvcategory = (TextView) findViewById(R.id.textCategory);
         tvcategory.setSelected(true);
@@ -134,7 +138,7 @@ public class TicketActivity extends AppCompatActivity {
         final String Category =  intent.getExtras().getString("Category");
         final String Price = "Price: " + intent.getExtras().getString("Price");
         final String intentPrice = intent.getExtras().getString("Price");
-        final String Description = Name + "'s description:\n" + intent.getExtras().getString("Description");
+        final String Description = "Description:\n" + intent.getExtras().getString("Description");
         final String intentDescription = intent.getExtras().getString("Description");
         final String intentEventdate = intent.getExtras().getString("Eventdate");
         final String City = "City: " + intent.getExtras().getString("City");

@@ -15,15 +15,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.Editable;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nv;
     private DrawerLayout dl;
     private int numero,conta=0,conto=0;
+    private String donation ="";
     private SearchView searchView;
     private ActionBarDrawerToggle t;
     private DrawerLayout activity_main;
@@ -304,13 +309,37 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.feedback:
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setData(Uri.parse("mailto: "));
-                                String[] contatto = {"ticket@engineer.com"};
+                                String[] contatto = {"app.ticket4sale@gmail.com\n"};
                                 intent.putExtra(Intent.EXTRA_EMAIL, contatto);
-                                intent.putExtra(Intent.EXTRA_SUBJECT, "Ticket:Feedback");
+                                intent.putExtra(Intent.EXTRA_SUBJECT, "Ticket4Sale:Feedback");
                                 intent.putExtra(Intent.EXTRA_TEXT, "I would like to report the following bug: ");
                                 intent.setType("message/rfc822");
                                 Intent chooser = Intent.createChooser(intent, "Send Email");
                                 startActivity(chooser);
+                                break;
+                            case R.id.cheers:
+
+                                final EditText input = new EditText(MainActivity.this);
+                                input.setHint("Enter amount");
+                                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                                final CharSequence[] items={"Edit", "Delete", "Back"};
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setView(input)
+                                        .setCancelable(false)
+                                        .setPositiveButton("Donate", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                donation = input.getText().toString();
+                                                //Toast.makeText(MainActivity.this, donation, Toast.LENGTH_SHORT).show();
+                                                Intent intento = new Intent(MainActivity.this, CheersActivity.class);
+                                                intento.putExtra("Donation", donation);
+                                                startActivity(intento);
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", null)
+                                        .show();
+
+
                                 break;
 
                             case R.id.nv_chat:

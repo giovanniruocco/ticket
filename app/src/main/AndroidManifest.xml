@@ -21,13 +21,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_tickets"
+
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_tickets"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DeveloperActivity"></activity>
+
+        <activity android:name=".CheersActivity" />
+        <activity android:name=".DeveloperActivity" />
         <activity android:name=".SliderActivity" />
 
         <provider
@@ -51,6 +53,11 @@
             android:name=".EditProfileActivity"
             android:parentActivityName=".ProfileActivity" />
         <activity
+            android:name=".PaymentDetails"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+
             android:name=".ChatActivity"
             android:parentActivityName=".MainActivity" />
         <activity
@@ -84,7 +91,7 @@
         <activity
             android:name=".TicketActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
