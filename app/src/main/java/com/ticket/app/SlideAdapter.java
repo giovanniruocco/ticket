@@ -16,17 +16,17 @@ public class SlideAdapter extends PagerAdapter {
     Context context;
     LayoutInflater inflater;
     public int[] lst_images = {
-            R.drawable.ic_profile,
-            R.drawable.ic_profile,
-            R.drawable.ic_profile,
-            R.drawable.ic_profile,
-            R.drawable.ic_profile,
-            R.drawable.ic_profile
+           R.mipmap.ic_launcher_round,
+            R.drawable.guide_1,
+            R.drawable.guide_3,
+            R.drawable.guide_2,
+            R.drawable.ic_baseline_perm_phone_msg_24,
+            R.drawable.ic_baseline_chat_24
 
     };
     public String[] lst_title = {
             "THE DREAM EVENT",
-            "TICKETS FOR ALL THE TASTES",
+            "TICKETS FOR EVERYONE",
             "LOOK FOR TICKETS",
             "ADD YOUR PREFERENCES",
             "CONTACT THE OWNER",
@@ -35,7 +35,7 @@ public class SlideAdapter extends PagerAdapter {
     public String[] lst_description = {
             "The goal of our application is to help you finding/selling a ticket to a fantastic event.",
             "Choose from a list of tickets between many categories",
-            "With a simple tap you can go to search function",
+            "Waste no time with our search function!",
             "Use our filter function to find what you are looking for",
             "After you find your event you can contact the owner via email or telephone",
             "Use our real-time chat to talk to other users"
