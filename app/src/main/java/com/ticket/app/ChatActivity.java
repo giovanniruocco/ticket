@@ -2,21 +2,16 @@ package com.ticket.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,10 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -55,7 +46,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private MessageAdapter messageAdapter;
     private FirebaseAuth auth;
     private DatabaseReference myRef2;
-    private boolean prova = false;
+    private boolean isOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +72,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!prova) {
+                if (!isOpen) {
 
                     new AlertDialog.Builder(ChatActivity.this)
                             .setMessage("Socket Connection Failed")
@@ -167,9 +158,9 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
                 @Override
                 public void run() {
 
-                    prova = true;
+                    isOpen = true;
 
-                    if (prova) {
+                    if (isOpen) {
 
                         Toast.makeText(ChatActivity.this,
                                 "Socket Connection Successful!",
