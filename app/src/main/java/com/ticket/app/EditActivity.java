@@ -641,7 +641,7 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivityForResult(intent, SELECT_FILE);
     }
     private void requeststorage(){
-        ActivityCompat.requestPermissions(EditActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},1);
+        ActivityCompat.requestPermissions(EditActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},2);
     }
     private void captureimage()
     {
@@ -864,10 +864,15 @@ public class EditActivity extends AppCompatActivity implements AdapterView.OnIte
                 captureimage();
             }
         }
-        if (requestCode==1)
+        if (requestCode==2)
         {
             if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
                 selectimage();
+        }
+        if (requestCode==1)
+        {
+            if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                useGPS();
         }
     }
     public void setUrlimage(Uri prova)

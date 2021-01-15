@@ -39,7 +39,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
     private String name, email;
     private WebSocket webSocket;
     //private String SERVER_PATH = "ws://10.0.2.2:8000";
-    private String SERVER_PATH = "ws://192.168.1.9:8000";
+    private String SERVER_PATH = "ws://192.168.8.113:8000";
     private EditText messageEdit;
     private ImageView sendBtn;
     private RecyclerView recyclerView;
