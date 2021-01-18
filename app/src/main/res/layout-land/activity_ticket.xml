@@ -25,12 +25,12 @@
 
             <ImageView
                 android:id="@+id/ticketthumbnail"
-                app:layout_collapseMode="parallax"
-                android:contentDescription="ooooooo"
-                android:scaleType="centerCrop"
                 android:layout_width="450dp"
                 android:layout_height="350dp"
-                />
+                android:layout_gravity="center"
+                android:contentDescription="etext"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
 
 
 
