@@ -75,6 +75,11 @@ import java.util.UUID;
 
 public class EditActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    /*
+    * Analogous to the Add activity, uses the same layout template but gets the values from the
+    * Add activity so we can show them in edit text in this activity
+    * */
+
     String[] categoryNames={"Music", "Football", "Theater", "Cinema", "Flights", "Train", "Other events"};
     int categories[] = {R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
     ImageView imgview;

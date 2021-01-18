@@ -80,6 +80,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mDatabase= FirebaseDatabase.getInstance().getReference();
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+
+        //Get Values from intent in ProfileActivity so we can show them in edit texts
         final Intent intent = getIntent();
         editName = intent.getExtras().getString("Name");
         editSurname=  intent.getExtras().getString("Surname");
@@ -125,6 +127,8 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        //delete current user info and create new user with same UID and new info
+
         if (item.getItemId()==R.id.done)
         {
             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
@@ -147,6 +151,7 @@ public class EditProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Edit Image Functions
     public void Click(View v){
         myVib.vibrate(25);
         SelectImage();

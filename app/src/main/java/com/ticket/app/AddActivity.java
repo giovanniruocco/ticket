@@ -143,6 +143,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
         Button gippiesse, add_btn, add_img;
+
+        //Declaration of view's elements
         gippiesse = findViewById(R.id.gippiesse);
         add_btn = findViewById(R.id.add_button);
         add_img = findViewById(R.id.immaginepiuID);
@@ -151,8 +153,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         storageReference = storage.getReference();
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
-
-
 
 
         auth = FirebaseAuth.getInstance();
@@ -175,6 +175,8 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
+
+        //Creating a Calendar with min Date local date
         myCalendar = Calendar.getInstance();
 
         et_date= (EditText) findViewById(R.id.add_date);
@@ -191,9 +193,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
         };
 
-/*
-        datePicker.setMinDate(System.currentTimeMillis() - 1000);
-*/
 
         dateP = new DatePickerDialog(AddActivity.this, date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
@@ -204,9 +203,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         et_date.setOnClickListener(new View.OnClickListener() {
          @Override
             public void onClick(View view) {
-                /*new DatePickerDialog(AddActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();*/
 
              // Initialize a new date picker dialog fragment
              DialogFragment dFragment = new DatePickerFragment();
@@ -234,6 +230,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+        //Populate spinner by Region selected
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -356,6 +353,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
                                          }
         });
 
+        //submit inserted values and required fields check
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -401,6 +399,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
                 //finaltext = "Name: " + addname + "\nCategory: " + category + "\nDescription: " + adddesc + "\nRegion: " + region + "\nCity: " + city + "\nPrice: " + addprice + " €" + "\nEmail: " + email + "\nCell: " + cell;
 
+                //Confirm Dialog and Creating new Ticket
                 new AlertDialog.Builder(AddActivity.this)
                         .setMessage("Are you sure you entered the data correctly?")
                         .setCancelable(false)
@@ -457,6 +456,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         // TODO Auto-generated method stub
     }
 
+    //Add Ticket Image function
     private void SelectImage(){
         final CharSequence[] items={"Camera","Album", "Back"};
         AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
@@ -610,6 +610,7 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
+    //Asks permission and get Position from GPS
     public void useGPS(){
 
                 if (ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -783,7 +784,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
         urlimage=null;
         imgview.setImageResource(R.drawable.ic_addphoto);
 
-
     }
 
     @Override
@@ -826,9 +826,6 @@ public class AddActivity extends AppCompatActivity implements AdapterView.OnItem
 
         et_date.setText(sdf.format(myCalendar.getTime()));
     }
-
-
-
 
 
     public void onBackPressed() {

@@ -61,7 +61,7 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
     int categories[] = {R.drawable.ic_mytickets, R.drawable.ic_music, R.drawable.ic_football, R.drawable.ic_theater, R.drawable.ic_popcorn, R.drawable.ic_airplane, R.drawable.ic_train, R.drawable.ic_more};
 
 
-
+    //Activity to select the filter fields, it will intent to Filter Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -246,15 +246,6 @@ public class FilterSearchActivity extends AppCompatActivity implements AdapterVi
             }
             });
 //Performing action onItemSelected and onNothing selected
-
-
-
-
-
-
-
-
-
 
     }
 

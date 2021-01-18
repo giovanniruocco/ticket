@@ -65,7 +65,6 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         Query profilo=myRef2.orderByChild("email").equalTo(email);
         profilo.addListenerForSingleValueEvent(evento);
 
-
         initiateSocketConnection();
 
         Handler handler = new Handler();
@@ -102,14 +101,13 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
     }
 
+    //Initiate Connection
     private void initiateSocketConnection() {
-
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(SERVER_PATH).build();
 
         webSocket = client.newWebSocket(request, new SocketListener());
-
 
     }
 
@@ -149,6 +147,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
     private class SocketListener extends WebSocketListener {
 
+        //when the websocket is opened
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
             super.onOpen(webSocket, response);
@@ -173,6 +172,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
         }
 
+        //On a new message create a new JSON object and update the view
         @Override
         public void onMessage(WebSocket webSocket, final String text) {
             super.onMessage(webSocket, text);
@@ -199,13 +199,11 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         }
     }
 
+    //Initialize the chat view
     private void initializeView() {
 
 
         messageEdit = findViewById(R.id.messageEdit);
-
-
-
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -213,13 +211,13 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         messageEdit.addTextChangedListener(this);
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //On send, if message is not empty create new object and send it via WebSocket
                 if (!(messageEdit.getText().toString().equals(""))) {
 
                     JSONObject jsonObject = new JSONObject();
@@ -247,7 +245,7 @@ public class ChatActivity extends AppCompatActivity implements TextWatcher {
 
     }
 
-
+    //On the received messages display the name of the sender
     ValueEventListener evento = new ValueEventListener() {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {

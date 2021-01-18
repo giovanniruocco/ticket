@@ -42,6 +42,8 @@ public class FilterActivity extends AppCompatActivity {
     private boolean ordine=false;
     private View v;
     String resultText;
+
+    //This activity will show the result of the filtered search
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
