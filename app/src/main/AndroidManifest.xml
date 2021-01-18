@@ -29,7 +29,6 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".CheersActivity" />
-        <activity android:name=".DeveloperActivity" />
         <activity android:name=".SliderActivity" />
 
         <provider
@@ -52,6 +51,9 @@
         <activity
             android:name=".EditProfileActivity"
             android:parentActivityName=".ProfileActivity" />
+        <activity
+            android:name=".DeveloperActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".PaymentDetails"
             android:parentActivityName=".MainActivity" />
