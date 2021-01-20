@@ -19,7 +19,7 @@ public class PaymentDetails extends AppCompatActivity {
         setContentView(R.layout.activity_payment_details);
         setTitle("Payment Details");
 
-
+        //layout references
         txtId = findViewById(R.id.txtId);
         txtAmount = findViewById(R.id.txtAmount);
         txtStatus = findViewById(R.id.txtStatus);
@@ -34,6 +34,7 @@ public class PaymentDetails extends AppCompatActivity {
         }
     }
 
+    //Show payment details
     private void showDetails(JSONObject response, String paymentAmount) {
         try {
             txtId.setText(response.getString("id"));

@@ -82,6 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
         UsersRef = FirebaseDatabase.getInstance().getReference("Users");
 
 
+        //references
         auth = FirebaseAuth.getInstance();
        /* logout = findViewById(R.id.logout);
         gippiesse = findViewById(R.id.gippiesse);*/
@@ -126,38 +127,10 @@ public class ProfileActivity extends AppCompatActivity {
             //mDatabase.child("Users").child(personId).child("cell").setValue(null);
         }
 
-
- /*       logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                auth.signOut();
-                mGoogleSignInClient.signOut();
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-                Toast.makeText(ProfileActivity.this, "Logout effettuato con successo", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        gippiesse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requestgps();
-
-                if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(new Intent(ProfileActivity.this, gps.class));
-
-                    Toast.makeText(ProfileActivity.this, "GPS", Toast.LENGTH_SHORT).show();
-                } *//*else
-                    Toast.makeText(ProfileActivity.this, "GPS Permission denied", Toast.LENGTH_SHORT).show();
-                    *//*
-
-            }
-        });*/
-
-
     }
 
     ValueEventListener evento = new ValueEventListener() {
+        //update user info in view
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             for (DataSnapshot snap : dataSnapshot.getChildren()) {
@@ -217,6 +190,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        //if tap on edit icon, start new activity and send info with intent
         if (item.getItemId()==R.id.edit)
         {
             Intent intento = new Intent(ProfileActivity.this, EditProfileActivity.class);

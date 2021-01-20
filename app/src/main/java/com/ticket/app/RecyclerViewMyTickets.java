@@ -39,6 +39,8 @@ public class RecyclerViewMyTickets extends RecyclerView.Adapter<RecyclerViewMyTi
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
+    //Same class as main rv, but only for tickets with user=auth user
+
     public RecyclerViewMyTickets(Context mContext, List<Ticket> mData) {
         this.mContext = mContext;
         this.mData = mData;

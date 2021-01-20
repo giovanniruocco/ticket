@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
         if (settings.getBoolean("my_first_time", true)) {
-            //the app is being launched for first time, do something
+            //the app is being launched for first time, start the tutorial
             startActivity(new Intent(MainActivity.this, SliderActivity.class));
             // first time task
 
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navView = (NavigationView) findViewById(R.id.nv);
         View headerView = navView.getHeaderView(0);
 
+        //layout references
         loginImage = (ImageView) headerView.findViewById(R.id.loginImage);
         loginImage.setImageResource(R.drawable.ic_profile);
         tvnamelogin = (TextView) headerView.findViewById(R.id.navigation_name);
@@ -142,9 +143,12 @@ public class MainActivity extends AppCompatActivity {
         listatickets = new ArrayList<>();
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
+        //add button reference and animation setting
         addbutton=(FloatingActionButton)findViewById(R.id.main_add);
         MotionSpec hide_spec = MotionSpec.createFromResource(MainActivity.this , R.animator.hide_spec);
         addbutton.setHideMotionSpec(hide_spec);
+
+        //Add button function and check
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //populating RV
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -242,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        //Drawer Layout Implementation
 
         dl = findViewById(R.id.dl);
         t = new ActionBarDrawerToggle(this, dl, R.string.open, R.string.close);
@@ -251,6 +257,8 @@ public class MainActivity extends AppCompatActivity {
         t.syncState();
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 nv = (NavigationView) findViewById(R.id.nv);
+
+                //Options of Drawer
                 nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -397,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu)
     {
-
+        //Menu options
         MenuInflater inflauto = getMenuInflater();
         inflauto.inflate(R.menu.right_menu,menu);
         MenuItem cerca=menu.findItem(R.id.app_bar_search);
@@ -481,6 +489,7 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    //Order Tickets
     private void changeOrder(){
         conta++;
         if (ordine)

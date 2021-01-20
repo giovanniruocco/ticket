@@ -20,6 +20,5 @@ public class DeveloperActivity extends AppCompatActivity {
         setContentView(R.layout.activity_developer);
         setTitle("Developers");
 
-
     }
 }

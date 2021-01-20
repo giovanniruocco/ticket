@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
+    //Initial splash gif
     private static int SPLASH_TIME = 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

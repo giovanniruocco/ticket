@@ -15,6 +15,8 @@ import androidx.viewpager.widget.PagerAdapter;
 public class SlideAdapter extends PagerAdapter {
     Context context;
     LayoutInflater inflater;
+
+    //Tutorial Class
     public int[] lst_images = {
            R.mipmap.ic_launcher_round,
             R.drawable.guide_1,
@@ -63,6 +65,7 @@ public class SlideAdapter extends PagerAdapter {
         return (view==(LinearLayout)object);
     }
 
+    //Instantiate tutorial slider
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);

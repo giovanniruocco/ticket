@@ -33,7 +33,7 @@
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/productsansregular"
         android:gravity="center"
-        android:text="This application is been built by:\nGiovanni Ruocco\nAndrea Gaetano Ferrara"
+        android:text="This application has been built by:\nGiovanni Ruocco\nAndrea Gaetano Ferrara"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,6 +8,8 @@ public class User {
     //private Map<String,String> Preferiti;
     private String email, name, surname, cell, image;
 
+    //user class with getter and setter
+
     public User(){
     }
 

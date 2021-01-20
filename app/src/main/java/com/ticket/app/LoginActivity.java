@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView textGOOGLE = (TextView) btnGoogleLogin.getChildAt(0);
         textGOOGLE.setText("LOGIN WITH GOOGLE          ");
 
+        //Google Sign in Implementation
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -66,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         btnLogin = (Button)findViewById(R.id.login_btn_login);
 
+
+        //layout references
         input_email = (EditText)findViewById(R.id.login_email);
         input_password = (EditText)findViewById(R.id.login_password);
         btnSignup = (TextView)findViewById(R.id.login_btn_signup);
@@ -75,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 
+        //Sign in with google
         btnGoogleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         });
+        //Sign in with email
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
         });
 
+        //Log in
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
         });
+        //Forgot pass function
         btnForgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,10 +120,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         });
-
-
-
-
 
     }
 
@@ -208,7 +211,5 @@ public class LoginActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(LoginActivity.this,MainActivity.class));
     }
-
-
 
 }

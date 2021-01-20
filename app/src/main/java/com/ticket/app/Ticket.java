@@ -19,6 +19,7 @@ public class Ticket {
     private String utente;
     private String uid;
 
+    //ticket class with getter and setter
     public Ticket() { }
 
     public Ticket(String name, String category, String eventdate, String description, String region, String city, String price, String email, String tel, String date, String thumbnail) {

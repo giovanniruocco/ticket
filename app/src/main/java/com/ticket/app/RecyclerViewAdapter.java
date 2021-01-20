@@ -33,6 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return new MyViewHolder(view);
     }
 
+    //show ticket info in rv card
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         Ticket currentticket= mData.get(position);

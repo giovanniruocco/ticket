@@ -25,6 +25,8 @@ public class SliderActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView[] dots;
     private Button BnNext;
     private Vibrator myVib;
+
+    //Create slider
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getSupportActionBar().hide();

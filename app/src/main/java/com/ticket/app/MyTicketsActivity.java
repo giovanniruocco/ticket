@@ -75,11 +75,13 @@ public class MyTicketsActivity extends AppCompatActivity {
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(MyTicketsActivity.this);
 
-
+        //layout references
         welcome=(TextView)findViewById(R.id.mytickets_welcome);
         immagine=(ImageView)findViewById(R.id.mytickets_image);
         immagine.setVisibility(View.INVISIBLE);
         setTitle("My Tickets");
+
+        //Check if user is logged, if not go to login
         auth = FirebaseAuth.getInstance();
         final Intent loginact = new Intent(MyTicketsActivity.this,LoginActivity.class);
         if(auth.getCurrentUser() != null) {
@@ -87,6 +89,8 @@ public class MyTicketsActivity extends AppCompatActivity {
             email=auth.getCurrentUser().getEmail();
         }
         else startActivity(loginact);
+
+        //Start Recicle view only with ticket that match the user
         addticket=(FloatingActionButton)findViewById(R.id.mytickets_add);
         myVib=(Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         listatickets = new ArrayList<>();
